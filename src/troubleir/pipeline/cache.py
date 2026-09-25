@@ -10,8 +10,9 @@ import numpy as np
 from ..schema import ContextDeeplinkResponse
 
 
-_CACHE: dict[str, dict] = {}  # atom_key -> {embedding, plan, ts, dependencies, polarity, slots}
+_CACHE: dict[str, dict] = {}  # atom_key -> {embedding, plan, ts, dependencies, polarity}
 _EMBED_MODEL = None
+_STATS = {"hits": 0, "misses": 0, "stores": 0, "invalidations": 0}
 
 SIMILARITY_THRESHOLD = float(os.environ.get("CACHE_SIMILARITY_THRESHOLD", "0.85"))
 POLARITY_STRICT_THRESHOLD = float(os.environ.get("POLARITY_STRICT_THRESHOLD", "0.92"))
@@ -103,8 +104,11 @@ def lookup(canonical: str, raw_query: str) -> Optional[ContextDeeplinkResponse]:
             best_entry = entry
 
     if best_entry is None:
+        _STATS["misses"] += 1
         return None
 
+    _STATS["hits"] += 1
+    best_entry["last_hit"] = time.time()
     return ContextDeeplinkResponse(**best_entry["plan"])
 
 
@@ -124,7 +128,9 @@ def store(
         "plan": plan.model_dump(),
         "dependencies": dependencies or [],
         "ts": time.time(),
+        "hits": 0,
     }
+    _STATS["stores"] += 1
 
 
 def invalidate_by_dependency(deeplink_uri: str) -> int:
@@ -132,11 +138,22 @@ def invalidate_by_dependency(deeplink_uri: str) -> int:
     to_remove = [k for k, v in _CACHE.items() if deeplink_uri in v.get("dependencies", [])]
     for k in to_remove:
         del _CACHE[k]
+    _STATS["invalidations"] += len(to_remove)
     return len(to_remove)
 
 
 def get_cache_stats() -> dict:
-    return {"size": len(_CACHE), "keys": list(_CACHE.keys())[:10]}
+    total = _STATS["hits"] + _STATS["misses"]
+    hit_rate = round(_STATS["hits"] / total, 3) if total else 0.0
+    return {
+        "size": len(_CACHE),
+        "hits": _STATS["hits"],
+        "misses": _STATS["misses"],
+        "stores": _STATS["stores"],
+        "invalidations": _STATS["invalidations"],
+        "hit_rate": hit_rate,
+        "keys": list(_CACHE.keys())[:10],
+    }
 
 
 def save_cache(path: str = "data/processed/cache.json") -> None:
