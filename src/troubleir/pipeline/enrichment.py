@@ -1,9 +1,10 @@
-"""Query enrichment: normalize + generate 8-10 paraphrases for cache keying."""
+"""Query enrichment: normalize + generate paraphrases for cache keying."""
 import re
 import json
 import os
 from typing import Tuple
 from groq import Groq
+from ..config import GROQ_API_KEY, MODEL_NAME, ENRICHMENT_VARIATIONS
 
 _client: Groq | None = None
 
@@ -11,7 +12,7 @@ _client: Groq | None = None
 def _get_client() -> Groq:
     global _client
     if _client is None:
-        _client = Groq(api_key=os.environ["GROQ_API_KEY"])
+        _client = Groq(api_key=GROQ_API_KEY or os.environ["GROQ_API_KEY"])
     return _client
 
 
@@ -54,7 +55,7 @@ def enrich_query(query: str) -> Tuple[str, list[str]]:
     """Return (canonical_query, [10 paraphrase variations])."""
     prompt = _ENRICH_PROMPT.format(query=query)
     resp = _get_client().chat.completions.create(
-        model=os.environ.get("MODEL_NAME", "llama-3.3-70b-versatile"),
+        model=MODEL_NAME,
         messages=[{"role": "user", "content": prompt}],
         max_tokens=800,
         temperature=0.3,
