@@ -1,0 +1,5 @@
+{"pair_id": "c001", "query_a": "Screen is too bright at night", "query_b": "Screen is too dim and hard to read", "expected_different": true, "domain": "display", "polarity_a": "too_bright", "polarity_b": "too_dim"}
+{"pair_id": "c002", "query_a": "Battery drains too fast", "query_b": "Battery not draining - stuck at full charge", "expected_different": true, "domain": "battery", "polarity_a": "high_drain", "polarity_b": "no_drain"}
+{"pair_id": "c003", "query_a": "Volume is too loud", "query_b": "Volume is too low and I can't hear anything", "expected_different": true, "domain": "sound", "polarity_a": "too_loud", "polarity_b": "too_quiet"}
+{"pair_id": "c004", "query_a": "Enable dark mode for night use", "query_b": "Disable dark mode it's too hard to read", "expected_different": true, "domain": "display", "polarity_a": "enable", "polarity_b": "disable"}
+{"pair_id": "c005", "query_a": "Turn on power saving mode", "query_b": "Turn off power saving mode performance is terrible", "expected_different": true, "domain": "battery", "polarity_a": "enable", "polarity_b": "disable"}

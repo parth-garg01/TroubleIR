@@ -1,0 +1,92 @@
+[
+  {
+    "id": "q001",
+    "domain": "battery",
+    "query": "Battery draining too fast after update",
+    "canonical": "battery rapid drain"
+  },
+  {
+    "id": "q002",
+    "domain": "display",
+    "query": "Screen is too bright at night",
+    "canonical": "display brightness too high"
+  },
+  {
+    "id": "q003",
+    "domain": "display",
+    "query": "Screen is too dim and hard to see",
+    "canonical": "display brightness too low"
+  },
+  {
+    "id": "q004",
+    "domain": "display",
+    "query": "Phone swipe gestures going wrong direction after app install",
+    "canonical": "navigation gesture misconfigured"
+  },
+  {
+    "id": "q005",
+    "domain": "battery",
+    "query": "Phone overheating while charging",
+    "canonical": "device overheating charging"
+  },
+  {
+    "id": "q006",
+    "domain": "performance",
+    "query": "Phone is very slow and laggy",
+    "canonical": "device performance lag"
+  },
+  {
+    "id": "q007",
+    "domain": "display",
+    "query": "Screen keeps flickering randomly",
+    "canonical": "display flickering"
+  },
+  {
+    "id": "q008",
+    "domain": "battery",
+    "query": "Battery not charging past 85 percent",
+    "canonical": "battery charge limit enabled"
+  },
+  {
+    "id": "q009",
+    "domain": "camera",
+    "query": "Photos are blurry and out of focus",
+    "canonical": "camera photo blur"
+  },
+  {
+    "id": "q010",
+    "domain": "performance",
+    "query": "Apps keep crashing unexpectedly",
+    "canonical": "app crashes"
+  },
+  {
+    "id": "q011",
+    "domain": "display",
+    "query": "Screen flickers and battery drains quickly at the same time",
+    "canonical": "compound display flicker and battery drain"
+  },
+  {
+    "id": "q012",
+    "domain": "battery",
+    "query": "Wi-Fi drains battery even when not using phone",
+    "canonical": "background wifi battery drain"
+  },
+  {
+    "id": "q013",
+    "domain": "performance",
+    "query": "Phone gets hot during gaming",
+    "canonical": "device thermal gaming"
+  },
+  {
+    "id": "q014",
+    "domain": "display",
+    "query": "Screen is hurting my eyes at night",
+    "canonical": "eye strain night display"
+  },
+  {
+    "id": "q015",
+    "domain": "camera",
+    "query": "Videos are shaky when I walk",
+    "canonical": "camera video stabilization"
+  }
+]

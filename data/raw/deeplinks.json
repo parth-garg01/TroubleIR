@@ -1,0 +1,402 @@
+[
+  {
+    "deeplink": "bixby://masked/act/com.samsung.android.settings.display.brightness",
+    "description": "Adjust screen brightness level in Display settings",
+    "message": "Open Display brightness settings",
+    "qna_description": "Controls the brightness of your Galaxy screen. Drag the slider to increase or decrease brightness.",
+    "classes": {"target": "BrightnessSettings"},
+    "originalType": "auto"
+  },
+  {
+    "deeplink": "bixby://masked/act/com.samsung.android.settings.display.adaptiveBrightness",
+    "description": "Toggle adaptive brightness to auto-adjust screen brightness based on ambient light",
+    "message": "Open Adaptive brightness settings",
+    "qna_description": "Adaptive brightness automatically adjusts screen brightness based on the ambient light level around you.",
+    "classes": {"target": "AdaptiveBrightnessSettings"},
+    "originalType": "auto"
+  },
+  {
+    "deeplink": "bixby://masked/act/com.samsung.android.settings.display.screenTimeout",
+    "description": "Set the screen timeout duration before the display turns off automatically",
+    "message": "Open Screen timeout settings",
+    "qna_description": "Screen timeout controls how long the screen stays on when idle. Shorter timeout saves battery.",
+    "classes": {"target": "ScreenTimeoutSettings"},
+    "originalType": "auto"
+  },
+  {
+    "deeplink": "bixby://masked/act/com.samsung.android.settings.display.resolution",
+    "description": "Change screen resolution for display quality vs battery trade-off",
+    "message": "Open Screen resolution settings",
+    "qna_description": "Screen resolution determines display quality. Higher resolution uses more battery.",
+    "classes": {"target": "ScreenResolutionSettings"},
+    "originalType": "auto"
+  },
+  {
+    "deeplink": "bixby://masked/act/com.samsung.android.settings.display.refreshRate",
+    "description": "Set screen refresh rate - higher refresh rate gives smoother scrolling but uses more power",
+    "message": "Open Motion smoothness / refresh rate settings",
+    "qna_description": "Refresh rate determines how many times per second the screen updates. 60Hz saves battery, 120Hz is smoother.",
+    "classes": {"target": "RefreshRateSettings"},
+    "originalType": "auto"
+  },
+  {
+    "deeplink": "bixby://masked/act/com.samsung.android.settings.display.blueLight",
+    "description": "Enable Eye comfort shield (blue light filter) to reduce eye strain",
+    "message": "Open Eye comfort shield / blue light filter",
+    "qna_description": "Eye comfort shield reduces blue light emission which can improve sleep quality and reduce eye fatigue at night.",
+    "classes": {"target": "EyeComfortShieldSettings"},
+    "originalType": "auto"
+  },
+  {
+    "deeplink": "bixby://masked/act/com.samsung.android.settings.display.nightMode",
+    "description": "Enable dark mode or night mode across the system",
+    "message": "Open Dark mode / Night mode settings",
+    "qna_description": "Dark mode switches the system UI and supported apps to dark backgrounds, reducing eye strain and battery on AMOLED screens.",
+    "classes": {"target": "DarkModeSettings"},
+    "originalType": "auto"
+  },
+  {
+    "deeplink": "bixby://masked/act/com.samsung.android.settings.display.navigationBar",
+    "description": "Configure navigation bar layout, type, and gesture navigation settings",
+    "message": "Open Navigation bar settings under Display",
+    "qna_description": "Navigation bar settings let you choose between button navigation and swipe gesture navigation, and customize the layout.",
+    "classes": {"target": "NavigationBarSettings"},
+    "originalType": "auto"
+  },
+  {
+    "deeplink": "bixby://masked/act/com.samsung.android.settings.display.screenZoom",
+    "description": "Adjust display size and text size for readability",
+    "message": "Open Display size and font settings",
+    "qna_description": "Display size and font settings let you make items on the screen larger or smaller.",
+    "classes": {"target": "DisplaySizeSettings"},
+    "originalType": "auto"
+  },
+  {
+    "deeplink": "bixby://masked/act/com.samsung.android.settings.battery.usage",
+    "description": "View detailed battery usage statistics by app and system component",
+    "message": "Open Battery usage details",
+    "qna_description": "Battery usage shows which apps and processes are consuming the most battery power.",
+    "classes": {"target": "BatteryUsageSettings"},
+    "originalType": "auto"
+  },
+  {
+    "deeplink": "bixby://masked/act/com.samsung.android.settings.battery.powerSaving",
+    "description": "Enable Power saving mode to extend battery life by limiting performance and features",
+    "message": "Open Power saving mode settings",
+    "qna_description": "Power saving mode reduces battery consumption by limiting CPU speed, turning off sync, and reducing screen brightness.",
+    "classes": {"target": "PowerSavingSettings"},
+    "originalType": "auto"
+  },
+  {
+    "deeplink": "bixby://masked/act/com.samsung.android.settings.battery.ultraPowerSaving",
+    "description": "Enable Ultra power saving mode for maximum battery conservation in emergency situations",
+    "message": "Open Ultra power saving mode",
+    "qna_description": "Ultra power saving mode severely limits the device to only essential functions to maximize remaining battery life.",
+    "classes": {"target": "UltraPowerSavingSettings"},
+    "originalType": "critical"
+  },
+  {
+    "deeplink": "bixby://masked/act/com.samsung.android.settings.battery.optimization",
+    "description": "Manage battery optimization settings for individual apps to prevent excessive background drain",
+    "message": "Open App battery optimization settings",
+    "qna_description": "Battery optimization puts apps to sleep when not in use to reduce background battery consumption.",
+    "classes": {"target": "BatteryOptimizationSettings"},
+    "originalType": "auto"
+  },
+  {
+    "deeplink": "bixby://masked/act/com.samsung.android.settings.battery.protectBattery",
+    "description": "Enable battery protection to limit charging to 85% for long-term battery health",
+    "message": "Open Protect battery settings",
+    "qna_description": "Battery protection limits maximum charge to 85% to extend the overall lifespan of your battery.",
+    "classes": {"target": "ProtectBatterySettings"},
+    "originalType": "auto"
+  },
+  {
+    "deeplink": "bixby://masked/act/com.samsung.android.settings.battery.adaptiveCharging",
+    "description": "Enable Adaptive charging to slow charge overnight and reduce battery degradation",
+    "message": "Open Adaptive charging settings",
+    "qna_description": "Adaptive charging learns your routine and slows charging to protect battery health during overnight charging.",
+    "classes": {"target": "AdaptiveChargingSettings"},
+    "originalType": "auto"
+  },
+  {
+    "deeplink": "bixby://masked/act/com.samsung.android.settings.connections.wifi",
+    "description": "Manage Wi-Fi networks, connections, and advanced settings",
+    "message": "Open Wi-Fi settings",
+    "qna_description": "Wi-Fi settings let you connect to wireless networks, manage saved networks, and configure advanced options.",
+    "classes": {"target": "WifiSettings"},
+    "originalType": "auto"
+  },
+  {
+    "deeplink": "bixby://masked/act/com.samsung.android.settings.connections.bluetooth",
+    "description": "Manage Bluetooth connections, paired devices, and visibility settings",
+    "message": "Open Bluetooth settings",
+    "qna_description": "Bluetooth settings let you pair and manage wireless accessories and other devices.",
+    "classes": {"target": "BluetoothSettings"},
+    "originalType": "auto"
+  },
+  {
+    "deeplink": "bixby://masked/act/com.samsung.android.settings.connections.mobileData",
+    "description": "Control mobile data usage, data limits, and network preferences",
+    "message": "Open Mobile data settings",
+    "qna_description": "Mobile data settings let you control cellular data usage, set limits, and manage network connections.",
+    "classes": {"target": "MobileDataSettings"},
+    "originalType": "auto"
+  },
+  {
+    "deeplink": "bixby://masked/act/com.samsung.android.settings.general.deviceCare",
+    "description": "Run device care optimization to improve performance and free up memory",
+    "message": "Open Device Care for optimization",
+    "qna_description": "Device Care checks battery, storage, memory, and device security, and provides optimization recommendations.",
+    "classes": {"target": "DeviceCareSettings"},
+    "originalType": "auto"
+  },
+  {
+    "deeplink": "bixby://masked/act/com.samsung.android.settings.general.storage",
+    "description": "View and manage device storage, clear cached data and unused files",
+    "message": "Open Storage settings",
+    "qna_description": "Storage settings show how your device storage is being used and let you free up space by deleting cached files.",
+    "classes": {"target": "StorageSettings"},
+    "originalType": "auto"
+  },
+  {
+    "deeplink": "bixby://masked/act/com.samsung.android.settings.general.ram",
+    "description": "View RAM usage and manage background apps consuming memory",
+    "message": "Open RAM and device care memory settings",
+    "qna_description": "RAM management lets you see which apps are using memory and clear background processes to improve performance.",
+    "classes": {"target": "RamSettings"},
+    "originalType": "auto"
+  },
+  {
+    "deeplink": "bixby://masked/act/com.samsung.android.settings.sound.volume",
+    "description": "Adjust volume levels for ringtone, media, notifications, and system sounds",
+    "message": "Open Sound and volume settings",
+    "qna_description": "Volume settings let you independently control media volume, ringtone volume, notification volume, and system sound volume.",
+    "classes": {"target": "VolumeSettings"},
+    "originalType": "auto"
+  },
+  {
+    "deeplink": "bixby://masked/act/com.samsung.android.settings.sound.doNotDisturb",
+    "description": "Configure Do Not Disturb mode to silence calls, alerts, and notifications",
+    "message": "Open Do Not Disturb settings",
+    "qna_description": "Do Not Disturb silences calls and notifications. You can allow exceptions for alarms or specific contacts.",
+    "classes": {"target": "DoNotDisturbSettings"},
+    "originalType": "auto"
+  },
+  {
+    "deeplink": "bixby://masked/act/com.samsung.android.settings.apps.manage",
+    "description": "View all installed apps and manage permissions, storage, and notifications per app",
+    "message": "Open App management settings",
+    "qna_description": "App management lets you view all apps, force stop apps, clear cache, manage permissions, and uninstall apps.",
+    "classes": {"target": "AppManagementSettings"},
+    "originalType": "auto"
+  },
+  {
+    "deeplink": "bixby://masked/act/com.samsung.android.settings.apps.defaultApps",
+    "description": "Set default apps for browser, messaging, phone, and other functions",
+    "message": "Open Default apps settings",
+    "qna_description": "Default apps settings let you choose which app handles browser links, calls, messages, and other common actions.",
+    "classes": {"target": "DefaultAppsSettings"},
+    "originalType": "auto"
+  },
+  {
+    "deeplink": "bixby://masked/act/com.samsung.android.settings.camera.videoStabilization",
+    "description": "Enable video stabilization (OIS) to reduce camera shake during recording",
+    "message": "Open Camera video stabilization settings",
+    "qna_description": "Video stabilization reduces blur and shake in videos. Advanced stabilization crops slightly but significantly smooths footage.",
+    "classes": {"target": "VideoStabilizationSettings"},
+    "originalType": "auto"
+  },
+  {
+    "deeplink": "bixby://masked/act/com.samsung.android.settings.camera.gridLines",
+    "description": "Enable grid lines in camera viewfinder for better composition",
+    "message": "Open Camera grid and composition settings",
+    "qna_description": "Camera grid lines overlay a rule-of-thirds grid to help frame your shots.",
+    "classes": {"target": "CameraGridSettings"},
+    "originalType": "auto"
+  },
+  {
+    "deeplink": "bixby://masked/act/com.samsung.android.settings.camera.scanQR",
+    "description": "Enable QR code scanning directly from the camera viewfinder",
+    "message": "Open Camera QR code scanner settings",
+    "qna_description": "QR code scanning lets you scan codes directly in the camera app without opening a separate scanner app.",
+    "classes": {"target": "CameraQRSettings"},
+    "originalType": "auto"
+  },
+  {
+    "deeplink": "bixby://masked/act/com.samsung.android.settings.performance.developerOptions",
+    "description": "Access developer options for advanced performance tuning and debugging",
+    "message": "Open Developer options",
+    "qna_description": "Developer options provide advanced settings for app debugging, performance tuning, and system behavior.",
+    "classes": {"target": "DeveloperOptionsSettings"},
+    "originalType": "critical"
+  },
+  {
+    "deeplink": "bixby://masked/act/com.samsung.android.settings.general.softwareUpdate",
+    "description": "Check for and install system software updates",
+    "message": "Open Software update settings",
+    "qna_description": "Software update checks for the latest One UI firmware and security patches for your Galaxy device.",
+    "classes": {"target": "SoftwareUpdateSettings"},
+    "originalType": "auto"
+  },
+  {
+    "deeplink": "bixby://masked/act/com.samsung.android.settings.general.resetSettings",
+    "description": "Reset all device settings to factory defaults without erasing data",
+    "message": "Open Reset settings",
+    "qna_description": "Reset settings restores all device settings to their default values without deleting your apps or data.",
+    "classes": {"target": "ResetSettings"},
+    "originalType": "critical"
+  },
+  {
+    "deeplink": "bixby://masked/act/com.samsung.android.settings.general.factoryReset",
+    "description": "Perform a full factory data reset - WARNING: erases all data on device",
+    "message": "Open Factory data reset settings",
+    "qna_description": "Factory reset erases all data and restores the device to its original state. This cannot be undone.",
+    "classes": {"target": "FactoryResetSettings"},
+    "originalType": "critical"
+  },
+  {
+    "deeplink": "bixby://masked/act/com.samsung.android.settings.display.touchSensitivity",
+    "description": "Increase touch sensitivity for use with screen protectors or gloves",
+    "message": "Open Touch sensitivity settings",
+    "qna_description": "Touch sensitivity settings improve screen response when using a screen protector or thin gloves.",
+    "classes": {"target": "TouchSensitivitySettings"},
+    "originalType": "auto"
+  },
+  {
+    "deeplink": "bixby://masked/act/com.samsung.android.settings.battery.wirelessPowerSharing",
+    "description": "Enable wireless power sharing to charge accessories or other phones",
+    "message": "Open Wireless PowerShare settings",
+    "qna_description": "Wireless PowerShare lets you charge Qi-compatible devices by placing them on the back of your Galaxy phone.",
+    "classes": {"target": "WirelessPowerShareSettings"},
+    "originalType": "auto"
+  },
+  {
+    "deeplink": "bixby://masked/act/com.samsung.android.settings.connections.hotspot",
+    "description": "Set up and manage mobile hotspot for internet sharing",
+    "message": "Open Mobile hotspot settings",
+    "qna_description": "Mobile hotspot shares your cellular data connection with other devices via Wi-Fi.",
+    "classes": {"target": "HotspotSettings"},
+    "originalType": "auto"
+  },
+  {
+    "deeplink": "bixby://masked/act/com.samsung.android.settings.general.accessibility",
+    "description": "Access accessibility features including display size, text, hearing, and interaction settings",
+    "message": "Open Accessibility settings",
+    "qna_description": "Accessibility settings provide features to assist users with visual, hearing, and motor impairments.",
+    "classes": {"target": "AccessibilitySettings"},
+    "originalType": "auto"
+  },
+  {
+    "deeplink": "bixby://masked/act/com.samsung.android.settings.display.alwaysOnDisplay",
+    "description": "Configure Always On Display to show clock and notifications while screen is off",
+    "message": "Open Always On Display settings",
+    "qna_description": "Always On Display shows the clock, calendar, and notification icons while the screen is off, using minimal battery.",
+    "classes": {"target": "AlwaysOnDisplaySettings"},
+    "originalType": "auto"
+  },
+  {
+    "deeplink": "bixby://masked/act/com.samsung.android.settings.battery.backgroundAppRefresh",
+    "description": "Control which apps can refresh content in the background to reduce battery and data usage",
+    "message": "Open Background app activity settings",
+    "qna_description": "Background app activity controls whether apps can check for new content when not actively used.",
+    "classes": {"target": "BackgroundAppSettings"},
+    "originalType": "auto"
+  },
+  {
+    "deeplink": "bixby://masked/act/com.samsung.android.settings.general.location",
+    "description": "Manage location access permissions and location accuracy settings",
+    "message": "Open Location settings",
+    "qna_description": "Location settings control which apps can access your GPS and network location data.",
+    "classes": {"target": "LocationSettings"},
+    "originalType": "auto"
+  },
+  {
+    "deeplink": "bixby://masked/act/com.samsung.android.settings.performance.gameBooster",
+    "description": "Configure Game Booster settings for optimized gaming performance",
+    "message": "Open Game Booster settings",
+    "qna_description": "Game Booster optimizes your phone for gaming by blocking notifications and allocating more resources to games.",
+    "classes": {"target": "GameBoosterSettings"},
+    "originalType": "auto"
+  },
+  {
+    "deeplink": "bixby://masked/act/com.samsung.android.settings.sound.notificationSound",
+    "description": "Change the default notification sound and vibration pattern",
+    "message": "Open Notification sound settings",
+    "qna_description": "Notification sound settings let you choose the default alert sound and vibration pattern for notifications.",
+    "classes": {"target": "NotificationSoundSettings"},
+    "originalType": "auto"
+  },
+  {
+    "deeplink": "bixby://masked/act/com.samsung.android.settings.general.date",
+    "description": "Set date, time, and time zone settings manually or automatically",
+    "message": "Open Date and time settings",
+    "qna_description": "Date and time settings let you set the current date, time, and time zone, or sync them automatically.",
+    "classes": {"target": "DateTimeSettings"},
+    "originalType": "auto"
+  },
+  {
+    "deeplink": "bixby://masked/act/com.samsung.android.settings.display.screensaver",
+    "description": "Configure screensaver that activates when device is charging or docked",
+    "message": "Open Screensaver settings",
+    "qna_description": "Screensaver displays photos, animations, or a clock when your phone is charging or connected to a dock.",
+    "classes": {"target": "ScreensaverSettings"},
+    "originalType": "auto"
+  },
+  {
+    "deeplink": "bixby://masked/act/com.samsung.android.settings.connections.nfc",
+    "description": "Enable or disable NFC for contactless payments and data transfer",
+    "message": "Open NFC settings",
+    "qna_description": "NFC enables contactless payments via Samsung Pay and short-range data sharing with NFC-compatible devices.",
+    "classes": {"target": "NFCSettings"},
+    "originalType": "auto"
+  },
+  {
+    "deeplink": "bixby://masked/act/com.samsung.android.settings.general.biometrics",
+    "description": "Configure fingerprint, face recognition, and other biometric security options",
+    "message": "Open Biometrics and security settings",
+    "qna_description": "Biometrics settings let you register fingerprints, set up face recognition, and configure their security level.",
+    "classes": {"target": "BiometricsSettings"},
+    "originalType": "auto"
+  },
+  {
+    "deeplink": "bixby://masked/act/com.samsung.android.settings.performance.backgroundProcessLimit",
+    "description": "Limit the number of background processes to improve performance (developer option)",
+    "message": "Open Background process limit in Developer options",
+    "qna_description": "Background process limit restricts how many processes can run in the background simultaneously.",
+    "classes": {"target": "BackgroundProcessLimitSettings"},
+    "originalType": "critical"
+  },
+  {
+    "deeplink": "bixby://masked/act/com.samsung.android.settings.camera.photoFormat",
+    "description": "Change camera photo format between HEIF and JPEG",
+    "message": "Open Camera picture format settings",
+    "qna_description": "HEIF photos use less storage space than JPEG but may not be compatible with all apps.",
+    "classes": {"target": "CameraPhotoFormatSettings"},
+    "originalType": "auto"
+  },
+  {
+    "deeplink": "bixby://masked/act/com.samsung.android.settings.connections.airplaneMode",
+    "description": "Toggle Airplane mode to disable all wireless communications",
+    "message": "Open Airplane mode settings",
+    "qna_description": "Airplane mode disables all wireless communications including cellular, Wi-Fi, and Bluetooth.",
+    "classes": {"target": "AirplaneModeSettings"},
+    "originalType": "auto"
+  },
+  {
+    "deeplink": "bixby://masked/act/com.samsung.android.settings.display.colorMode",
+    "description": "Adjust display color mode between Vivid, Natural, and custom color profiles",
+    "message": "Open Display color mode settings",
+    "qna_description": "Color mode settings let you choose between Vivid colors for more saturation or Natural colors for accurate color reproduction.",
+    "classes": {"target": "ColorModeSettings"},
+    "originalType": "auto"
+  },
+  {
+    "deeplink": "bixby://masked/act/com.samsung.android.settings.general.safeMode",
+    "description": "Restart device in Safe mode to diagnose third-party app issues",
+    "message": "Information about restarting in Safe mode",
+    "qna_description": "Safe mode starts your Galaxy with only pre-installed Samsung apps to help identify if a third-party app is causing problems.",
+    "classes": {"target": "SafeModeInfo"},
+    "originalType": "critical"
+  }
+]
