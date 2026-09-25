@@ -4,6 +4,7 @@ import os
 from typing import Optional
 
 from ..schema import ContextDeeplinkResponse, TroubleshootResponse
+from ..config import MODEL_NAME, RETRIEVAL_TOP_K
 from .enrichment import enrich_query
 from .extraction import extract_plan
 from .mapping import load_catalog, retrieve_deeplinks, get_catalog
@@ -68,7 +69,7 @@ def run_pipeline(query: str, siis_response_override: Optional[str] = None) -> Tr
 
     # Step 4: LLM extraction (cold path)
     catalog = get_catalog()
-    relevant_deeplinks = retrieve_deeplinks(canonical, top_k=20)
+    relevant_deeplinks = retrieve_deeplinks(canonical, top_k=RETRIEVAL_TOP_K)
 
     plan = None
     diagnostics = []
