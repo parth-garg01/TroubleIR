@@ -1,0 +1,5 @@
+{"id": "g001", "query": "Battery draining too fast after update", "domain": "battery", "expected_intents": ["battery_drain"], "expected_screens": ["Battery usage", "Power saving", "Background usage limits"], "expected_no_match": false}
+{"id": "g002", "query": "Screen is too bright at night", "domain": "display", "expected_intents": ["brightness_high"], "expected_screens": ["Brightness", "Eye comfort shield", "Dark mode"], "expected_no_match": false}
+{"id": "g003", "query": "Phone swipe gestures going wrong direction", "domain": "display", "expected_intents": ["navigation_gesture"], "expected_screens": ["Navigation bar"], "expected_no_match": false}
+{"id": "g004", "query": "My cat is making noise", "domain": "out_of_scope", "expected_intents": [], "expected_screens": [], "expected_no_match": true}
+{"id": "g005", "query": "Screen flickers and battery drains fast", "domain": "compound", "expected_intents": ["display_flicker", "battery_drain"], "expected_screens": ["Motion smoothness", "Battery usage", "Device care"], "expected_no_match": false}
