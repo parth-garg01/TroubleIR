@@ -1,0 +1,875 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TroubleIR — Samsung Smart Troubleshooting Engine</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #080808;
+      --surface: #111111;
+      --surface2: #191919;
+      --border: #262626;
+      --border2: #333333;
+      --text: #f0f0f0;
+      --text2: #999999;
+      --text3: #555555;
+      --accent: #1428A0;
+      --accent-light: #4F6BDA;
+      --accent-glow: rgba(20, 40, 160, 0.3);
+      --green: #22c55e;
+      --yellow: #eab308;
+      --red: #ef4444;
+      --orange: #f97316;
+      --radius: 10px;
+      --radius-sm: 6px;
+      --radius-lg: 16px;
+    }
+
+    html, body { height: 100%; }
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      font-size: 14px;
+      line-height: 1.5;
+      overflow-x: hidden;
+    }
+
+    /* ---- Header ---- */
+    header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 0 28px;
+      height: 56px;
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(8,8,8,0.92);
+      backdrop-filter: blur(12px);
+    }
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 600;
+      font-size: 15px;
+      letter-spacing: -0.01em;
+    }
+    .logo-icon {
+      width: 28px; height: 28px;
+      background: linear-gradient(135deg, #1428A0, #4F6BDA);
+      border-radius: 7px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 13px; font-weight: 700; color: #fff;
+    }
+    .logo-sub { color: var(--text3); font-weight: 400; font-size: 13px; margin-left: 2px; }
+    header .spacer { flex: 1; }
+    .header-badge {
+      font-size: 11px;
+      padding: 3px 9px;
+      border-radius: 20px;
+      border: 1px solid var(--border2);
+      color: var(--text2);
+      letter-spacing: 0.01em;
+    }
+
+    /* ---- Layout ---- */
+    .app {
+      display: grid;
+      grid-template-columns: 420px 1fr;
+      height: calc(100vh - 56px);
+      overflow: hidden;
+    }
+
+    /* ---- Left Panel ---- */
+    .left-panel {
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      overflow-y: auto;
+      padding: 24px 20px;
+      gap: 20px;
+    }
+
+    .panel-label {
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text3);
+    }
+
+    .query-box {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    textarea {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      color: var(--text);
+      font-family: inherit;
+      font-size: 14px;
+      padding: 14px;
+      resize: vertical;
+      min-height: 96px;
+      outline: none;
+      transition: border-color 0.15s;
+      line-height: 1.6;
+    }
+    textarea:focus { border-color: var(--accent-light); }
+    textarea::placeholder { color: var(--text3); }
+
+    .siis-toggle {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      user-select: none;
+      color: var(--text2);
+      font-size: 12px;
+    }
+    .siis-toggle input[type=checkbox] { accent-color: var(--accent-light); }
+    #siisBox {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      color: var(--text);
+      font-family: 'Menlo', 'Monaco', monospace;
+      font-size: 12px;
+      padding: 12px;
+      resize: vertical;
+      min-height: 80px;
+      outline: none;
+      line-height: 1.6;
+      display: none;
+    }
+    #siisBox.visible { display: block; }
+
+    .btn-primary {
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: var(--radius);
+      padding: 11px 18px;
+      font-family: inherit;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      width: 100%;
+      transition: background 0.15s, transform 0.08s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+    .btn-primary:hover { background: #1a35c8; }
+    .btn-primary:active { transform: scale(0.99); }
+    .btn-primary:disabled { background: var(--border2); cursor: not-allowed; color: var(--text3); }
+
+    /* Demo queries */
+    .demo-list {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .demo-btn {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      color: var(--text2);
+      font-family: inherit;
+      font-size: 13px;
+      padding: 9px 12px;
+      text-align: left;
+      cursor: pointer;
+      transition: all 0.12s;
+      line-height: 1.4;
+    }
+    .demo-btn:hover { border-color: var(--accent-light); color: var(--text); background: var(--surface2); }
+
+    /* Cache stats */
+    .stat-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 13px;
+      padding: 6px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .stat-row:last-child { border-bottom: none; }
+    .stat-val { font-weight: 500; color: var(--accent-light); }
+    .stat-label { color: var(--text2); }
+
+    /* Invalidate */
+    .invalidate-row {
+      display: flex;
+      gap: 8px;
+    }
+    .invalidate-row input {
+      flex: 1;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      color: var(--text);
+      font-family: monospace;
+      font-size: 12px;
+      padding: 8px 10px;
+      outline: none;
+    }
+    .btn-danger {
+      background: transparent;
+      color: var(--red);
+      border: 1px solid var(--red);
+      border-radius: var(--radius-sm);
+      padding: 8px 12px;
+      font-family: inherit;
+      font-size: 12px;
+      cursor: pointer;
+      transition: all 0.12s;
+      white-space: nowrap;
+    }
+    .btn-danger:hover { background: rgba(239,68,68,0.1); }
+
+    /* ---- Right Panel ---- */
+    .right-panel {
+      overflow-y: auto;
+      padding: 24px 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    /* Empty state */
+    .empty-state {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      color: var(--text3);
+    }
+    .empty-icon {
+      width: 56px; height: 56px;
+      border-radius: 14px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 24px;
+    }
+    .empty-state h3 { color: var(--text2); font-size: 16px; font-weight: 500; }
+    .empty-state p { font-size: 13px; text-align: center; max-width: 300px; line-height: 1.6; }
+
+    /* Meta bar */
+    .meta-bar {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 11px;
+      font-weight: 500;
+      padding: 4px 9px;
+      border-radius: 20px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+    }
+    .badge.green { color: var(--green); border-color: rgba(34,197,94,0.3); background: rgba(34,197,94,0.06); }
+    .badge.blue { color: var(--accent-light); border-color: rgba(79,107,218,0.3); background: rgba(79,107,218,0.06); }
+    .badge.orange { color: var(--orange); border-color: rgba(249,115,22,0.3); background: rgba(249,115,22,0.06); }
+    .badge.red { color: var(--red); border-color: rgba(239,68,68,0.3); background: rgba(239,68,68,0.06); }
+    .badge.yellow { color: var(--yellow); border-color: rgba(234,179,8,0.3); background: rgba(234,179,8,0.06); }
+    .dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+
+    /* Query display */
+    .query-display {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 14px 16px;
+    }
+    .query-display .label { font-size: 11px; color: var(--text3); margin-bottom: 6px; font-weight: 500; }
+    .query-display .text { font-size: 15px; font-weight: 500; color: var(--text); line-height: 1.4; }
+    .query-display .canonical { font-size: 12px; color: var(--text2); margin-top: 4px; font-style: italic; }
+
+    /* Goal card */
+    .goal-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+    }
+    .goal-header {
+      padding: 18px 20px 14px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    .goal-title { font-size: 16px; font-weight: 600; letter-spacing: -0.01em; }
+    .goal-subtitle { font-size: 12px; color: var(--text2); margin-top: 3px; }
+    .score-pill {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 13px;
+      font-weight: 600;
+      padding: 5px 10px;
+      border-radius: 8px;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      white-space: nowrap;
+      color: var(--green);
+    }
+
+    /* Actions */
+    .actions-list {
+      padding: 16px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .action-item {
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      transition: border-color 0.15s;
+    }
+    .action-item:hover { border-color: var(--border2); }
+
+    .action-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 14px;
+      cursor: pointer;
+      background: var(--surface2);
+      user-select: none;
+    }
+    .action-number {
+      width: 22px; height: 22px;
+      border-radius: 6px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 11px; font-weight: 700;
+      flex-shrink: 0;
+    }
+    .cat-auto { background: rgba(79,107,218,0.15); color: var(--accent-light); }
+    .cat-manual { background: rgba(234,179,8,0.15); color: var(--yellow); }
+    .cat-critical { background: rgba(239,68,68,0.15); color: var(--red); }
+
+    .action-name { font-weight: 500; font-size: 14px; flex: 1; }
+    .action-desc { font-size: 12px; color: var(--text2); }
+    .action-chevron {
+      color: var(--text3);
+      font-size: 12px;
+      transition: transform 0.2s;
+    }
+    .action-item.open .action-chevron { transform: rotate(180deg); }
+
+    .action-body {
+      padding: 14px;
+      display: none;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .action-item.open .action-body { display: flex; }
+
+    /* Steps */
+    .steps-list {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .step-item {
+      display: flex;
+      gap: 10px;
+      font-size: 13px;
+      color: var(--text2);
+      line-height: 1.5;
+      padding: 4px 0;
+    }
+    .step-num {
+      width: 18px; height: 18px;
+      border-radius: 50%;
+      border: 1px solid var(--border2);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 10px;
+      color: var(--text3);
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    /* Deeplink chip */
+    .deeplink-chip {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 12px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      font-family: 'Menlo', 'Monaco', monospace;
+      font-size: 11px;
+      color: var(--accent-light);
+      word-break: break-all;
+      line-height: 1.4;
+    }
+    .deeplink-icon { flex-shrink: 0; opacity: 0.6; }
+    .dummy-chip { color: var(--yellow); }
+
+    /* Evidence pane */
+    .evidence-section {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+    .evidence-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--border);
+      background: var(--surface2);
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--text3);
+    }
+
+    /* Query variations */
+    .variations-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .variation-item {
+      display: flex;
+      gap: 8px;
+      align-items: flex-start;
+      font-size: 12px;
+      color: var(--text2);
+      padding: 6px 0;
+      border-bottom: 1px solid var(--border);
+      line-height: 1.4;
+    }
+    .variation-item:last-child { border-bottom: none; }
+    .var-num { color: var(--text3); width: 18px; flex-shrink: 0; font-size: 11px; margin-top: 1px; }
+
+    /* Diagnostics */
+    .diagnostics-list { display: flex; flex-direction: column; gap: 6px; }
+    .diag-item {
+      display: flex;
+      gap: 8px;
+      font-size: 12px;
+      font-family: monospace;
+      padding: 8px 10px;
+      border-radius: var(--radius-sm);
+      background: rgba(239,68,68,0.06);
+      border: 1px solid rgba(239,68,68,0.2);
+      color: #fc8181;
+      line-height: 1.4;
+    }
+
+    /* No-match state */
+    .no-match-card {
+      background: var(--surface);
+      border: 1px dashed var(--border2);
+      border-radius: var(--radius-lg);
+      padding: 40px 24px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+    }
+    .no-match-icon { font-size: 32px; }
+    .no-match-title { font-size: 16px; font-weight: 600; color: var(--text2); }
+    .no-match-desc { font-size: 13px; color: var(--text3); max-width: 280px; line-height: 1.6; }
+
+    /* Loading */
+    .spinner {
+      width: 16px; height: 16px;
+      border: 2px solid rgba(255,255,255,0.2);
+      border-top-color: #fff;
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+      display: inline-block;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--text3); }
+
+    /* Section header */
+    .section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    /* Collapse toggle */
+    details > summary { list-style: none; cursor: pointer; }
+    details > summary::-webkit-details-marker { display: none; }
+
+    @media (max-width: 900px) {
+      .app { grid-template-columns: 1fr; }
+      .left-panel { border-right: none; border-bottom: 1px solid var(--border); max-height: 50vh; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="logo">
+    <div class="logo-icon">T</div>
+    TroubleIR
+    <span class="logo-sub">/ Samsung</span>
+  </div>
+  <div class="spacer"></div>
+  <div class="header-badge" id="healthBadge">Checking...</div>
+</header>
+
+<div class="app">
+  <!-- Left Panel -->
+  <div class="left-panel">
+    <div>
+      <div class="panel-label" style="margin-bottom:12px">Query</div>
+      <div class="query-box">
+        <textarea id="queryInput" placeholder="Describe the Galaxy device issue in plain language...
+e.g. My phone screen is too bright at night and the battery drains super fast"></textarea>
+
+        <label class="siis-toggle">
+          <input type="checkbox" id="siisToggle" />
+          Provide custom SIIS context
+        </label>
+        <textarea id="siisBox" placeholder="Paste Samsung support / SIIS reference text here..."></textarea>
+
+        <button class="btn-primary" id="submitBtn">
+          <span class="btn-label">Analyze Complaint</span>
+        </button>
+      </div>
+    </div>
+
+    <div>
+      <div class="panel-label" style="margin-bottom:10px">Demo Queries</div>
+      <div class="demo-list" id="demoList">
+        <button class="demo-btn" data-query="Battery draining too fast after the recent update">Battery draining fast after update</button>
+        <button class="demo-btn" data-query="Screen is too bright at night and hurting my eyes">Screen too bright at night</button>
+        <button class="demo-btn" data-query="Screen is too dim and hard to read outdoors">Screen too dim outdoors</button>
+        <button class="demo-btn" data-query="Phone swipe gestures going the wrong direction after installing an app">Swipe gestures going wrong direction</button>
+        <button class="demo-btn" data-query="Screen flickers and battery drains quickly at the same time">Screen flickers + battery drains (compound)</button>
+        <button class="demo-btn" data-query="My washing machine is broken">Out-of-scope query (no_match demo)</button>
+      </div>
+    </div>
+
+    <div>
+      <div class="panel-label" style="margin-bottom:10px">Cache</div>
+      <div id="cacheStats">
+        <div class="stat-row">
+          <span class="stat-label">Cached plans</span>
+          <span class="stat-val" id="cacheSize">-</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-label">Last hit</span>
+          <span class="stat-val" id="lastHit">-</span>
+        </div>
+      </div>
+      <div class="invalidate-row" style="margin-top:10px">
+        <input type="text" id="invalidateInput" placeholder="bixby://masked/act/..." />
+        <button class="btn-danger" id="invalidateBtn">Invalidate</button>
+      </div>
+      <div id="invalidateMsg" style="font-size:12px;color:var(--text2);margin-top:6px;min-height:16px"></div>
+    </div>
+  </div>
+
+  <!-- Right Panel -->
+  <div class="right-panel" id="rightPanel">
+    <div class="empty-state">
+      <div class="empty-icon">🔍</div>
+      <h3>Ready to troubleshoot</h3>
+      <p>Enter a Samsung Galaxy device complaint or pick a demo query on the left to generate a structured troubleshooting plan.</p>
+    </div>
+  </div>
+</div>
+
+<script>
+const API = '';
+
+async function checkHealth() {
+  try {
+    const r = await fetch(`${API}/health`);
+    const d = await r.json();
+    document.getElementById('healthBadge').textContent = d.status === 'ok' ? '● API Online' : '● API Error';
+    document.getElementById('healthBadge').style.color = d.status === 'ok' ? '#22c55e' : '#ef4444';
+  } catch {
+    document.getElementById('healthBadge').textContent = '● API Offline';
+    document.getElementById('healthBadge').style.color = '#ef4444';
+  }
+}
+
+async function refreshCache() {
+  try {
+    const r = await fetch(`${API}/v1/cache/stats`);
+    const d = await r.json();
+    document.getElementById('cacheSize').textContent = d.size;
+  } catch {}
+}
+
+document.getElementById('siisToggle').addEventListener('change', e => {
+  document.getElementById('siisBox').classList.toggle('visible', e.target.checked);
+});
+
+document.querySelectorAll('.demo-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.getElementById('queryInput').value = btn.dataset.query;
+    document.getElementById('queryInput').focus();
+  });
+});
+
+document.getElementById('submitBtn').addEventListener('click', runQuery);
+document.getElementById('queryInput').addEventListener('keydown', e => {
+  if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') runQuery();
+});
+
+document.getElementById('invalidateBtn').addEventListener('click', async () => {
+  const uri = document.getElementById('invalidateInput').value.trim();
+  if (!uri) return;
+  const msg = document.getElementById('invalidateMsg');
+  msg.textContent = 'Invalidating...';
+  try {
+    const r = await fetch(`${API}/v1/cache/invalidate`, {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({deeplink_uri: uri}),
+    });
+    const d = await r.json();
+    msg.textContent = `Removed ${d.removed} plan(s) depending on this deeplink.`;
+    refreshCache();
+  } catch(err) {
+    msg.textContent = `Error: ${err.message}`;
+  }
+});
+
+async function runQuery() {
+  const query = document.getElementById('queryInput').value.trim();
+  if (!query) return;
+
+  const btn = document.getElementById('submitBtn');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner"></span> Analyzing...';
+
+  const siisToggle = document.getElementById('siisToggle').checked;
+  const siisText = siisToggle ? document.getElementById('siisBox').value.trim() : null;
+
+  try {
+    const res = await fetch(`${API}/v1/troubleshoot`, {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({query, siis_response: siisText || undefined}),
+    });
+    const data = await res.json();
+    renderResult(data);
+    document.getElementById('lastHit').textContent = data.meta?.cache_hit ? 'Yes' : 'No';
+    refreshCache();
+  } catch(err) {
+    showError(err.message);
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = '<span class="btn-label">Analyze Complaint</span>';
+  }
+}
+
+function renderResult(data) {
+  const panel = document.getElementById('rightPanel');
+  const meta = data.meta || {};
+  const response = data.response || {};
+  const contexts = response.contexts || [];
+  const isNoMatch = response.fallback === 'no_match' || contexts.length === 0;
+
+  let html = '';
+
+  // Meta bar
+  html += `<div class="meta-bar">`;
+  if (meta.cache_hit) {
+    html += `<span class="badge green"><span class="dot"></span>Cache hit</span>`;
+  } else {
+    html += `<span class="badge orange"><span class="dot"></span>Cold path</span>`;
+  }
+  if (meta.latency_ms != null) {
+    const latClass = meta.latency_ms < 300 ? 'green' : meta.latency_ms < 8000 ? 'blue' : 'red';
+    html += `<span class="badge ${latClass}">${meta.latency_ms} ms</span>`;
+  }
+  if (meta.lint_passed === true) html += `<span class="badge green">Schema valid</span>`;
+  if (meta.lint_passed === false) html += `<span class="badge red">Schema issues</span>`;
+  if (meta.model) html += `<span class="badge">${meta.model}</span>`;
+  if (meta.cost_usd != null) html += `<span class="badge">$${meta.cost_usd.toFixed(4)}</span>`;
+  html += `</div>`;
+
+  // Query display
+  html += `<div class="query-display">
+    <div class="label">COMPLAINT</div>
+    <div class="text">${esc(data.query)}</div>
+    ${meta.canonical ? `<div class="canonical">Canonical: ${esc(meta.canonical)}</div>` : ''}
+  </div>`;
+
+  if (isNoMatch) {
+    html += `<div class="no-match-card">
+      <div class="no-match-icon">🚫</div>
+      <div class="no-match-title">No match — honest abstention</div>
+      <div class="no-match-desc">The system cannot produce a grounded troubleshooting plan for this query. Returning <code>fallback: no_match</code> is safer than fabricating steps.</div>
+    </div>`;
+  } else {
+    // Goals
+    for (const goal of contexts) {
+      html += renderGoal(goal);
+    }
+  }
+
+  // Diagnostics
+  const diags = meta.diagnostics || [];
+  if (diags.length) {
+    html += `<div class="evidence-section">
+      <div class="evidence-header">⚠ Internal Diagnostics</div>
+      <div style="padding:12px">
+        <div class="diagnostics-list">`;
+    for (const d of diags) {
+      html += `<div class="diag-item">${esc(d)}</div>`;
+    }
+    html += `</div></div></div>`;
+  }
+
+  // Query variations
+  const variations = data.query_variations || [];
+  if (variations.length) {
+    html += `<div class="evidence-section">
+      <div class="evidence-header">🔄 Query Variations (cache keys)</div>
+      <div style="padding:12px">
+        <div class="variations-grid">`;
+    variations.forEach((v, i) => {
+      html += `<div class="variation-item"><span class="var-num">${i+1}.</span>${esc(v)}</div>`;
+    });
+    html += `</div></div></div>`;
+  }
+
+  panel.innerHTML = html;
+
+  // Add toggle listeners to action headers
+  panel.querySelectorAll('.action-header').forEach(hdr => {
+    hdr.addEventListener('click', () => {
+      hdr.closest('.action-item').classList.toggle('open');
+    });
+  });
+}
+
+function renderGoal(goal) {
+  const scoreColor = goal.score >= 0.8 ? 'var(--green)' : goal.score >= 0.6 ? 'var(--yellow)' : 'var(--red)';
+  let html = `<div class="goal-card">
+    <div class="goal-header">
+      <div>
+        <div class="goal-title">${esc(goal.title)}</div>
+        <div class="goal-subtitle">${esc(goal.goal)}</div>
+      </div>
+      <div class="score-pill" style="color:${scoreColor}">
+        ◎ ${(goal.score * 100).toFixed(0)}%
+      </div>
+    </div>
+    <div class="actions-list">`;
+
+  const actions = goal.actions || [];
+  for (let i = 0; i < actions.length; i++) {
+    html += renderAction(actions[i], i + 1);
+  }
+
+  html += `</div></div>`;
+  return html;
+}
+
+function renderAction(action, num) {
+  const cat = action.category || 'auto';
+  const catClass = cat === 'critical' ? 'cat-critical' : cat === 'manual' ? 'cat-manual' : 'cat-auto';
+  const catLabel = cat.toUpperCase();
+
+  let html = `<div class="action-item open">
+    <div class="action-header">
+      <span class="action-number ${catClass}">${num}</span>
+      <div style="flex:1">
+        <div class="action-name">${esc(action.actionName)}</div>
+        <div class="action-desc">${esc(action.description)}</div>
+      </div>
+      <span class="badge ${cat === 'critical' ? 'red' : cat === 'manual' ? 'yellow' : 'blue'}">${catLabel}</span>
+      <span class="action-chevron">▼</span>
+    </div>
+    <div class="action-body">`;
+
+  for (const sg of (action.stepGroups || [])) {
+    // Steps
+    if (sg.steps?.length) {
+      html += `<div class="steps-list">`;
+      sg.steps.forEach((step, si) => {
+        html += `<div class="step-item">
+          <span class="step-num">${si + 1}</span>
+          <span>${esc(step)}</span>
+        </div>`;
+      });
+      html += `</div>`;
+    }
+    // Deeplink
+    if (sg.actionableDeeplink) {
+      const dl = sg.actionableDeeplink;
+      const isDummy = dl.deeplink === 'bixby://dummy_positive';
+      html += `<div class="deeplink-chip ${isDummy ? 'dummy-chip' : ''}">
+        <span class="deeplink-icon">${isDummy ? '⬡' : '⬟'}</span>
+        <div>
+          <div>${esc(dl.deeplink)}</div>
+          ${dl.description ? `<div style="color:var(--text2);margin-top:2px">${esc(dl.description)}</div>` : ''}
+        </div>
+      </div>`;
+    }
+  }
+
+  html += `</div></div>`;
+  return html;
+}
+
+function showError(msg) {
+  document.getElementById('rightPanel').innerHTML = `
+    <div class="no-match-card">
+      <div class="no-match-icon">❌</div>
+      <div class="no-match-title">Request failed</div>
+      <div class="no-match-desc">${esc(msg)}</div>
+    </div>`;
+}
+
+function esc(s) {
+  if (s == null) return '';
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+// Init
+checkHealth();
+refreshCache();
+setInterval(refreshCache, 30000);
+</script>
+</body>
+</html>
