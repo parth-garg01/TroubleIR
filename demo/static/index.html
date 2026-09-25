@@ -365,7 +365,7 @@
     .demo-chip:hover { border-color: var(--samsung-light); color: var(--samsung-light); }
 
     /* ===================== RESULTS ===================== */
-    #resultsArea { display: none; }
+    #resultsArea { display: none; flex-direction: column; gap: 20px; }
 
     /* Meta bar */
     .meta-strip {
@@ -1024,7 +1024,6 @@
 
 <!-- QUERY SECTION -->
 <section id="querySection">
-  <div class="section-label">01 — Complaint Input</div>
   <h2 class="section-title">Describe the problem.</h2>
   <p class="section-desc">
     Enter a plain-language Samsung Galaxy complaint. TroubleIR enriches it,
@@ -1062,7 +1061,6 @@
 
 <!-- RESULTS -->
 <section id="resultsSection">
-  <div class="section-label">02 — Pipeline Output</div>
   <h2 class="section-title">Structured plan.</h2>
   <p class="section-desc">
     Each step is grounded in SIIS evidence. Every deeplink is validated against
@@ -1084,7 +1082,6 @@
 
 <!-- PIPELINE EXPLAINED -->
 <section>
-  <div class="section-label">03 — How It Works</div>
   <h2 class="section-title">From complaint to deeplink.</h2>
   <p class="section-desc">
     Seven stages, end-to-end. Each stage is independently testable and
@@ -1154,7 +1151,6 @@
 
 <!-- CACHE SECTION -->
 <section>
-  <div class="section-label">04 — Cache Management</div>
   <h2 class="section-title">Semantic cache.</h2>
   <p class="section-desc">
     Plans are cached by canonical query with polarity protection.
@@ -1301,13 +1297,13 @@ async function runQuery() {
     });
     const data = await res.json();
     document.getElementById('loadingScene').classList.remove('visible');
-    document.getElementById('resultsArea').style.display = 'block';
+    document.getElementById('resultsArea').style.display = 'flex';
     renderResult(data);
     document.getElementById('lastOp').textContent = data.meta?.cache_hit ? 'Cache hit' : 'Cold path';
     refreshCache();
   } catch (err) {
     document.getElementById('loadingScene').classList.remove('visible');
-    document.getElementById('resultsArea').style.display = 'block';
+    document.getElementById('resultsArea').style.display = 'flex';
     document.getElementById('resultsArea').innerHTML = `
       <div class="error-card">
         <div class="error-title">Request failed</div>
