@@ -884,38 +884,33 @@
   <div class="col-text">
   <h2 class="scene-title">Grounded in Samsung support knowledge.</h2>
   <p class="scene-body">Every extracted intent traces back to a SIIS knowledge base article. The system does not generate steps from nothing.</p>
+  <div class="evidence-doc-label" style="margin-top:8px">SIIS Article — Battery drain</div>
+  <div class="evidence-doc" id="evidenceDoc">
+    If your Galaxy device battery is draining faster than expected, there are several settings you can adjust.
+    First, <mark>check Battery Usage in Settings to identify which apps are consuming the most power</mark>.
+    Navigate to Settings &gt; Battery and device care &gt; Battery &gt; Battery usage.
+    <mark>Apps running in the background can significantly drain battery</mark>.
+    Go to Settings &gt; Battery and device care &gt; Battery &gt; Background usage limits and restrict apps that you don't need running in the background.
+    <mark>Reduce screen brightness</mark> by going to Settings &gt; Display &gt; Brightness and lowering the slider.
+    Enable <mark>Power saving mode</mark> via Settings &gt; Battery and device care &gt; Battery &gt; Power saving to limit CPU performance and background network activity.
+  </div>
   </div>
   <div class="col-vis">
-  <div class="evidence-layout">
-    <div>
-      <div class="evidence-doc-label">SIIS Article — Battery drain</div>
-      <div class="evidence-doc" id="evidenceDoc">
-        If your Galaxy device battery is draining faster than expected, there are several settings you can adjust.
-        First, <mark>check Battery Usage in Settings to identify which apps are consuming the most power</mark>.
-        Navigate to Settings &gt; Battery and device care &gt; Battery &gt; Battery usage.
-        <mark>Apps running in the background can significantly drain battery</mark>.
-        Go to Settings &gt; Battery and device care &gt; Battery &gt; Background usage limits and restrict apps that you don't need running in the background.
-        <mark>Reduce screen brightness</mark> by going to Settings &gt; Display &gt; Brightness and lowering the slider.
-        Enable <mark>Power saving mode</mark> via Settings &gt; Battery and device care &gt; Battery &gt; Power saving to limit CPU performance and background network activity.
-      </div>
+  <div class="evidence-bindings" id="evidenceBindings">
+    <div class="evidence-bind" id="eb0">
+      <div class="bind-source">Source span</div>
+      <div class="bind-target">Check Battery Usage in Settings</div>
+      <div class="bind-arrow">&#8594; Action: Check Battery Usage</div>
     </div>
-    <div class="evidence-divider"></div>
-    <div class="evidence-bindings" id="evidenceBindings">
-      <div class="evidence-bind" id="eb0">
-        <div class="bind-source">Source span</div>
-        <div class="bind-target">Check Battery Usage in Settings</div>
-        <div class="bind-arrow">&#8594; Action: Check Battery Usage</div>
-      </div>
-      <div class="evidence-bind" id="eb1">
-        <div class="bind-source">Source span</div>
-        <div class="bind-target">Background usage limits</div>
-        <div class="bind-arrow">&#8594; Action: Review Background Limits</div>
-      </div>
-      <div class="evidence-bind" id="eb2">
-        <div class="bind-source">Source span</div>
-        <div class="bind-target">Power saving to limit CPU</div>
-        <div class="bind-arrow">&#8594; Action: Enable Power Saving</div>
-      </div>
+    <div class="evidence-bind" id="eb1">
+      <div class="bind-source">Source span</div>
+      <div class="bind-target">Background usage limits</div>
+      <div class="bind-arrow">&#8594; Action: Review Background Limits</div>
+    </div>
+    <div class="evidence-bind" id="eb2">
+      <div class="bind-source">Source span</div>
+      <div class="bind-target">Power saving to limit CPU</div>
+      <div class="bind-arrow">&#8594; Action: Enable Power Saving</div>
     </div>
   </div>
   </div><!-- col-vis -->
