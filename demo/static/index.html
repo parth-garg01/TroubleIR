@@ -593,16 +593,23 @@
     .result-score-bar-wrap { flex:1; height:3px; background:var(--cream3); border-radius:2px; overflow:hidden; }
     .result-score-bar { height:100%; background:var(--blue); border-radius:2px; transition:width 0.8s cubic-bezier(0.16,1,0.3,1); }
     .result-score-val { font-family:var(--mono); font-size:11px; color:var(--text3); width:32px; text-align:right; flex-shrink:0; }
+    /* result two-col layout */
+    .result-cols { display:grid; grid-template-columns:3fr 2fr; gap:48px; align-items:start; margin-top:24px; }
     /* settings navigation tree */
-    .result-nav-tree-section { margin-top:32px; padding-top:24px; border-top:1px solid var(--cream3); }
-    .nav-tree-section-lbl { font-family:var(--mono); font-size:10px; color:var(--text3); letter-spacing:0.1em; text-transform:uppercase; margin-bottom:16px; }
-    .nav-tree { font-family:var(--mono); font-size:13px; line-height:1.6; }
-    .nav-tree-root-lbl { color:var(--blue); font-weight:700; margin-bottom:8px; letter-spacing:0.02em; }
-    .nav-tree-children { border-left:1px solid var(--cream3); margin-left:7px; padding-left:14px; padding-top:2px; padding-bottom:2px; }
-    .nav-tree-node { padding:2px 0; }
-    .nav-tree-lbl { color:var(--text4); }
-    .nav-tree-lbl.active { color:var(--blue); }
-    .nav-tree-dest-btn { display:inline-block; background:var(--blue); color:#fff; padding:2px 10px; border-radius:3px; font-size:12px; margin:2px 0; }
+    .nav-tree-section-lbl { font-family:var(--mono); font-size:10px; color:var(--text3); letter-spacing:0.1em; text-transform:uppercase; margin-bottom:14px; }
+    .nav-tree { font-family:var(--mono); font-size:13px; }
+    .nav-tree-root-lbl { color:var(--blue); font-weight:700; margin-bottom:2px; letter-spacing:0.02em; }
+    .nav-tree-ul { list-style:none; margin:0; padding-left:20px; }
+    .nav-tree-li { position:relative; padding:4px 0 4px 12px; line-height:1.5; }
+    .nav-tree-li::after { content:''; position:absolute; left:0; top:0; bottom:0; width:1px; background:#ccc; }
+    .nav-tree-li:last-child::after { bottom:50%; }
+    .nav-tree-li::before { content:''; position:absolute; left:0; top:calc(50% - 0.5px); width:10px; height:1px; background:#ccc; }
+    .nav-tree-lbl { color:var(--text2); }
+    .nav-tree-lbl.active { color:var(--blue); font-weight:600; }
+    .nav-tree-dest-btn { display:inline-block; background:var(--blue); color:#fff; padding:3px 12px; border-radius:3px; font-size:12px; margin:2px 0; }
+    /* score chart in right col needs less top margin */
+    .result-right .result-score-chart { margin-top:28px; }
+    @media (max-width: 860px) { .result-cols { grid-template-columns:1fr; gap:32px; } }
 
     /* ===================== INPUT SCENE ===================== */
     .input-scene { background: var(--cream2); padding: 72px 40px; }
@@ -1541,8 +1548,10 @@ function renderNavTreeHTML(screenTree, navPaths) {
     if (path.length > 0) dests.add(path.join(sep));
   }
 
-  function renderChildren(node, pathSoFar, depth) {
-    return Object.keys(node).map(name => {
+  function renderChildren(node, pathSoFar) {
+    const keys = Object.keys(node);
+    if (!keys.length) return '';
+    return '<ul class="nav-tree-ul">' + keys.map(name => {
       const nodePath = [...pathSoFar, name];
       const key = nodePath.join(sep);
       const isTraversed = traversed.has(key);
@@ -1552,15 +1561,12 @@ function renderNavTreeHTML(screenTree, navPaths) {
       const lbl = isDest
         ? `<span class="nav-tree-dest-btn">${esc(name)}</span>`
         : `<span class="nav-tree-lbl${isTraversed ? ' active' : ''}">${esc(name)}</span>`;
-      return `<div class="nav-tree-node">${lbl}${expand ? `<div class="nav-tree-children">${renderChildren(children, nodePath, depth + 1)}</div>` : ''}</div>`;
-    }).join('');
+      return `<li class="nav-tree-li">${lbl}${expand ? renderChildren(children, nodePath) : ''}</li>`;
+    }).join('') + '</ul>';
   }
 
   const settingsChildren = screenTree['Settings'] || {};
-  return `<div class="nav-tree">
-    <div class="nav-tree-root-lbl">Settings</div>
-    <div class="nav-tree-children">${renderChildren(settingsChildren, ['Settings'], 1)}</div>
-  </div>`;
+  return `<div class="nav-tree"><div class="nav-tree-root-lbl">Settings</div>${renderChildren(settingsChildren, ['Settings'])}</div>`;
 }
 
 async function renderResult(data) {
@@ -1584,7 +1590,7 @@ async function renderResult(data) {
   } else {
     const scoreItems = [];
     const allNavPaths = [];
-    html += '<div class="result-actions">';
+    let actionsHTML = '<div class="result-actions">';
     for (const goal of contexts) {
       for (const action of (goal.actions || [])) {
         const cat = action.category || 'auto';
@@ -1607,13 +1613,12 @@ async function renderResult(data) {
             dlHTML = `<div class="result-deeplink ${isDummy ? '' : 'verified'}">${esc(dl)}</div>`;
           }
         }
-        // breadcrumb inline
         const navHTML = navSteps.length > 1
           ? `<div class="result-nav-path">${navSteps.map((s,i) => i === 0 ? `<span class="result-nav-step">${esc(s)}</span>` : `<span class="result-nav-arrow">›</span><span class="result-nav-step">${esc(s)}</span>`).join('')}</div>`
           : '';
         if (navSteps.length > 0) allNavPaths.push(navSteps);
         scoreItems.push({ name: action.actionName, score: goal.score ?? 0 });
-        html += `<div class="result-action">
+        actionsHTML += `<div class="result-action">
           <div class="result-action-num" aria-hidden="true">&bull;</div>
           <div class="result-action-body">
             <div style="display:flex;align-items:center;gap:10px;margin-bottom:4px">
@@ -1626,22 +1631,18 @@ async function renderResult(data) {
         </div>`;
       }
     }
-    html += '</div>';
+    actionsHTML += '</div>';
 
-    // navigation tree
+    // right column: nav tree + score chart
+    let rightHTML = '';
     if (allNavPaths.length > 0) {
       const screens = await fetchScreens();
       const screenTree = buildScreenTree(screens);
-      html += `<div class="result-nav-tree-section">
-        <div class="nav-tree-section-lbl">Settings navigation tree</div>
-        ${renderNavTreeHTML(screenTree, allNavPaths)}
-      </div>`;
+      rightHTML += `<div class="nav-tree-section-lbl">Settings navigation tree</div>${renderNavTreeHTML(screenTree, allNavPaths)}`;
     }
-
-    // score bar chart
     if (scoreItems.length > 0) {
       const maxScore = Math.max(...scoreItems.map(i => i.score), 0.01);
-      html += `<div class="result-score-chart">
+      rightHTML += `<div class="result-score-chart">
         <div class="result-score-chart-title">Relevance scores</div>
         ${scoreItems.map(({name, score}) => `
         <div class="result-score-row">
@@ -1651,6 +1652,11 @@ async function renderResult(data) {
         </div>`).join('')}
       </div>`;
     }
+
+    html += `<div class="result-cols">
+      <div class="result-left">${actionsHTML}</div>
+      <div class="result-right">${rightHTML}</div>
+    </div>`;
   }
 
   // meta chips
