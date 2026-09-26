@@ -627,6 +627,9 @@
     }
 
     /* ===================== RESPONSIVE ===================== */
+    @media (max-width: 1100px) {
+      .hero-title { font-size: clamp(44px, 7vw, 88px); }
+    }
     @media (max-width: 900px) {
       .evidence-layout { grid-template-columns: 1fr; }
       .evidence-divider { display: none; }
@@ -634,6 +637,9 @@
       .polarity-divider { display: none; }
       .graph-annotation { position: static; margin-top: 32px; max-width: 100%; }
       .nav-links { display: none; }
+      .fragment-grid { grid-template-columns: repeat(2, 1fr); }
+      .pipeline-steps { gap: 8px; }
+      .hero-meta { gap: 20px; }
     }
     @media (max-width: 640px) {
       .hero, .scene-pad, .scene-pad-lg,
@@ -644,6 +650,18 @@
       .hero-scroll { left: 20px; }
       footer { padding: 28px 20px; }
       .eng-toggle { bottom: 16px; right: 16px; }
+      .fragment-grid { grid-template-columns: 1fr; }
+      .hero-meta { flex-wrap: wrap; gap: 16px; }
+      .hero-meta-sep { display: none; }
+      .scene-title { font-size: clamp(24px, 6vw, 40px); }
+      .input-wrap { max-width: 100%; }
+      .demo-chips { flex-wrap: wrap; gap: 6px; }
+      .result-action { flex-direction: column; align-items: flex-start; gap: 10px; }
+    }
+    @media (max-width: 400px) {
+      .hero-title { font-size: clamp(36px, 10vw, 52px); }
+      .fragment-card { padding: 12px 14px; }
+      .pipeline-step { padding: 14px 16px; }
     }
 
     @media (prefers-reduced-motion: reduce) {
