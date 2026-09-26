@@ -168,6 +168,18 @@
     }
     .scene-body.light-text { color: rgba(248,247,245,0.5); }
 
+    /* ===================== TWO-COL ALTERNATING LAYOUT ===================== */
+    .two-col {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 80px; align-items: start;
+    }
+    .two-col.rev .col-text { order: 2; }
+    .two-col.rev .col-vis { order: 1; }
+    .col-text { display: flex; flex-direction: column; padding-top: 8px; }
+    .col-vis > * { margin-top: 0 !important; }
+    .two-col .graph-container { display: flex; flex-direction: column; gap: 24px; }
+    .two-col .graph-annotation { position: static; max-width: 100%; }
+
     /* ===================== COMPLAINT SCENE ===================== */
     .complaint-scene { padding: 72px 40px 56px; background: var(--white); }
     .complaint-raw {
@@ -703,6 +715,9 @@
       .hero-title { font-size: clamp(44px, 7vw, 88px); }
     }
     @media (max-width: 900px) {
+      .two-col { grid-template-columns: 1fr; gap: 32px; }
+      .two-col.rev .col-text, .two-col.rev .col-vis { order: 0; }
+      .col-vis > * { margin-top: 16px !important; }
       .evidence-layout { grid-template-columns: 1fr; }
       .evidence-divider { display: none; }
       .polarity-split { grid-template-columns: 1fr; }
@@ -865,8 +880,12 @@
 
 <!-- SIIS EVIDENCE -->
 <section class="evidence-scene">
+  <div class="two-col">
+  <div class="col-text">
   <h2 class="scene-title">Grounded in Samsung support knowledge.</h2>
   <p class="scene-body">Every extracted intent traces back to a SIIS knowledge base article. The system does not generate steps from nothing.</p>
+  </div>
+  <div class="col-vis">
   <div class="evidence-layout">
     <div>
       <div class="evidence-doc-label">SIIS Article — Battery drain</div>
@@ -899,6 +918,8 @@
       </div>
     </div>
   </div>
+  </div><!-- col-vis -->
+  </div><!-- two-col -->
 </section>
 
 <div class="divider"></div>
@@ -958,50 +979,54 @@
 
 <!-- SETTINGS GRAPH -->
 <section class="graph-scene" id="graph-section">
+  <div class="two-col rev">
+  <div class="col-text">
   <h2 class="scene-title">The system resolves the most specific supported screen.</h2>
-  <p class="scene-body" style="margin-bottom:0">Parent-menu matches are rejected. The compiler navigates to the exact Settings destination.</p>
+  <p class="scene-body">Parent-menu matches are rejected. The compiler navigates to the exact Settings destination.</p>
+  </div>
+  <div class="col-vis">
   <div class="graph-container">
     <div class="graph-tree" id="graphTree">
       <div class="graph-node" id="gn0" style="padding:8px 0">
         <span class="graph-node-label">Settings</span>
       </div>
       <div class="graph-node" id="gn1" style="padding:8px 0;padding-left:24px">
-        <span class="graph-indent" style="color:rgba(248,247,245,0.15)">&#9500;</span>
+        <span class="graph-indent" style="color:var(--cream3)">&#9500;</span>
         <span class="graph-connector">&nbsp;</span>
         <span class="graph-node-label">Connections</span>
       </div>
       <div class="graph-node" id="gn2" style="padding:8px 0;padding-left:24px">
-        <span class="graph-indent" style="color:rgba(248,247,245,0.15)">&#9500;</span>
+        <span class="graph-indent" style="color:var(--cream3)">&#9500;</span>
         <span class="graph-connector">&nbsp;</span>
         <span class="graph-node-label">Display</span>
       </div>
       <div class="graph-node" id="gn3" style="padding:8px 0;padding-left:24px">
-        <span class="graph-indent" style="color:rgba(248,247,245,0.15)">&#9500;</span>
+        <span class="graph-indent" style="color:var(--cream3)">&#9500;</span>
         <span class="graph-connector">&nbsp;</span>
         <span class="graph-node-label">Notifications</span>
       </div>
       <div class="graph-node" id="gn4" style="padding:8px 0;padding-left:24px">
-        <span class="graph-indent" style="color:rgba(248,247,245,0.15)">&#9492;</span>
+        <span class="graph-indent" style="color:var(--cream3)">&#9492;</span>
         <span class="graph-connector">&nbsp;</span>
         <span class="graph-node-label">Battery and device care</span>
       </div>
       <div class="graph-node" id="gn5" style="padding:8px 0;padding-left:64px">
-        <span class="graph-indent" style="color:rgba(248,247,245,0.15)">&#9500;</span>
+        <span class="graph-indent" style="color:var(--cream3)">&#9500;</span>
         <span class="graph-connector">&nbsp;</span>
         <span class="graph-node-label">Battery</span>
       </div>
       <div class="graph-node" id="gn6" style="padding:8px 0;padding-left:104px">
-        <span class="graph-indent" style="color:rgba(248,247,245,0.15)">&#9500;</span>
+        <span class="graph-indent" style="color:var(--cream3)">&#9500;</span>
         <span class="graph-connector">&nbsp;</span>
         <span class="graph-node-label">Battery usage</span>
       </div>
       <div class="graph-node" id="gn7" style="padding:8px 0;padding-left:104px">
-        <span class="graph-indent" style="color:rgba(248,247,245,0.15)">&#9500;</span>
+        <span class="graph-indent" style="color:var(--cream3)">&#9500;</span>
         <span class="graph-connector">&nbsp;</span>
         <span class="graph-node-label">Background usage limits</span>
       </div>
       <div class="graph-node" id="gn8" style="padding:8px 0;padding-left:104px">
-        <span class="graph-indent" style="color:rgba(248,247,245,0.15)">&#9492;</span>
+        <span class="graph-indent" style="color:var(--cream3)">&#9492;</span>
         <span class="graph-connector">&nbsp;</span>
         <span class="graph-node-label">Power saving</span>
       </div>
@@ -1012,12 +1037,18 @@
       <div class="annot-dl">bixby://masked/act/com.samsung.android.settings.battery.usage</div>
     </div>
   </div>
+  </div><!-- col-vis -->
+  </div><!-- two-col -->
 </section>
 
 <!-- ACTION ORDERING -->
 <section class="ordering-scene">
+  <div class="two-col">
+  <div class="col-text">
   <h2 class="scene-title">Least disruptive first.<br />Critical operations last.</h2>
   <p class="scene-body">Actions are sorted by category before delivery. The user always tries non-destructive steps before reaching factory reset or data-loss operations.</p>
+  </div>
+  <div class="col-vis">
   <div class="order-track" id="orderTrack">
     <div class="order-action" id="oa0">
       <span class="order-num">1</span>
@@ -1044,6 +1075,8 @@
       <span class="order-arrow">&#8594;</span>
     </div>
   </div>
+  </div><!-- col-vis -->
+  </div><!-- two-col -->
 </section>
 
 <!-- POLARITY PROTECTION -->
@@ -1069,8 +1102,12 @@
 
 <!-- NO MATCH -->
 <section class="nomatch-scene">
+  <div class="two-col rev">
+  <div class="col-text">
   <h2 class="scene-title">Some complaints have no supported path.</h2>
   <p class="scene-body">When the system cannot produce a grounded, schema-valid plan, it returns no_match. No fabricated steps. No hallucinated deeplinks.</p>
+  </div>
+  <div class="col-vis">
   <div class="nomatch-block">
     <div class="nomatch-query" id="nomatchQuery">"my phone makes a strange noise when I put it on my desk"</div>
     <div class="nomatch-steps">
@@ -1096,6 +1133,8 @@
       <div class="nomatch-verdict-body">The system returns <span class="nomatch-code">fallback: no_match</span> rather than fabricating a troubleshooting plan for an unsupported complaint.</div>
     </div>
   </div>
+  </div><!-- col-vis -->
+  </div><!-- two-col -->
 </section>
 
 <div class="divider"></div>
