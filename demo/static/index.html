@@ -1527,11 +1527,13 @@ function renderResult(data) {
         html += `<div class="result-action">
           <div class="result-action-num" aria-hidden="true">&bull;</div>
           <div class="result-action-body">
-            <div class="result-action-name">${esc(action.actionName)}</div>
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:4px">
+              <div class="result-action-name" style="margin-bottom:0">${esc(action.actionName)}</div>
+              <span class="order-cat ${cat}" style="flex-shrink:0">${catMap[cat]||cat}</span>
+            </div>
             <div class="result-action-desc">${esc(action.description)}</div>
             ${stepsHTML}${dlHTML}
           </div>
-          <span class="order-cat ${cat}" style="flex-shrink:0">${catMap[cat]||cat}</span>
         </div>`;
       }
     }
