@@ -10,9 +10,9 @@ from dotenv import load_dotenv
 load_dotenv()
 
 import os
-# Validate required env vars early
 if not os.environ.get("GROQ_API_KEY"):
-    raise RuntimeError("GROQ_API_KEY is not set. Create a .env file with your Groq API key.")
+    import warnings
+    warnings.warn("GROQ_API_KEY is not set. LLM-dependent endpoints will fail at call time.")
 
 from .routes import router
 from ..pipeline.mapping import load_catalog
