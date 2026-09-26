@@ -582,6 +582,18 @@
     .eng-row:last-child { border-bottom: none; }
     .eng-val { color: var(--blue-l); }
 
+    .result-error {
+      display: flex; align-items: flex-start; gap: 12px;
+      padding: 20px 24px; background: var(--red-l);
+      border: 1px solid rgba(220,38,38,0.2); border-radius: 8px;
+      color: var(--red); font-size: 14px; line-height: 1.6;
+    }
+    .result-error-code {
+      font-family: var(--mono); font-size: 11px; font-weight: 500;
+      padding: 2px 8px; background: rgba(220,38,38,0.15);
+      border-radius: 4px; flex-shrink: 0; margin-top: 2px;
+    }
+
     /* ===================== LOADING ===================== */
     .compile-loader {
       display: none; flex-direction: column; align-items: center;
@@ -1266,10 +1278,18 @@ async function runPipeline() {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ query }),
     });
-    const data = await res.json();
     clearInterval(stageInterval);
     loader.classList.remove('active');
     resultSection.style.display = 'block';
+    if (!res.ok) {
+      let detail = `HTTP ${res.status}`;
+      try { const e = await res.json(); detail = e.detail || detail; } catch {}
+      document.getElementById('resultPlan').innerHTML =
+        `<div class="result-error"><span class="result-error-code">${res.status}</span>${esc(detail)}</div>`;
+      resultSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      return;
+    }
+    const data = await res.json();
     renderResult(data);
     setTimeout(() => {
       resultSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -1279,7 +1299,7 @@ async function runPipeline() {
     loader.classList.remove('active');
     resultSection.style.display = 'block';
     document.getElementById('resultPlan').innerHTML =
-      `<div style="color:var(--red);font-size:14px;padding:20px 0">Request failed: ${esc(err.message)}</div>`;
+      `<div class="result-error"><span class="result-error-code">ERR</span>${esc(err.message)}</div>`;
   } finally {
     btn.disabled = false;
     document.getElementById('btnText').textContent = 'Compile';
