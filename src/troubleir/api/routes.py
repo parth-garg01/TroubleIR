@@ -65,8 +65,11 @@ async def health_detailed():
 
 @router.post("/v1/troubleshoot")
 async def troubleshoot(req: TroubleshootRequest):
-    result = run_pipeline(req.query, siis_response_override=req.siis_response)
-    return result.model_dump()
+    try:
+        result = run_pipeline(req.query, siis_response_override=req.siis_response)
+        return result.model_dump()
+    except Exception as exc:
+        raise HTTPException(status_code=500, detail=str(exc)) from exc
 
 
 @router.get("/v1/cache/stats")
