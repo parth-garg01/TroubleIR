@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>TroubleIR — Samsung PRISM</title>
+  <title>TroubleIR / Samsung PRISM</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@300;400;500&display=swap" rel="stylesheet" />
@@ -620,6 +620,11 @@
     }
     .divider { height: 1px; background: var(--cream3); }
     .max-w { max-width: 1100px; margin: 0 auto; }
+    .sr-only {
+      position: absolute; width: 1px; height: 1px; padding: 0;
+      margin: -1px; overflow: hidden; clip: rect(0,0,0,0);
+      white-space: nowrap; border: 0;
+    }
 
     /* ===================== RESPONSIVE ===================== */
     @media (max-width: 900px) {
@@ -653,24 +658,24 @@
 <body>
 
 <!-- NAV -->
-<nav class="nav">
-  <a class="nav-logo" href="#">
-    <div class="nav-mark">TIR</div>
+<nav class="nav" role="navigation" aria-label="Primary navigation">
+  <a class="nav-logo" href="#" aria-label="TroubleIR home">
+    <div class="nav-mark" aria-hidden="true">TIR</div>
     TroubleIR
     <span class="nav-tagline">/ Samsung PRISM Theme 02</span>
   </a>
   <div class="nav-right">
-    <div class="nav-links">
-      <a href="#input-section">Try it</a>
-      <a href="#compiler-section">Compiler</a>
-      <a href="#graph-section">Graph</a>
+    <div class="nav-links" role="list">
+      <a href="#input-section" role="listitem">Try it</a>
+      <a href="#compiler-section" role="listitem">Compiler</a>
+      <a href="#graph-section" role="listitem">Graph</a>
     </div>
-    <div class="nav-status" id="healthPill">Checking...</div>
+    <div class="nav-status" id="healthPill" role="status" aria-live="polite">Checking...</div>
   </div>
 </nav>
 
 <!-- HERO -->
-<section class="hero" id="top">
+<section class="hero" id="top" aria-label="Hero introduction">
   <div class="hero-eyebrow" id="heroEyebrow">Smart Guided Troubleshooting Engine</div>
   <h1 class="hero-title" id="heroTitle">
     <span class="line"><span class="word">From</span> <span class="word">vague</span></span>
@@ -994,7 +999,8 @@
   <div class="input-wrap">
     <div class="input-label">Your complaint</div>
     <div class="input-box">
-      <textarea id="complaint" rows="3" placeholder="Describe a Samsung Galaxy problem in plain language..."></textarea>
+      <textarea id="complaint" rows="3" placeholder="Describe a Samsung Galaxy problem in plain language..." aria-label="Complaint input" aria-describedby="inputHint"></textarea>
+      <p id="inputHint" class="sr-only">Type a Samsung Galaxy device problem. Results appear below after compilation.</p>
       <div class="input-footer">
         <div class="demo-chips">
           <button class="demo-chip" data-q="Battery draining too fast after the recent update">Battery drain</button>
@@ -1004,7 +1010,7 @@
           <button class="demo-chip" data-q="Screen flickers and battery drains at the same time">Compound</button>
           <button class="demo-chip" data-q="My washing machine is broken">No-match</button>
         </div>
-        <button class="input-btn" id="submitBtn">
+        <button class="input-btn" id="submitBtn" type="button" aria-label="Compile complaint and run pipeline">
           <span id="btnText">Compile</span>
         </button>
       </div>
@@ -1017,7 +1023,7 @@
 </section>
 
 <!-- RESULT DISPLAY -->
-<section class="result-scene" id="result-section" style="display:none">
+<section class="result-scene" id="result-section" style="display:none" aria-live="polite" aria-label="Compiled troubleshooting plan">
   <div class="eyebrow">09 — Output</div>
   <h2 class="scene-title">Verified troubleshooting plan.</h2>
   <div class="result-plan" id="resultPlan">
@@ -1040,10 +1046,10 @@
 </footer>
 
 <!-- Engineering toggle -->
-<div class="eng-toggle" id="engToggle">
-  <div class="eng-dot"></div>
+<button class="eng-toggle" id="engToggle" type="button" aria-pressed="false" aria-label="Toggle engineering diagnostics view">
+  <div class="eng-dot" aria-hidden="true"></div>
   <span id="engLabel">Engineering view</span>
-</div>
+</button>
 
 <!-- GSAP + ScrollTrigger -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
@@ -1301,7 +1307,7 @@ function renderResult(data) {
           }
         }
         html += `<div class="result-action">
-          <div class="result-action-num">&#8212;</div>
+          <div class="result-action-num" aria-hidden="true">&bull;</div>
           <div class="result-action-body">
             <div class="result-action-name">${esc(action.actionName)}</div>
             <div class="result-action-desc">${esc(action.description)}</div>
@@ -1349,7 +1355,9 @@ function renderResult(data) {
 document.getElementById('engToggle').addEventListener('click', () => {
   document.body.classList.toggle('eng-mode');
   const active = document.body.classList.contains('eng-mode');
-  document.getElementById('engToggle').classList.toggle('active', active);
+  const btn = document.getElementById('engToggle');
+  btn.classList.toggle('active', active);
+  btn.setAttribute('aria-pressed', String(active));
   document.getElementById('engLabel').textContent = active ? 'User view' : 'Engineering view';
 });
 
