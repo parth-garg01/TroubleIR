@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>TroubleIR / Samsung PRISM</title>
-  <link rel="icon" type="image/svg+xml" href="/static/favicon.svg" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@300;400;500&display=swap" rel="stylesheet" />
@@ -66,7 +66,7 @@
     }
     .nav-logo {
       display: flex; align-items: center; gap: 10px;
-      font-size: 14px; font-weight: 600; letter-spacing: -0.02em;
+      font-size: 15px; font-weight: 600; letter-spacing: -0.02em;
       color: var(--text); text-decoration: none;
     }
     .nav-mark {
@@ -75,17 +75,17 @@
       display: flex; align-items: center; justify-content: center;
       font-family: var(--mono); font-size: 10px; color: #fff; font-weight: 500;
     }
-    .nav-tagline { font-size: 11px; color: var(--text3); font-weight: 400; }
+    .nav-tagline { font-size: 13px; color: var(--text3); font-weight: 400; }
     .nav-right { display: flex; align-items: center; gap: 20px; }
     .nav-links { display: flex; gap: 24px; }
     .nav-links a {
-      font-size: 12px; color: var(--text3); text-decoration: none;
+      font-size: 14px; color: var(--text3); text-decoration: none;
       font-weight: 500; letter-spacing: 0.01em;
       transition: color 0.15s;
     }
     .nav-links a:hover { color: var(--text); }
     .nav-status {
-      font-family: var(--mono); font-size: 10px;
+      font-family: var(--mono); font-size: 12px;
       padding: 3px 9px; border-radius: 20px;
       border: 1px solid var(--cream3); color: var(--text3);
       transition: all 0.2s;
@@ -95,35 +95,35 @@
 
     /* ===================== HERO ===================== */
     .hero {
-      min-height: 100vh; padding: 100px 40px 80px;
+      padding: 72px 40px 56px;
       display: flex; flex-direction: column;
-      align-items: flex-start; justify-content: center;
+      align-items: flex-start; justify-content: flex-start;
       position: relative; overflow: hidden;
     }
     .hero-eyebrow {
-      font-family: var(--mono); font-size: 11px; font-weight: 400;
-      letter-spacing: 0.14em; color: var(--blue); text-transform: uppercase;
-      margin-bottom: 32px; opacity: 0;
+      font-family: var(--mono); font-size: 13px; font-weight: 400;
+      letter-spacing: 0.12em; color: var(--blue); text-transform: uppercase;
+      margin-bottom: 24px; opacity: 0;
     }
     .hero-title {
       font-size: clamp(52px, 8vw, 104px);
       font-weight: 700; letter-spacing: -0.04em; line-height: 0.95;
-      color: var(--text); max-width: 900px; margin-bottom: 48px;
+      color: var(--text); max-width: 900px; margin-bottom: 36px;
     }
     .hero-title .line { display: block; overflow: hidden; }
     .hero-title .word { display: inline-block; }
     .hero-title .blue { color: var(--blue); }
     .hero-meta {
       display: flex; align-items: center; gap: 32px;
-      margin-bottom: 64px; opacity: 0;
+      margin-bottom: 40px; opacity: 0;
     }
     .hero-meta-item { display: flex; flex-direction: column; gap: 2px; }
     .hero-meta-val {
-      font-size: 22px; font-weight: 700; letter-spacing: -0.03em; color: var(--text);
+      font-size: 26px; font-weight: 700; letter-spacing: -0.03em; color: var(--text);
     }
     .hero-meta-key {
-      font-family: var(--mono); font-size: 9px; color: var(--text3);
-      letter-spacing: 0.12em; text-transform: uppercase;
+      font-family: var(--mono); font-size: 12px; color: var(--text3);
+      letter-spacing: 0.08em; text-transform: uppercase;
     }
     .hero-meta-sep { width: 1px; height: 32px; background: var(--cream3); }
     .hero-scroll {
@@ -152,35 +152,28 @@
     .scene-dark { background: var(--ink); color: var(--cream); }
     .scene-ink2 { background: var(--ink2); color: var(--cream); }
 
-    .scene-pad { padding: 100px 40px; }
-    .scene-pad-lg { padding: 140px 40px; }
+    .scene-pad { padding: 72px 40px; }
+    .scene-pad-lg { padding: 96px 40px; }
 
-    .eyebrow {
-      font-family: var(--mono); font-size: 10px; font-weight: 400;
-      letter-spacing: 0.16em; color: var(--text3); text-transform: uppercase;
-      margin-bottom: 20px; display: flex; align-items: center; gap: 12px;
-    }
-    .eyebrow.light-text { color: rgba(248,247,245,0.35); }
-    .eyebrow::before { content: ''; display: block; width: 24px; height: 1px; background: currentColor; }
 
     .scene-title {
       font-size: clamp(32px, 4vw, 56px); font-weight: 700;
       letter-spacing: -0.03em; line-height: 1.1;
-      max-width: 640px; margin-bottom: 24px;
+      max-width: 640px; margin-bottom: 16px;
     }
     .scene-title.light-text { color: var(--cream); }
     .scene-body {
-      font-size: 15px; line-height: 1.75; color: var(--text2);
-      max-width: 520px; margin-bottom: 56px;
+      font-size: 16px; line-height: 1.75; color: var(--text2);
+      max-width: 520px; margin-bottom: 28px;
     }
     .scene-body.light-text { color: rgba(248,247,245,0.5); }
 
     /* ===================== COMPLAINT SCENE ===================== */
-    .complaint-scene { padding: 120px 40px 80px; background: var(--white); }
+    .complaint-scene { padding: 72px 40px 56px; background: var(--white); }
     .complaint-raw {
       font-size: clamp(28px, 4vw, 52px); font-weight: 600;
       letter-spacing: -0.03em; line-height: 1.2; color: var(--text);
-      max-width: 800px; margin-bottom: 80px; position: relative;
+      max-width: 800px; margin-bottom: 48px; position: relative;
     }
     .complaint-cursor {
       display: inline-block; width: 3px; height: 1em;
@@ -190,7 +183,7 @@
     @keyframes blink { 50% { opacity: 0; } }
 
     .fragment-field {
-      position: relative; min-height: 320px;
+      position: relative; min-height: auto;
       display: flex; flex-wrap: wrap; gap: 20px; align-items: flex-start;
     }
     .fragment {
@@ -198,12 +191,12 @@
       opacity: 0; transform: translateY(20px);
     }
     .fragment-label {
-      font-family: var(--mono); font-size: 9px; color: var(--text3);
-      letter-spacing: 0.14em; text-transform: uppercase;
+      font-family: var(--mono); font-size: 11px; color: var(--text3);
+      letter-spacing: 0.1em; text-transform: uppercase;
     }
     .fragment-val {
-      font-size: 20px; font-weight: 600; letter-spacing: -0.02em;
-      color: var(--text); padding: 10px 16px;
+      font-size: 22px; font-weight: 600; letter-spacing: -0.02em;
+      color: var(--text); padding: 12px 18px;
       border: 1px solid var(--cream3); border-radius: 6px;
       background: var(--cream);
     }
@@ -212,14 +205,14 @@
     .fragment-val.amber { color: var(--amber); border-color: rgba(217,119,6,0.2); background: var(--amber-l); }
 
     /* ===================== EVIDENCE SCENE ===================== */
-    .evidence-scene { background: var(--cream2); padding: 100px 40px; }
+    .evidence-scene { background: var(--cream2); padding: 72px 40px; }
     .evidence-layout {
       display: grid; grid-template-columns: 1fr 1px 340px; gap: 60px;
       align-items: start; max-width: 1100px; margin: 0 auto;
     }
     .evidence-divider { background: var(--cream3); align-self: stretch; }
     .evidence-doc {
-      font-size: 14px; line-height: 1.9; color: var(--text2);
+      font-size: 15px; line-height: 1.9; color: var(--text2);
       max-height: 400px; overflow: hidden; position: relative;
     }
     .evidence-doc::after {
@@ -233,8 +226,8 @@
       color: var(--text); padding: 0 2px; border-radius: 2px;
     }
     .evidence-doc-label {
-      font-family: var(--mono); font-size: 9px; color: var(--text3);
-      letter-spacing: 0.14em; text-transform: uppercase; margin-bottom: 16px;
+      font-family: var(--mono); font-size: 11px; color: var(--text3);
+      letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 16px;
     }
     .evidence-bindings { display: flex; flex-direction: column; gap: 16px; }
     .evidence-bind {
@@ -243,47 +236,47 @@
       border-radius: 8px; padding: 14px 16px;
     }
     .bind-source {
-      font-family: var(--mono); font-size: 10px; color: var(--text3);
-      letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 4px;
+      font-family: var(--mono); font-size: 11px; color: var(--text3);
+      letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 4px;
     }
     .bind-target {
-      font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 4px;
+      font-size: 14px; font-weight: 600; color: var(--text); margin-bottom: 4px;
     }
     .bind-arrow {
-      font-family: var(--mono); font-size: 10px; color: var(--blue);
+      font-family: var(--mono); font-size: 11px; color: var(--blue);
     }
 
     /* ===================== COMPILER SCENE ===================== */
     .compiler-scene {
       background: var(--ink); color: var(--cream);
-      padding: 120px 40px; overflow: hidden;
+      padding: 72px 40px; overflow: hidden;
     }
     .compiler-pipeline {
       display: flex; align-items: center; gap: 0;
-      margin-top: 64px; overflow-x: auto;
+      margin-top: 24px; overflow-x: auto;
       scrollbar-width: none;
     }
     .compiler-pipeline::-webkit-scrollbar { display: none; }
     .pipeline-stage {
       flex-shrink: 0; display: flex; flex-direction: column;
-      gap: 12px; padding: 28px 32px;
+      gap: 10px; padding: 22px 28px;
       border-left: 1px solid rgba(248,247,245,0.08);
       opacity: 0; transform: translateY(16px);
       min-width: 160px;
     }
     .pipeline-stage:first-child { border-left: none; }
     .stage-idx {
-      font-family: var(--mono); font-size: 10px;
-      color: rgba(248,247,245,0.25); letter-spacing: 0.1em;
+      font-family: var(--mono); font-size: 11px;
+      color: rgba(248,247,245,0.25); letter-spacing: 0.08em;
     }
     .stage-name {
-      font-size: 11px; font-weight: 600; letter-spacing: 0.08em;
+      font-size: 13px; font-weight: 600; letter-spacing: 0.04em;
       text-transform: uppercase; color: rgba(248,247,245,0.5);
       transition: color 0.3s;
     }
     .pipeline-stage.active .stage-name { color: var(--blue-l); }
     .stage-detail {
-      font-size: 12px; color: rgba(248,247,245,0.3); line-height: 1.5;
+      font-size: 13px; color: rgba(248,247,245,0.35); line-height: 1.5;
     }
     .stage-dot {
       width: 6px; height: 6px; border-radius: 50%;
@@ -295,7 +288,7 @@
 
     .compiler-token {
       display: inline-flex; align-items: center; gap: 8px;
-      font-family: var(--mono); font-size: 12px;
+      font-family: var(--mono); font-size: 14px;
       color: var(--cream); margin-top: 32px;
       opacity: 0;
     }
@@ -306,10 +299,10 @@
     .compiler-token-arrow { color: rgba(248,247,245,0.25); }
 
     /* ===================== SETTINGS GRAPH ===================== */
-    .graph-scene { background: var(--ink2); color: var(--cream); padding: 120px 40px; }
+    .graph-scene { background: var(--ink2); color: var(--cream); padding: 72px 40px; }
     .graph-container {
-      position: relative; margin-top: 64px;
-      font-family: var(--mono); font-size: 12px;
+      position: relative; margin-top: 24px;
+      font-family: var(--mono); font-size: 13px;
     }
     .graph-tree { display: flex; flex-direction: column; gap: 0; max-width: 480px; }
     .graph-node {
@@ -342,23 +335,23 @@
     }
     .graph-annotation.visible { opacity: 1; }
     .annot-label {
-      font-size: 9px; color: rgba(248,247,245,0.3);
-      letter-spacing: 0.14em; text-transform: uppercase; margin-bottom: 8px;
+      font-size: 11px; color: rgba(248,247,245,0.3);
+      letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 8px;
     }
     .annot-body {
-      font-family: var(--head); font-size: 13px;
+      font-family: var(--head); font-size: 14px;
       color: rgba(248,247,245,0.6); line-height: 1.6;
     }
     .annot-dl {
-      margin-top: 12px; font-size: 11px;
+      margin-top: 12px; font-size: 12px;
       color: var(--blue-l); word-break: break-all; line-height: 1.5;
     }
 
     /* ===================== ORDERING SCENE ===================== */
-    .ordering-scene { background: var(--white); padding: 120px 40px; }
+    .ordering-scene { background: var(--white); padding: 72px 40px; }
     .order-track {
       display: flex; flex-direction: column; gap: 0;
-      max-width: 560px; margin-top: 64px;
+      max-width: 560px; margin-top: 24px;
     }
     .order-action {
       display: flex; align-items: center; gap: 20px;
@@ -368,14 +361,14 @@
     }
     .order-action:last-child { border-bottom: none; }
     .order-num {
-      font-family: var(--mono); font-size: 11px;
-      color: var(--text3); width: 20px; flex-shrink: 0;
+      font-family: var(--mono); font-size: 13px;
+      color: var(--text3); width: 24px; flex-shrink: 0;
     }
-    .order-name { font-size: 16px; font-weight: 600; letter-spacing: -0.02em; flex: 1; }
+    .order-name { font-size: 17px; font-weight: 600; letter-spacing: -0.02em; flex: 1; }
     .order-cat {
-      font-family: var(--mono); font-size: 9px; font-weight: 500;
-      letter-spacing: 0.1em; text-transform: uppercase;
-      padding: 3px 8px; border-radius: 4px;
+      font-family: var(--mono); font-size: 11px; font-weight: 500;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      padding: 4px 10px; border-radius: 4px;
     }
     .order-cat.auto { color: var(--blue); background: var(--blue-d); border: 1px solid rgba(20,40,160,0.15); }
     .order-cat.manual { color: var(--amber); background: var(--amber-l); border: 1px solid rgba(217,119,6,0.15); }
@@ -383,10 +376,10 @@
     .order-arrow { color: var(--text4); font-size: 13px; }
 
     /* ===================== POLARITY SCENE ===================== */
-    .polarity-scene { background: var(--ink); color: var(--cream); padding: 120px 40px; }
+    .polarity-scene { background: var(--ink); color: var(--cream); padding: 72px 40px; }
     .polarity-split {
       display: grid; grid-template-columns: 1fr 1px 1fr;
-      gap: 48px; align-items: start; max-width: 900px; margin-top: 64px;
+      gap: 48px; align-items: start; max-width: 900px; margin-top: 24px;
     }
     .polarity-divider { background: rgba(248,247,245,0.08); }
     .polarity-col { display: flex; flex-direction: column; gap: 20px; opacity: 0; }
@@ -394,23 +387,23 @@
       font-size: 18px; font-weight: 600; letter-spacing: -0.02em; line-height: 1.3;
     }
     .polarity-arrow {
-      font-family: var(--mono); font-size: 11px;
-      color: rgba(248,247,245,0.3); letter-spacing: 0.1em;
+      font-family: var(--mono); font-size: 13px;
+      color: rgba(248,247,245,0.4); letter-spacing: 0.06em;
     }
     .polarity-verdict {
-      font-family: var(--mono); font-size: 11px; font-weight: 500;
-      letter-spacing: 0.08em; text-transform: uppercase;
+      font-family: var(--mono); font-size: 12px; font-weight: 500;
+      letter-spacing: 0.06em; text-transform: uppercase;
       padding: 8px 14px; border-radius: 5px; display: inline-block;
     }
     .polarity-verdict.mismatch { color: var(--red); background: var(--red-l); border: 1px solid rgba(220,38,38,0.2); }
     .polarity-verdict.match { color: var(--green); background: var(--green-l); border: 1px solid rgba(22,163,74,0.2); }
-    .polarity-note { font-size: 12px; color: rgba(248,247,245,0.35); line-height: 1.6; }
+    .polarity-note { font-size: 14px; color: rgba(248,247,245,0.45); line-height: 1.6; }
 
     /* ===================== NO-MATCH SCENE ===================== */
-    .nomatch-scene { background: var(--cream); padding: 120px 40px; }
-    .nomatch-block { max-width: 560px; margin-top: 64px; }
+    .nomatch-scene { background: var(--cream); padding: 72px 40px; }
+    .nomatch-block { max-width: 560px; margin-top: 24px; }
     .nomatch-query {
-      font-size: 28px; font-weight: 600; letter-spacing: -0.03em;
+      font-size: 26px; font-weight: 600; letter-spacing: -0.03em;
       color: var(--text2); margin-bottom: 48px; opacity: 0;
       font-style: italic;
     }
@@ -425,9 +418,9 @@
     }
     .nomatch-step-dot.searching { background: var(--amber); }
     .nomatch-step-dot.failed { background: var(--red); }
-    .nomatch-step-label { font-size: 14px; color: var(--text2); }
+    .nomatch-step-label { font-size: 15px; color: var(--text2); }
     .nomatch-verdict {
-      margin-top: 40px; padding: 24px 28px;
+      margin-top: 32px; padding: 24px 28px;
       border: 1px dashed var(--cream3); border-radius: 8px;
       opacity: 0;
     }
@@ -435,19 +428,19 @@
       font-size: 18px; font-weight: 700; letter-spacing: -0.02em;
       color: var(--text); margin-bottom: 8px;
     }
-    .nomatch-verdict-body { font-size: 13px; color: var(--text2); line-height: 1.6; }
+    .nomatch-verdict-body { font-size: 14px; color: var(--text2); line-height: 1.6; }
     .nomatch-code {
       display: inline-block; margin-top: 12px;
-      font-family: var(--mono); font-size: 11px; color: var(--amber);
+      font-family: var(--mono); font-size: 12px; color: var(--amber);
       background: var(--amber-l); border: 1px solid rgba(217,119,6,0.2);
       padding: 3px 9px; border-radius: 4px;
     }
 
     /* ===================== RESULT SCENE ===================== */
-    .result-scene { background: var(--white); padding: 120px 40px; }
-    .result-plan { max-width: 600px; margin-top: 48px; }
+    .result-scene { background: var(--white); padding: 72px 40px; }
+    .result-plan { max-width: 600px; margin-top: 32px; }
     .result-complaint-display {
-      font-size: 14px; color: var(--text2); margin-bottom: 40px;
+      font-size: 15px; color: var(--text2); margin-bottom: 32px;
       padding-bottom: 24px; border-bottom: 1px solid var(--cream3);
     }
     .result-complaint-display strong { color: var(--text); font-weight: 600; }
@@ -464,20 +457,20 @@
     }
     .result-action-body { flex: 1; min-width: 0; }
     .result-action-name {
-      font-size: 17px; font-weight: 600; letter-spacing: -0.02em;
+      font-size: 18px; font-weight: 600; letter-spacing: -0.02em;
       color: var(--text); margin-bottom: 4px;
     }
-    .result-action-desc { font-size: 13px; color: var(--text2); margin-bottom: 12px; }
+    .result-action-desc { font-size: 15px; color: var(--text2); margin-bottom: 12px; }
     .result-steps { display: flex; flex-direction: column; gap: 4px; }
     .result-step {
-      display: flex; gap: 8px; font-size: 12px; color: var(--text2);
+      display: flex; gap: 8px; font-size: 14px; color: var(--text2);
       padding: 3px 0;
     }
     .result-step-n { font-family: var(--mono); color: var(--text4); width: 14px; flex-shrink: 0; }
     .result-deeplink {
       display: inline-flex; align-items: center; gap: 6px;
-      margin-top: 10px; padding: 6px 10px;
-      font-family: var(--mono); font-size: 10px; color: var(--blue);
+      margin-top: 10px; padding: 7px 12px;
+      font-family: var(--mono); font-size: 12px; color: var(--blue);
       background: var(--blue-d); border: 1px solid rgba(20,40,160,0.15);
       border-radius: 4px; word-break: break-all;
     }
@@ -491,7 +484,7 @@
       flex-wrap: wrap;
     }
     .result-chip {
-      font-family: var(--mono); font-size: 10px;
+      font-family: var(--mono); font-size: 12px;
       padding: 4px 10px; border-radius: 20px;
       border: 1px solid var(--cream3); color: var(--text3);
     }
@@ -500,13 +493,13 @@
     .result-chip.amber { color: var(--amber); border-color: rgba(217,119,6,0.2); background: var(--amber-l); }
 
     /* ===================== INPUT SCENE ===================== */
-    .input-scene { background: var(--cream2); padding: 100px 40px; }
+    .input-scene { background: var(--cream2); padding: 72px 40px; }
     .input-wrap {
-      max-width: 680px; margin: 48px auto 0;
+      max-width: 680px; margin: 32px auto 0;
     }
     .input-label {
-      font-family: var(--mono); font-size: 10px; color: var(--text3);
-      letter-spacing: 0.14em; text-transform: uppercase; margin-bottom: 16px;
+      font-family: var(--mono); font-size: 12px; color: var(--text3);
+      letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 16px;
     }
     .input-box {
       display: flex; flex-direction: column; gap: 0;
@@ -568,7 +561,7 @@
     .eng-panel {
       margin-top: 32px; padding: 20px 24px;
       background: var(--ink); color: var(--cream);
-      border-radius: 8px; font-family: var(--mono); font-size: 11px;
+      border-radius: 8px; font-family: var(--mono); font-size: 13px;
       line-height: 1.7;
     }
     .eng-panel-title {
@@ -621,8 +614,8 @@
       display: flex; align-items: center; justify-content: space-between;
       gap: 16px; flex-wrap: wrap;
     }
-    .footer-logo { font-size: 13px; font-weight: 600; letter-spacing: -0.02em; }
-    .footer-meta { font-family: var(--mono); font-size: 10px; color: var(--text3); letter-spacing: 0.06em; }
+    .footer-logo { font-size: 15px; font-weight: 600; letter-spacing: -0.02em; }
+    .footer-meta { font-family: var(--mono); font-size: 13px; color: var(--text3); letter-spacing: 0.04em; }
 
     /* ===================== UTILS ===================== */
     .spinner {
@@ -745,7 +738,6 @@
 
 <!-- COMPLAINT DECOMPOSITION -->
 <section class="complaint-scene" id="complaint-section">
-  <div class="eyebrow">01 — Complaint</div>
   <div class="complaint-raw" id="complaintRaw">
     my phone keeps getting too hot<br />and the battery drains really fast<span class="complaint-cursor"></span>
   </div>
@@ -781,7 +773,6 @@
 
 <!-- SIIS EVIDENCE -->
 <section class="evidence-scene">
-  <div class="eyebrow">02 — Source Evidence</div>
   <h2 class="scene-title">Grounded in Samsung support knowledge.</h2>
   <p class="scene-body">Every extracted intent traces back to a SIIS knowledge base article. The system does not generate steps from nothing.</p>
   <div class="evidence-layout">
@@ -822,7 +813,6 @@
 
 <!-- COMPILER PIPELINE -->
 <section class="compiler-scene" id="compiler-section">
-  <div class="eyebrow light-text">03 — Compiler</div>
   <h2 class="scene-title light-text" style="max-width:580px">The LLM understands language.<br />Deterministic stages control navigation.</h2>
   <p class="scene-body light-text">The intent travels through seven compiler stages. The LLM only touches extraction. Every downstream step is deterministic.</p>
   <div class="compiler-token" id="compilerToken">
@@ -876,7 +866,6 @@
 
 <!-- SETTINGS GRAPH -->
 <section class="graph-scene" id="graph-section">
-  <div class="eyebrow light-text">04 — SettingsGraph</div>
   <h2 class="scene-title light-text">The system resolves the most specific supported screen.</h2>
   <p class="scene-body light-text" style="margin-bottom:0">Parent-menu matches are rejected. The compiler navigates to the exact Settings destination.</p>
   <div class="graph-container">
@@ -935,7 +924,6 @@
 
 <!-- ACTION ORDERING -->
 <section class="ordering-scene">
-  <div class="eyebrow">05 — Action Ordering</div>
   <h2 class="scene-title">Least disruptive first.<br />Critical operations last.</h2>
   <p class="scene-body">Actions are sorted by category before delivery. The user always tries non-destructive steps before reaching factory reset or data-loss operations.</p>
   <div class="order-track" id="orderTrack">
@@ -968,7 +956,6 @@
 
 <!-- POLARITY PROTECTION -->
 <section class="polarity-scene">
-  <div class="eyebrow light-text">06 — Cache Protection</div>
   <h2 class="scene-title light-text">Semantic similarity alone is not enough.</h2>
   <p class="scene-body light-text">Two complaints can produce similar embeddings but opposite intents. The polarity guard prevents stale plans from being reused incorrectly.</p>
   <div class="polarity-split">
@@ -990,7 +977,6 @@
 
 <!-- NO MATCH -->
 <section class="nomatch-scene">
-  <div class="eyebrow">07 — Honest Abstention</div>
   <h2 class="scene-title">Some complaints have no supported path.</h2>
   <p class="scene-body">When the system cannot produce a grounded, schema-valid plan, it returns no_match. No fabricated steps. No hallucinated deeplinks.</p>
   <div class="nomatch-block">
@@ -1024,7 +1010,6 @@
 
 <!-- TRY IT — REAL API -->
 <section class="input-scene" id="input-section">
-  <div class="eyebrow">08 — Try it live</div>
   <h2 class="scene-title" style="margin:0 auto 12px">Run the real pipeline.</h2>
   <p class="scene-body" style="margin:0 auto 0;text-align:center">Submit any Galaxy complaint. The backend runs enrichment, SIIS retrieval, LLM extraction, grounding, and lint in real time.</p>
   <div class="input-wrap">
@@ -1055,7 +1040,6 @@
 
 <!-- RESULT DISPLAY -->
 <section class="result-scene" id="result-section" style="display:none" aria-live="polite" aria-label="Compiled troubleshooting plan">
-  <div class="eyebrow">09 — Output</div>
   <h2 class="scene-title">Verified troubleshooting plan.</h2>
   <div class="result-plan" id="resultPlan">
     <!-- populated by JS -->
