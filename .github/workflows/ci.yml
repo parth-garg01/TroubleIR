@@ -1,0 +1,43 @@
+name: CI
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run unit tests
+        env:
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+          MODEL_NAME: qwen/qwen3.8-27b
+          EMBEDDING_MODEL: all-MiniLM-L6-v2
+          PYTHONPATH: src
+        run: |
+          python -m pytest tests/test_schema.py tests/test_cache.py tests/test_lint.py tests/test_grounding.py -v --tb=short
+
+      - name: Start server and run API tests
+        env:
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+          MODEL_NAME: qwen/qwen3.8-27b
+          EMBEDDING_MODEL: all-MiniLM-L6-v2
+          PYTHONPATH: src
+        run: |
+          python -m uvicorn troubleir.api.main:app --host 0.0.0.0 --port 8000 &
+          sleep 15
+          python -m pytest tests/test_api.py -v --tb=short -k "not troubleshoot_warm_cache"
