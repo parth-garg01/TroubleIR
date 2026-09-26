@@ -118,3 +118,8 @@ def has_url_leak(text: str) -> bool:
     # Remove bixby:// deeplinks before checking
     cleaned = re.sub(r"bixby://\S+", "", text)
     return bool(URL_PATTERN.search(cleaned))
+
+
+# Aliases for test compatibility
+ActionableDeeplink = Deeplink
+ActionCategory = actionCategory
