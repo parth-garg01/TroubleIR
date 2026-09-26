@@ -204,6 +204,54 @@
     .fragment-val.green { color: var(--green); border-color: rgba(22,163,74,0.2); background: var(--green-l); }
     .fragment-val.amber { color: var(--amber); border-color: rgba(217,119,6,0.2); background: var(--amber-l); }
 
+    /* ===================== ENRICHMENT PANEL ===================== */
+    .enrich-panel {
+      margin-top: 40px; padding: 24px 28px;
+      background: var(--cream); border: 1px solid var(--cream3);
+      border-radius: 12px; opacity: 0; transform: translateY(16px);
+      transition: opacity 0.5s, transform 0.5s;
+    }
+    .enrich-panel.visible { opacity: 1; transform: translateY(0); }
+    .enrich-header {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 20px;
+    }
+    .enrich-label {
+      font-family: var(--mono); font-size: 11px; font-weight: 500;
+      letter-spacing: 0.12em; text-transform: uppercase; color: var(--text3);
+    }
+    .enrich-badge {
+      font-family: var(--mono); font-size: 11px;
+      color: var(--blue); background: var(--blue-d);
+      border: 1px solid rgba(20,40,160,0.15);
+      padding: 3px 10px; border-radius: 20px;
+    }
+    .enrich-variations { display: flex; flex-direction: column; gap: 0; }
+    .enrich-var {
+      display: flex; align-items: center; gap: 16px;
+      padding: 12px 0; border-bottom: 1px solid var(--cream3);
+      opacity: 0; transform: translateX(-10px);
+      transition: opacity 0.4s, transform 0.4s;
+    }
+    .enrich-var.visible { opacity: 1; transform: translateX(0); }
+    .enrich-idx {
+      font-family: var(--mono); font-size: 11px;
+      color: var(--text4); width: 24px; flex-shrink: 0;
+    }
+    .enrich-text {
+      font-size: 14px; color: var(--text); flex: 1;
+      font-weight: 500;
+    }
+    .enrich-score {
+      font-family: var(--mono); font-size: 11px;
+      color: var(--text3);
+    }
+    .enrich-more {
+      padding-top: 12px;
+      font-family: var(--mono); font-size: 11px;
+      color: var(--text3); font-style: italic;
+    }
+
     /* ===================== EVIDENCE SCENE ===================== */
     .evidence-scene { background: var(--cream2); padding: 72px 40px; }
     .evidence-layout {
@@ -767,6 +815,32 @@
       <div class="fragment-val green">0.95</div>
     </div>
   </div>
+
+  <!-- Query enrichment panel -->
+  <div class="enrich-panel" id="enrichPanel">
+    <div class="enrich-header">
+      <span class="enrich-label">Query enrichment</span>
+      <span class="enrich-badge">10 variations generated</span>
+    </div>
+    <div class="enrich-variations">
+      <div class="enrich-var" id="ev0">
+        <span class="enrich-idx">v1</span>
+        <span class="enrich-text">battery draining fast and phone overheating</span>
+        <span class="enrich-score">BM25 + dense</span>
+      </div>
+      <div class="enrich-var" id="ev1">
+        <span class="enrich-idx">v2</span>
+        <span class="enrich-text">Galaxy battery drain overheating issue fix</span>
+        <span class="enrich-score">BM25 + dense</span>
+      </div>
+      <div class="enrich-var" id="ev2">
+        <span class="enrich-idx">v3</span>
+        <span class="enrich-text">phone gets hot battery dies quickly Samsung</span>
+        <span class="enrich-score">BM25 + dense</span>
+      </div>
+      <div class="enrich-more">+ 7 more variations fed into hybrid retrieval</div>
+    </div>
+  </div>
 </section>
 
 <div class="divider"></div>
@@ -1104,6 +1178,15 @@ ScrollTrigger.create({
         delay: 0.5 + idx * 0.1, ease: 'power2.out'
       });
     });
+    // reveal enrichment panel after fragments
+    setTimeout(() => {
+      document.getElementById('enrichPanel').classList.add('visible');
+      [0,1,2].forEach((i) => {
+        setTimeout(() => {
+          document.getElementById(`ev${i}`).classList.add('visible');
+        }, i * 120);
+      });
+    }, 1100);
   }
 });
 

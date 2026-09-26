@@ -3,10 +3,16 @@
 Requires the server to be running at http://127.0.0.1:8000.
 Run with: py -m pytest tests/test_api.py -v
 """
+import os
 import pytest
 import requests
 
 BASE = "http://127.0.0.1:8000"
+
+needs_llm = pytest.mark.skipif(
+    not os.environ.get("GROQ_API_KEY"),
+    reason="GROQ_API_KEY not set; skipping LLM-dependent test",
+)
 
 
 def _get(path: str, **kwargs):
@@ -106,6 +112,7 @@ def test_troubleshoot_empty_query_rejected():
     assert r.status_code == 422
 
 
+@needs_llm
 def test_troubleshoot_out_of_scope_returns_no_match():
     r = _post("/v1/troubleshoot", json={"query": "My washing machine is broken"})
     assert r.status_code == 200
@@ -114,6 +121,7 @@ def test_troubleshoot_out_of_scope_returns_no_match():
     assert resp.get("fallback") == "no_match" or len(resp.get("contexts", [])) == 0
 
 
+@needs_llm
 def test_troubleshoot_response_schema():
     r = _post("/v1/troubleshoot", json={"query": "screen too bright at night"})
     assert r.status_code == 200
@@ -128,6 +136,7 @@ def test_troubleshoot_response_schema():
     assert isinstance(meta["cache_hit"], bool)
 
 
+@needs_llm
 def test_troubleshoot_warm_cache_faster():
     query = "battery draining quickly after software update"
     r1 = _post("/v1/troubleshoot", json={"query": query})
