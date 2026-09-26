@@ -30,16 +30,6 @@
     "originalType": "auto"
   },
   {
-    "deeplink": "bixby://masked/act/com.samsung.android.settings.display.resolution",
-    "description": "Change screen resolution for display quality vs battery trade-off",
-    "message": "Open Screen resolution settings",
-    "qna_description": "Screen resolution determines display quality. Higher resolution uses more battery.",
-    "classes": {
-      "target": "ScreenResolutionSettings"
-    },
-    "originalType": "auto"
-  },
-  {
     "deeplink": "bixby://masked/act/com.samsung.android.settings.display.refreshRate",
     "description": "Set screen refresh rate - higher refresh rate gives smoother scrolling but uses more power",
     "message": "Open Motion smoothness / refresh rate settings",
@@ -190,16 +180,6 @@
     "originalType": "auto"
   },
   {
-    "deeplink": "bixby://masked/act/com.samsung.android.settings.general.storage",
-    "description": "View and manage device storage, clear cached data and unused files",
-    "message": "Open Storage settings",
-    "qna_description": "Storage settings show how your device storage is being used and let you free up space by deleting cached files.",
-    "classes": {
-      "target": "StorageSettings"
-    },
-    "originalType": "auto"
-  },
-  {
     "deeplink": "bixby://masked/act/com.samsung.android.settings.general.ram",
     "description": "View RAM usage and manage background apps consuming memory",
     "message": "Open RAM and device care memory settings",
@@ -216,16 +196,6 @@
     "qna_description": "Volume settings let you independently control media volume, ringtone volume, notification volume, and system sound volume.",
     "classes": {
       "target": "VolumeSettings"
-    },
-    "originalType": "auto"
-  },
-  {
-    "deeplink": "bixby://masked/act/com.samsung.android.settings.sound.doNotDisturb",
-    "description": "Configure Do Not Disturb mode to silence calls, alerts, and notifications",
-    "message": "Open Do Not Disturb settings",
-    "qna_description": "Do Not Disturb silences calls and notifications. You can allow exceptions for alarms or specific contacts.",
-    "classes": {
-      "target": "DoNotDisturbSettings"
     },
     "originalType": "auto"
   },
@@ -288,16 +258,6 @@
       "target": "DeveloperOptionsSettings"
     },
     "originalType": "critical"
-  },
-  {
-    "deeplink": "bixby://masked/act/com.samsung.android.settings.general.softwareUpdate",
-    "description": "Check for and install system software updates",
-    "message": "Open Software update settings",
-    "qna_description": "Software update checks for the latest One UI firmware and security patches for your Galaxy device.",
-    "classes": {
-      "target": "SoftwareUpdateSettings"
-    },
-    "originalType": "auto"
   },
   {
     "deeplink": "bixby://masked/act/com.samsung.android.settings.general.resetSettings",
