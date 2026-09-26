@@ -208,19 +208,18 @@
     }
     .fragment-val {
       font-size: 22px; font-weight: 600; letter-spacing: -0.02em;
-      color: var(--text); padding: 12px 18px;
-      border: 1px solid var(--cream3); border-radius: 6px;
-      background: var(--cream);
+      color: var(--text); padding: 8px 0;
+      border-bottom: 2px solid var(--cream3);
     }
-    .fragment-val.blue { color: var(--blue); border-color: rgba(20,40,160,0.2); background: var(--blue-d); }
-    .fragment-val.green { color: var(--green); border-color: rgba(22,163,74,0.2); background: var(--green-l); }
-    .fragment-val.amber { color: var(--amber); border-color: rgba(217,119,6,0.2); background: var(--amber-l); }
+    .fragment-val.blue { color: var(--blue); border-bottom-color: var(--blue); }
+    .fragment-val.green { color: var(--green); border-bottom-color: var(--green); }
+    .fragment-val.amber { color: var(--amber); border-bottom-color: var(--amber); }
 
     /* ===================== ENRICHMENT PANEL ===================== */
     .enrich-panel {
-      margin-top: 40px; padding: 24px 28px;
-      background: var(--cream); border: 1px solid var(--cream3);
-      border-radius: 12px; opacity: 0; transform: translateY(16px);
+      margin-top: 40px; padding: 24px 0;
+      border-top: 1px solid var(--cream3);
+      opacity: 0; transform: translateY(16px);
       transition: opacity 0.5s, transform 0.5s;
     }
     .enrich-panel.visible { opacity: 1; transform: translateY(0); }
@@ -289,12 +288,12 @@
       font-family: var(--mono); font-size: 11px; color: var(--text3);
       letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 16px;
     }
-    .evidence-bindings { display: flex; flex-direction: column; gap: 16px; }
+    .evidence-bindings { display: flex; flex-direction: column; gap: 0; }
     .evidence-bind {
       opacity: 0; transform: translateX(16px);
-      background: var(--white); border: 1px solid var(--cream3);
-      border-radius: 8px; padding: 14px 16px;
+      padding: 16px 0; border-bottom: 1px solid var(--cream3);
     }
+    .evidence-bind:last-child { border-bottom: none; }
     .bind-source {
       font-family: var(--mono); font-size: 11px; color: var(--text3);
       letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 4px;
@@ -309,7 +308,7 @@
     /* ===================== COMPILER SCENE ===================== */
     .compiler-scene {
       background: var(--cream); color: var(--text);
-      padding: 72px 40px; overflow: hidden;
+      padding: 72px 40px; overflow: visible;
     }
     .compiler-pipeline {
       display: flex; align-items: center; gap: 0;
@@ -333,20 +332,20 @@
     }
     .stage-name {
       font-size: 13px; font-weight: 600; letter-spacing: 0.04em;
-      text-transform: uppercase; color: var(--text3);
+      text-transform: uppercase; color: var(--text2);
       transition: color 0.3s;
     }
     .pipeline-stage.active .stage-name { color: var(--blue); }
     .stage-detail {
-      font-size: 13px; color: var(--text3); line-height: 1.5;
+      font-size: 13px; color: var(--text2); line-height: 1.5;
     }
     .stage-dot {
       width: 6px; height: 6px; border-radius: 50%;
-      background: var(--cream3); transition: background 0.3s;
+      background: var(--text4); transition: background 0.3s;
     }
     .pipeline-stage.active .stage-dot { background: var(--blue); }
-    .pipeline-stage.done .stage-dot { background: var(--green); }
-    .pipeline-stage.done .stage-name { color: var(--text4); }
+    .pipeline-stage.done .stage-dot { background: var(--blue); }
+    .pipeline-stage.done .stage-name { color: var(--text2); }
 
     .compiler-token {
       display: inline-flex; align-items: center; gap: 8px;
@@ -439,32 +438,55 @@
 
     /* ===================== POLARITY SCENE ===================== */
     .polarity-scene { background: var(--white); color: var(--text); padding: 72px 40px; }
-    .polarity-split {
-      display: grid; grid-template-columns: 1fr 1px 1fr;
-      gap: 48px; align-items: start; max-width: 900px; margin-top: 24px;
+    .polarity-compare { display: flex; flex-direction: column; }
+    .polarity-case { opacity: 0; padding: 24px 0; }
+    .polarity-case-divider { height: 1px; background: var(--cream3); }
+    .polarity-quote {
+      font-size: 18px; font-weight: 600; letter-spacing: -0.02em;
+      color: var(--text); margin-bottom: 10px; font-style: italic;
     }
-    .polarity-divider { background: var(--cream3); }
-    .polarity-col {
-      display: flex; flex-direction: column; gap: 20px; opacity: 0;
-      padding: 24px; border: 1px solid var(--cream3); border-radius: 12px;
-      background: var(--cream);
+    .polarity-meta {
+      font-family: var(--mono); font-size: 12px; color: var(--text3);
+      margin-bottom: 14px; letter-spacing: 0.04em;
     }
-    .polarity-complaint {
-      font-size: 17px; font-weight: 600; letter-spacing: -0.02em; line-height: 1.4;
-      color: var(--text);
+    .polarity-meta strong { color: var(--blue); font-weight: 600; }
+    .polarity-verdict-text {
+      font-family: var(--mono); font-size: 12px; font-weight: 700;
+      letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 10px;
     }
-    .polarity-arrow {
-      font-family: var(--mono); font-size: 13px;
-      color: var(--text3); letter-spacing: 0.06em;
+    .polarity-verdict-text.match { color: var(--green); }
+    .polarity-verdict-text.blocked { color: var(--red); }
+    .polarity-note-text { font-size: 14px; color: var(--text2); line-height: 1.6; }
+
+    /* ===================== GRAPH STATS ===================== */
+    .graph-stats {
+      display: flex; gap: 28px;
+      padding: 20px 0; margin: 16px 0;
+      border-top: 1px solid var(--cream3); border-bottom: 1px solid var(--cream3);
     }
-    .polarity-verdict {
-      font-family: var(--mono); font-size: 12px; font-weight: 500;
-      letter-spacing: 0.06em; text-transform: uppercase;
-      padding: 8px 14px; border-radius: 5px; display: inline-block;
+    .graph-stat { display: flex; flex-direction: column; gap: 4px; }
+    .graph-stat-num {
+      font-size: 40px; font-weight: 700; letter-spacing: -0.04em; color: var(--blue);
+      line-height: 1;
     }
-    .polarity-verdict.mismatch { color: var(--red); background: var(--red-l); border: 1px solid rgba(220,38,38,0.2); }
-    .polarity-verdict.match { color: var(--green); background: var(--green-l); border: 1px solid rgba(22,163,74,0.2); }
-    .polarity-note { font-size: 14px; color: var(--text2); line-height: 1.6; }
+    .graph-stat-label {
+      font-family: var(--mono); font-size: 10px; color: var(--text3);
+      letter-spacing: 0.08em; text-transform: uppercase;
+    }
+    .two-col .graph-container { display: flex; flex-direction: column; gap: 0; }
+    .two-col .graph-annotation {
+      position: static; max-width: 100%;
+      margin-top: 20px;
+      border-left: 2px solid var(--blue); padding-left: 14px;
+    }
+
+    /* ===================== ORDERING LEGEND ===================== */
+    .order-legend {
+      margin-top: 28px; display: flex; flex-direction: column; gap: 16px;
+      padding-top: 24px; border-top: 1px solid var(--cream3);
+    }
+    .order-legend-item { display: flex; align-items: flex-start; gap: 12px; }
+    .order-legend-desc { font-size: 14px; color: var(--text2); line-height: 1.5; }
 
     /* ===================== NO-MATCH SCENE ===================== */
     .nomatch-scene { background: var(--cream); padding: 56px 40px; }
@@ -487,8 +509,8 @@
     .nomatch-step-dot.failed { background: var(--red); }
     .nomatch-step-label { font-size: 15px; color: var(--text2); }
     .nomatch-verdict {
-      margin-top: 32px; padding: 24px 28px;
-      border: 1px dashed var(--cream3); border-radius: 8px;
+      margin-top: 24px; padding-top: 20px;
+      border-top: 2px solid var(--text);
       opacity: 0;
     }
     .nomatch-verdict-title {
@@ -978,6 +1000,25 @@
   <div class="col-text">
   <h2 class="scene-title">The system resolves the most specific supported screen.</h2>
   <p class="scene-body">Parent-menu matches are rejected. The compiler navigates to the exact Settings destination.</p>
+  <div class="graph-stats">
+    <div class="graph-stat">
+      <span class="graph-stat-num">4</span>
+      <span class="graph-stat-label">traversal depth</span>
+    </div>
+    <div class="graph-stat">
+      <span class="graph-stat-num">3</span>
+      <span class="graph-stat-label">resolved screens</span>
+    </div>
+    <div class="graph-stat">
+      <span class="graph-stat-num">0</span>
+      <span class="graph-stat-label">parent-only matches</span>
+    </div>
+  </div>
+  <div class="graph-annotation" id="graphAnnotation">
+    <div class="annot-label">Resolved destination</div>
+    <div class="annot-body">The compiler navigates through Battery and device care then Battery to reach the exact screen. The parent node alone is not a valid destination.</div>
+    <div class="annot-dl">bixby://masked/act/com.samsung.android.settings.battery.usage</div>
+  </div>
   </div>
   <div class="col-vis">
   <div class="graph-container">
@@ -1026,11 +1067,6 @@
         <span class="graph-node-label">Power saving</span>
       </div>
     </div>
-    <div class="graph-annotation" id="graphAnnotation">
-      <div class="annot-label">Resolved destination</div>
-      <div class="annot-body">The compiler navigates through Battery and device care then Battery to reach the exact screen. The parent node alone is not a valid destination.</div>
-      <div class="annot-dl">bixby://masked/act/com.samsung.android.settings.battery.usage</div>
-    </div>
   </div>
   </div><!-- col-vis -->
   </div><!-- two-col -->
@@ -1042,6 +1078,20 @@
   <div class="col-text">
   <h2 class="scene-title">Least disruptive first.<br />Critical operations last.</h2>
   <p class="scene-body">Actions are sorted by category before delivery. The user always tries non-destructive steps before reaching factory reset or data-loss operations.</p>
+  <div class="order-legend">
+    <div class="order-legend-item">
+      <span class="order-cat auto">Auto</span>
+      <span class="order-legend-desc">Direct deeplink navigation. Zero user interaction required.</span>
+    </div>
+    <div class="order-legend-item">
+      <span class="order-cat manual">Manual</span>
+      <span class="order-legend-desc">Requires a single user tap or toggle to complete.</span>
+    </div>
+    <div class="order-legend-item">
+      <span class="order-cat critical">Critical</span>
+      <span class="order-legend-desc">Data loss risk. Shown last, after all safer options are exhausted.</span>
+    </div>
+  </div>
   </div>
   <div class="col-vis">
   <div class="order-track" id="orderTrack">
@@ -1076,23 +1126,29 @@
 
 <!-- POLARITY PROTECTION -->
 <section class="polarity-scene">
+  <div class="two-col">
+  <div class="col-text">
   <h2 class="scene-title">Semantic similarity alone is not enough.</h2>
   <p class="scene-body">Two complaints can produce similar embeddings but opposite intents. The polarity guard prevents stale plans from being reused incorrectly.</p>
-  <div class="polarity-split">
-    <div class="polarity-col" id="pc0">
-      <div class="polarity-complaint">"battery is draining too fast"</div>
-      <div class="polarity-arrow">&#8595; LLM extracts polarity: DRAIN</div>
-      <div class="polarity-verdict match">Cache reuse ALLOWED</div>
-      <div class="polarity-note">Another "drain" query maps to the same compiled plan. Cache hit.</div>
+  </div>
+  <div class="col-vis">
+  <div class="polarity-compare">
+    <div class="polarity-case" id="pc0">
+      <div class="polarity-quote">"battery is draining too fast"</div>
+      <div class="polarity-meta">&#8595; LLM extracts polarity: <strong>DRAIN</strong></div>
+      <div class="polarity-verdict-text match">Cache reuse allowed</div>
+      <div class="polarity-note-text">Another "drain" query maps to the same compiled plan. Cache hit.</div>
     </div>
-    <div class="polarity-divider"></div>
-    <div class="polarity-col" id="pc1">
-      <div class="polarity-complaint">"battery is charging too slowly"</div>
-      <div class="polarity-arrow">&#8595; LLM extracts polarity: CHARGE</div>
-      <div class="polarity-verdict mismatch">Cache reuse BLOCKED</div>
-      <div class="polarity-note">Different polarity detected. System runs cold path to generate a new plan.</div>
+    <div class="polarity-case-divider"></div>
+    <div class="polarity-case" id="pc1">
+      <div class="polarity-quote">"battery is charging too slowly"</div>
+      <div class="polarity-meta">&#8595; LLM extracts polarity: <strong>CHARGE</strong></div>
+      <div class="polarity-verdict-text blocked">Cache reuse blocked</div>
+      <div class="polarity-note-text">Different polarity detected. System runs cold path to generate a new plan.</div>
     </div>
   </div>
+  </div><!-- col-vis -->
+  </div><!-- two-col -->
 </section>
 
 <!-- NO MATCH -->
