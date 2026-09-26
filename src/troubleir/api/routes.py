@@ -8,7 +8,12 @@ from ..pipeline.orchestrator import run_pipeline
 from ..pipeline.cache import get_cache_stats, invalidate_by_dependency, save_cache
 from ..pipeline.mapping import get_catalog, retrieve_deeplinks
 from ..graph.builder import get_screen_index
-from ..config import MAX_QUERY_LEN, MAX_SIIS_OVERRIDE_LEN
+from ..config import (
+    MAX_QUERY_LEN, MAX_SIIS_OVERRIDE_LEN,
+    MODEL_NAME, EMBEDDING_MODEL,
+    CACHE_SIMILARITY_THRESHOLD, GROUNDING_MIN_COVERAGE,
+    GROUNDING_STEP_THRESHOLD, RETRIEVAL_TOP_K,
+)
 
 router = APIRouter()
 
@@ -102,3 +107,17 @@ async def get_screens():
     """Return the SettingsGraph screen index for visualization."""
     index = get_screen_index()
     return {"screens": index, "count": len(index)}
+
+
+@router.get("/v1/debug/config")
+async def debug_config():
+    """Return active configuration values (no secrets)."""
+    return {
+        "model_name": MODEL_NAME,
+        "embedding_model": EMBEDDING_MODEL,
+        "cache_similarity_threshold": CACHE_SIMILARITY_THRESHOLD,
+        "grounding_min_coverage": GROUNDING_MIN_COVERAGE,
+        "grounding_step_threshold": GROUNDING_STEP_THRESHOLD,
+        "retrieval_top_k": RETRIEVAL_TOP_K,
+        "max_query_len": MAX_QUERY_LEN,
+    }
