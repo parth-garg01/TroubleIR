@@ -58,7 +58,7 @@ def test_unrelated_steps_fail():
 
 def test_empty_steps_are_grounded():
     """Actions with no steps are trivially grounded."""
-    sg = StepGroup(steps=[], actionableDeeplink=ActionableDeeplink(deeplink="bixby://dummy_positive"))
+    sg = StepGroup(steps=[], actionableDeeplink=ActionableDeeplink(deeplink="bixby://dummy_positive", description=""))
     action = Action(
         actionName="Empty",
         description="It will do nothing.",
