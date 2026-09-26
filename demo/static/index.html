@@ -1459,7 +1459,11 @@ async function runPipeline() {
     resultSection.style.display = 'block';
     if (!res.ok) {
       let detail = `HTTP ${res.status}`;
-      try { const e = await res.json(); detail = e.detail || detail; } catch {}
+      try {
+        const raw = await res.text();
+        try { const e = JSON.parse(raw); detail = e.detail || raw || detail; }
+        catch { if (raw) detail = raw.slice(0, 300); }
+      } catch {}
       document.getElementById('resultPlan').innerHTML =
         `<div class="result-error"><span class="result-error-code">${res.status}</span>${esc(detail)}</div>`;
       resultSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
