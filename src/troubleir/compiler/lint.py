@@ -38,7 +38,7 @@ def lint_response(response: ContextDeeplinkResponse) -> Tuple[bool, list[str]]:
 
                 if sg.actionableDeeplink:
                     dl = sg.actionableDeeplink.deeplink
-                    if not (dl.startswith("bixby://") or dl == "bixby://dummy_positive"):
+                    if not dl.startswith("voiceassist://"):
                         violations.append(f"{DiagnosticCode.INVALID_DEEPLINK}: Invalid deeplink URI: {dl}")
 
         # Ordering check: critical actions must be last

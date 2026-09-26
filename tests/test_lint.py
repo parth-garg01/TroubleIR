@@ -21,7 +21,7 @@ def _clean_response():
                     stepGroups=[StepGroup(
                         steps=["Go to Settings.", "Tap Battery and device care.", "Tap Battery."],
                         actionableDeeplink=Deeplink(
-                            deeplink="bixby://masked/act/com.samsung.android.settings.battery.usage",
+                            deeplink="voiceassist://masked/act/com.samsung.android.settings.battery.usage",
                             description="Battery usage details",
                             message="Open battery usage"
                         )
@@ -33,7 +33,7 @@ def _clean_response():
                     category=actionCategory.critical,
                     stepGroups=[StepGroup(
                         steps=["Go to Settings.", "Tap General management.", "Tap Reset."],
-                        actionableDeeplink=Deeplink(deeplink="bixby://dummy_positive", description="Reset", message="")
+                        actionableDeeplink=Deeplink(deeplink="voiceassist://dummy_positive", description="Reset", message="")
                     )]
                 )
             ]

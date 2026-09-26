@@ -89,8 +89,8 @@ src/troubleir/
   schema.py          Pydantic models for all data structures
 
 data/raw/
-  siis_responses.json   21 Samsung SIIS knowledge-base articles
-  deeplinks.json        62 Samsung Settings deeplinks
+  siis_responses.json   20 official SIIS knowledge-base articles (hackathon dataset)
+  deeplinks.json        578 official Settings deeplinks with voiceassist:// URIs (hackathon dataset)
 
 demo/static/
   index.html            Scroll-driven frontend (GSAP + Lenis)
@@ -178,6 +178,18 @@ Design decisions worth noting:
 - Section padding reduced from 72px to 48px to avoid dead space between sections.
 - All text uses Space Grotesk for body and IBM Plex Mono for code and labels. No em dashes in any copy.
 
+### Official hackathon data alignment
+
+The project was updated to use the official hackathon dataset exactly as provided:
+
+**Deeplinks** - replaced the initial prototype catalog (58 entries, `bixby://` scheme) with the official 578-deeplink catalog (`voiceassist://masked/act/...` URIs). Every URI is used verbatim from the catalog; the pipeline never constructs or guesses a URI. A `voiceassist://dummy_positive` placeholder is used only when the catalog has no match for a valid settings screen.
+
+**SIIS knowledge base** - replaced with the 20 official SIIS articles, keyed on `original_query` for retrieval. The loader accepts both the new `{responses: [...]}` format and the legacy flat-dict format for backwards compatibility.
+
+**Validation deeplinks** - each catalog entry includes a `validation.deeplink` and `validation.key`. The pipeline now populates `validationDeeplink` on every `StepGroup` where a catalog match is found, so the full output schema is satisfied.
+
+**Schema compliance** - the output schema matches the official `schema.py` exactly (`Goal`, `Action`, `StepGroup`, `Deeplink`, `ValidationDeepLink`, `actionCategory`). All 25 unit tests pass against the updated data.
+
 ### Backend fixes
 
 **Error handling** - the `/v1/troubleshoot` endpoint previously propagated raw Python exception messages to the client. It now logs the full traceback server-side with `logger.exception` and returns only `"Internal server error"` to the caller.
@@ -202,6 +214,8 @@ This protects against both DoS and unintended LLM cost runaway.
 **Admin endpoints** - `/v1/debug/config`, `/v1/cache/stats`, and `/v1/cache/invalidate` are now behind a `Bearer` token check. Set `DEBUG_TOKEN` in your `.env` and pass `Authorization: Bearer <token>` to access them. If `DEBUG_TOKEN` is not set, the endpoints return 404.
 
 **Input length caps** - query length is capped at 2000 characters and SIIS override at 8000 characters at the Pydantic validation layer, preventing large payload abuse.
+
+**No secrets in repo** - the `.env` file is gitignored. The `GROQ_API_KEY` is never committed. All sensitive configuration is loaded at runtime from environment variables only.
 
 ---
 

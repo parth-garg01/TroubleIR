@@ -114,9 +114,8 @@ _WEB_PATTERN = re.compile(
 
 
 def has_url_leak(text: str) -> bool:
-    """Return True if text contains a web URL leak (not bixby:// deeplinks)."""
-    # Remove bixby:// deeplinks before checking
-    cleaned = re.sub(r"bixby://\S+", "", text)
+    """Return True if text contains a web URL leak (not voiceassist:// deeplinks)."""
+    cleaned = re.sub(r"voiceassist://\S+", "", text)
     return bool(URL_PATTERN.search(cleaned))
 
 

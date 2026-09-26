@@ -6,7 +6,7 @@ from troubleir.schema import Action, StepGroup, ActionableDeeplink, ActionCatego
 from troubleir.compiler.grounding import check_grounding, check_url_leaks
 
 
-def _make_action(steps: list[str], deeplink: str = "bixby://dummy_positive") -> Action:
+def _make_action(steps: list[str], deeplink: str = "voiceassist://dummy_positive") -> Action:
     sg = StepGroup(
         steps=steps,
         actionableDeeplink=ActionableDeeplink(deeplink=deeplink, description="test"),
@@ -58,7 +58,7 @@ def test_unrelated_steps_fail():
 
 def test_empty_steps_are_grounded():
     """Actions with no steps are trivially grounded."""
-    sg = StepGroup(steps=[], actionableDeeplink=ActionableDeeplink(deeplink="bixby://dummy_positive", description=""))
+    sg = StepGroup(steps=[], actionableDeeplink=ActionableDeeplink(deeplink="voiceassist://dummy_positive", description=""))
     action = Action(
         actionName="Empty",
         description="It will do nothing.",
@@ -112,6 +112,6 @@ def test_url_leak_clean_text():
 
 
 def test_bixby_uri_not_flagged_as_url_leak():
-    """bixby:// URIs appear in action bodies but are not URL leaks."""
-    leaks = check_url_leaks("bixby://masked/act/com.samsung.android.settings.battery.usage")
+    """voiceassist:// URIs appear in action bodies but are not URL leaks."""
+    leaks = check_url_leaks("voiceassist://masked/act/com.samsung.android.settings.battery.usage")
     assert leaks == []

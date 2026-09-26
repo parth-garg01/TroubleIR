@@ -19,7 +19,7 @@ def _make_plan(title: str) -> ContextDeeplinkResponse:
                 category=actionCategory.auto,
                 stepGroups=[StepGroup(
                     steps=["Navigate to Settings.", "Tap Display.", "Adjust Brightness."],
-                    actionableDeeplink=Deeplink(deeplink="bixby://dummy_positive", description="Brightness", message="")
+                    actionableDeeplink=Deeplink(deeplink="voiceassist://dummy_positive", description="Brightness", message="")
                 )]
             )]
         )
@@ -53,10 +53,10 @@ def test_cache_dependency_invalidation():
     """Invalidating a deeplink should remove dependent plans."""
     from troubleir.pipeline.cache import invalidate_by_dependency, _CACHE
     plan = _make_plan("Power Saving")
-    store("battery drain fast", plan, dependencies=["bixby://masked/act/com.samsung.android.settings.battery.powerSaving"])
+    store("battery drain fast", plan, dependencies=["voiceassist://masked/act/com.samsung.android.settings.battery.powerSaving"])
     # Count before
     before = len(_CACHE)
-    removed = invalidate_by_dependency("bixby://masked/act/com.samsung.android.settings.battery.powerSaving")
+    removed = invalidate_by_dependency("voiceassist://masked/act/com.samsung.android.settings.battery.powerSaving")
     after = len(_CACHE)
     assert removed >= 1, f"Expected at least 1 removal, got {removed}"
     assert after < before, "Cache size should decrease after invalidation"

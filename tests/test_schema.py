@@ -11,7 +11,7 @@ from troubleir.schema import (
 
 
 def make_action(cat="auto", desc="It will help", deeplink=None):
-    adl = Deeplink(deeplink=deeplink or "bixby://dummy_positive", description="Settings", message="") if deeplink is not False else None
+    adl = Deeplink(deeplink=deeplink or "voiceassist://dummy_positive", description="Settings", message="") if deeplink is not False else None
     return Action(
         actionName="Test Screen",
         description=desc,
@@ -59,17 +59,17 @@ def test_action_category_ordering():
 
 
 def test_deeplink_dummy_positive_valid():
-    adl = Deeplink(deeplink="bixby://dummy_positive", description="Settings screen", message="Open")
-    assert adl.deeplink == "bixby://dummy_positive"
+    adl = Deeplink(deeplink="voiceassist://dummy_positive", description="Settings screen", message="Open")
+    assert adl.deeplink == "voiceassist://dummy_positive"
 
 
 def test_deeplink_masked_valid():
     adl = Deeplink(
-        deeplink="bixby://masked/act/com.samsung.android.settings.display.brightness",
+        deeplink="voiceassist://masked/act/com.samsung.android.settings.display.brightness",
         description="Brightness settings",
         message="Open brightness"
     )
-    assert adl.deeplink.startswith("bixby://masked/")
+    assert adl.deeplink.startswith("voiceassist://masked/")
 
 
 def test_no_match_response():

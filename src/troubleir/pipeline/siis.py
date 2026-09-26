@@ -27,17 +27,34 @@ def load_siis(path: str = "data/raw/siis_responses.json") -> None:
     global _siis_data, _bm25_siis, _siis_keys, _siis_embed_matrix
 
     with open(path) as f:
-        _siis_data = json.load(f)
+        raw = json.load(f)
+
+    # Official format: { "responses": [{ "id", "original_query", "siis_response": { "title", "content" } }] }
+    # Legacy format: { key: { "title", "content" } }
+    if isinstance(raw, dict) and "responses" in raw:
+        for item in raw["responses"]:
+            sr = item["siis_response"]
+            _siis_data[item["id"]] = {
+                "title": sr["title"],
+                "content": sr["content"],
+                "original_query": item.get("original_query", ""),
+            }
+    else:
+        _siis_data = raw
 
     _siis_keys = list(_siis_data.keys())
-    texts = [_siis_data[k]["content"] for k in _siis_keys]
 
-    tokenized = [re.findall(r"\w+", t.lower()) for t in texts]
+    # Index on original_query (if present) + title + content for better matching
+    index_texts = [
+        _siis_data[k].get("original_query", "") + " " + _siis_data[k]["title"] + " " + _siis_data[k]["content"][:300]
+        for k in _siis_keys
+    ]
+    tokenized = [re.findall(r"\w+", t.lower()) for t in index_texts]
     _bm25_siis = BM25Okapi(tokenized)
 
     model = _get_embed_model()
     _siis_embed_matrix = model.encode(
-        [_siis_data[k]["title"] + " " + _siis_data[k]["content"][:500] for k in _siis_keys],
+        index_texts,
         normalize_embeddings=True,
         show_progress_bar=False,
     )

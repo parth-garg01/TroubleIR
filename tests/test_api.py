@@ -89,7 +89,7 @@ def test_cache_stats_structure():
 
 
 def test_cache_invalidate_unknown_uri():
-    r = _post("/v1/cache/invalidate", json={"deeplink_uri": "bixby://masked/act/nonexistent"})
+    r = _post("/v1/cache/invalidate", json={"deeplink_uri": "voiceassist://masked/act/nonexistent"})
     assert r.status_code == 200
     assert r.json()["removed"] == 0
 

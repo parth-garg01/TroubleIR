@@ -11,6 +11,7 @@ from ..schema import (
     Action,
     StepGroup,
     Deeplink,
+    ValidationDeeplink,
     actionCategory,
     has_url_leak,
 )
@@ -45,7 +46,7 @@ OUTPUT RULES - follow exactly:
 6. description: exactly 5-7 words starting with "It will" explaining the benefit
 7. steps: clear imperative UI steps, one physical interaction each, NO URLs, NO external links
 8. category: "auto" for standard settings screens, "manual" for physical actions, "critical" for destructive/irreversible operations
-9. actionableDeeplink: use ONLY deeplinks from the catalog above matching the screen. Use "bixby://dummy_positive" for valid settings screens not in the catalog. Use null for manual/physical actions.
+9. actionableDeeplink: use ONLY deeplinks from the catalog above matching the screen. Use "voiceassist://dummy_positive" for valid settings screens not in the catalog. Use null for manual/physical actions.
 10. Order actions: least disruptive first, critical/destructive LAST
 11. NO web URLs anywhere in output
 12. stepGroups: group steps that occur on the SAME screen into one StepGroup
@@ -63,7 +64,7 @@ Return a single JSON object:
       "stepGroups": [
         {{
           "steps": ["...", "..."],
-          "actionableDeeplink": {{"deeplink": "bixby://masked/...", "description": "...", "message": "..."}} or null,
+          "actionableDeeplink": {{"deeplink": "voiceassist://masked/act/...", "description": "...", "message": "..."}} or null,
           "validationDeeplink": null
         }}
       ]
@@ -134,33 +135,43 @@ def extract_plan(
     data = _scrub_url_leaks(data)
 
     allowed_deeplinks = {d["deeplink"] for d in deeplink_catalog}
-    dummy = "bixby://dummy_positive"
+    dummy = "voiceassist://dummy_positive"
 
     actions = []
     for act_data in data.get("actions", []):
         step_groups = []
         for sg_data in act_data.get("stepGroups", []):
             adl = sg_data.get("actionableDeeplink")
+            matched_entry = None
             if adl and isinstance(adl, dict):
                 dl_str = adl.get("deeplink", "")
-                if dl_str not in allowed_deeplinks and dl_str != dummy:
-                    matched = _find_best_deeplink(
+                if dl_str in allowed_deeplinks:
+                    # Find the catalog entry to get its validation deeplink
+                    matched_entry = next((d for d in deeplink_catalog if d["deeplink"] == dl_str), None)
+                elif dl_str != dummy:
+                    matched_entry = _find_best_deeplink(
                         act_data.get("actionName", ""),
                         sg_data.get("steps", []),
                         deeplink_catalog
                     )
-                    if matched:
-                        adl = {"deeplink": matched["deeplink"], "description": matched["description"], "message": matched.get("message", "")}
+                    if matched_entry:
+                        adl = {"deeplink": matched_entry["deeplink"], "description": matched_entry["description"], "message": matched_entry.get("message", "")}
                     else:
                         adl = {"deeplink": dummy, "description": act_data.get("actionName", "Settings screen"), "message": "Open this settings screen"}
                 actionable_deeplink = Deeplink(**adl)
             else:
                 actionable_deeplink = None
 
+            # Populate validationDeeplink from catalog entry if available
+            validation_deeplink = None
+            if matched_entry and matched_entry.get("validation"):
+                v = matched_entry["validation"]
+                validation_deeplink = ValidationDeeplink(deeplink=v["deeplink"], key=v["key"])
+
             step_groups.append(StepGroup(
                 steps=sg_data.get("steps", []),
                 actionableDeeplink=actionable_deeplink,
-                validationDeeplink=None,
+                validationDeeplink=validation_deeplink,
             ))
 
         cat_str = act_data.get("category", "auto")

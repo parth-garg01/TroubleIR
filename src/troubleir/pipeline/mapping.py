@@ -26,7 +26,8 @@ def _get_embed_model():
 def load_catalog(path: str = "data/raw/deeplinks.json") -> list[dict]:
     global _catalog, _bm25, _embeddings
     with open(path) as f:
-        _catalog = json.load(f)
+        raw = json.load(f)
+    _catalog = raw["deeplinks"] if isinstance(raw, dict) else raw
 
     # Build BM25 index on description + qna_description
     tokenized = [
