@@ -21,9 +21,21 @@ from ..pipeline.cache import load_cache
 from ..graph.builder import save_graph
 
 
+_BANNER = r"""
+  _____ ____   ___  _   _ ____  _      ___ ____
+ |_   _|  _ \ / _ \| | | | __ )| |    |_ _|  _ \
+   | | | |_) | | | | | | |  _ \| |     | || |_) |
+   | | |  _ <| |_| | |_| | |_) | |___ | ||  _ <
+   |_| |_| \_\\___/ \___/|____/|_____|___|_| \_\
+
+ Samsung PRISM Theme 02 / Smart Guided Troubleshooting Engine
+"""
+
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     """Initialize all indexes and caches on startup."""
+    print(_BANNER)
     print("Loading deeplinks catalog...")
     load_catalog()
     print("Loading SIIS knowledge base...")
@@ -32,7 +44,7 @@ async def lifespan(app: FastAPI):
     load_cache()
     print("Building SettingsGraph...")
     save_graph()
-    print("TroubleIR ready.")
+    print("\nTroubleIR ready. Open http://localhost:8000\n")
     yield
 
 
