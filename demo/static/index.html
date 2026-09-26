@@ -580,6 +580,19 @@
     .result-chip.green { color: var(--green); border-color: rgba(22,163,74,0.25); background: var(--green-l); }
     .result-chip.blue { color: var(--blue); border-color: rgba(20,40,160,0.2); background: var(--blue-d); }
     .result-chip.amber { color: var(--amber); border-color: rgba(217,119,6,0.2); background: var(--amber-l); }
+    /* nav path breadcrumb */
+    .result-nav-path { display:flex; flex-wrap:wrap; align-items:center; gap:4px; margin-top:12px; padding:8px 0; border-top:1px solid var(--cream3); }
+    .result-nav-step { font-family:var(--mono); font-size:11px; color:var(--text3); letter-spacing:0.03em; }
+    .result-nav-arrow { font-size:10px; color:var(--text4); user-select:none; }
+    .result-nav-step:first-child { color:var(--blue); }
+    /* score bar chart */
+    .result-score-chart { margin-top:32px; padding:24px 0 0; border-top:1px solid var(--cream3); }
+    .result-score-chart-title { font-family:var(--mono); font-size:10px; color:var(--text3); letter-spacing:0.1em; text-transform:uppercase; margin-bottom:16px; }
+    .result-score-row { display:flex; align-items:center; gap:12px; margin-bottom:10px; }
+    .result-score-label { font-size:12px; color:var(--text2); width:160px; flex-shrink:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .result-score-bar-wrap { flex:1; height:3px; background:var(--cream3); border-radius:2px; overflow:hidden; }
+    .result-score-bar { height:100%; background:var(--blue); border-radius:2px; transition:width 0.8s cubic-bezier(0.16,1,0.3,1); }
+    .result-score-val { font-family:var(--mono); font-size:11px; color:var(--text3); width:32px; text-align:right; flex-shrink:0; }
 
     /* ===================== INPUT SCENE ===================== */
     .input-scene { background: var(--cream2); padding: 72px 40px; }
@@ -1505,6 +1518,7 @@ function renderResult(data) {
       <div style="font-size:13px;color:var(--text3)">The system returned <span style="font-family:var(--mono);color:var(--amber)">fallback: no_match</span></div>
     </div>`;
   } else {
+    const scoreItems = [];
     html += '<div class="result-actions">';
     for (const goal of contexts) {
       for (const action of (goal.actions || [])) {
@@ -1512,8 +1526,13 @@ function renderResult(data) {
         const catMap = { auto: 'Auto', manual: 'Manual', critical: 'Critical' };
         let stepsHTML = '';
         let dlHTML = '';
+        let navSteps = [];
         for (const sg of (action.stepGroups || [])) {
           if (sg.steps?.length) {
+            // build nav path from steps (strip Open/Tap prefixes)
+            navSteps = sg.steps
+              .map(s => s.replace(/^(open|tap|go to|navigate to)\s+/i, '').trim())
+              .filter(s => s.length > 0 && s.length < 50);
             stepsHTML += '<div class="result-steps">' +
               sg.steps.map((s, i) => `<div class="result-step"><span class="result-step-n">${i+1}.</span><span>${esc(s)}</span></div>`).join('') +
               '</div>';
@@ -1524,6 +1543,10 @@ function renderResult(data) {
             dlHTML = `<div class="result-deeplink ${isDummy ? '' : 'verified'}">${esc(dl)}</div>`;
           }
         }
+        const navHTML = navSteps.length > 1
+          ? `<div class="result-nav-path">${navSteps.map((s,i) => i === 0 ? `<span class="result-nav-step">${esc(s)}</span>` : `<span class="result-nav-arrow">›</span><span class="result-nav-step">${esc(s)}</span>`).join('')}</div>`
+          : '';
+        scoreItems.push({ name: action.actionName, score: goal.score ?? 0 });
         html += `<div class="result-action">
           <div class="result-action-num" aria-hidden="true">&bull;</div>
           <div class="result-action-body">
@@ -1532,12 +1555,25 @@ function renderResult(data) {
               <span class="order-cat ${cat}" style="flex-shrink:0">${catMap[cat]||cat}</span>
             </div>
             <div class="result-action-desc">${esc(action.description)}</div>
-            ${stepsHTML}${dlHTML}
+            ${stepsHTML}${dlHTML}${navHTML}
           </div>
         </div>`;
       }
     }
     html += '</div>';
+    // score bar chart
+    if (scoreItems.length > 0) {
+      const maxScore = Math.max(...scoreItems.map(i => i.score), 0.01);
+      html += `<div class="result-score-chart">
+        <div class="result-score-chart-title">Relevance scores</div>
+        ${scoreItems.map(({name, score}) => `
+        <div class="result-score-row">
+          <div class="result-score-label" title="${esc(name)}">${esc(name)}</div>
+          <div class="result-score-bar-wrap"><div class="result-score-bar" style="width:${(score/maxScore*100).toFixed(1)}%"></div></div>
+          <div class="result-score-val">${(score*100).toFixed(0)}%</div>
+        </div>`).join('')}
+      </div>`;
+    }
   }
 
   // meta chips
