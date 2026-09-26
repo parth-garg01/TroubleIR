@@ -54,7 +54,7 @@ def run_pipeline(query: str, siis_response_override: Optional[str] = None) -> Tr
             meta={
                 "latency_ms": elapsed_ms,
                 "cache_hit": True,
-                "model": os.environ.get("MODEL_NAME", "claude-haiku-4-5-20251001"),
+                "model": MODEL_NAME,
                 "cost_usd": 0.0,
                 "canonical": canonical,
                 "diagnostics": [],
@@ -89,7 +89,7 @@ def run_pipeline(query: str, siis_response_override: Optional[str] = None) -> Tr
             meta={
                 "latency_ms": elapsed_ms,
                 "cache_hit": False,
-                "model": os.environ.get("MODEL_NAME", "claude-haiku-4-5-20251001"),
+                "model": MODEL_NAME,
                 "cost_usd": cost_usd,
                 "canonical": canonical,
                 "diagnostics": diagnostics,
