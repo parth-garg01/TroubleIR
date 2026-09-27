@@ -1299,7 +1299,10 @@
 
 <!-- RESULT DISPLAY -->
 <section class="result-scene" id="result-section" style="display:none" aria-live="polite" aria-label="Compiled troubleshooting plan">
-  <h2 class="scene-title">Verified troubleshooting plan.</h2>
+  <div style="display:flex;align-items:baseline;gap:24px;flex-wrap:wrap;margin-bottom:8px;">
+    <h2 class="scene-title" style="margin-bottom:0">Verified troubleshooting plan.</h2>
+    <button id="downloadJsonBtn" type="button" onclick="downloadResultJson()" style="display:none;align-items:center;gap:8px;padding:8px 18px;background:var(--blue);color:#fff;border:none;border-radius:8px;font-family:inherit;font-size:13px;font-weight:600;cursor:pointer;letter-spacing:.02em;">&#8595; Download JSON</button>
+  </div>
   <div class="result-plan" id="resultPlan">
     <!-- populated by JS -->
   </div>
@@ -1547,6 +1550,8 @@ async function runPipeline() {
       return;
     }
     const data = await res.json();
+    window._lastTroubleshootResponse = data;
+    document.getElementById('downloadJsonBtn').style.display = 'inline-flex';
     await renderResult(data);
     setTimeout(() => {
       resultSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -1746,6 +1751,18 @@ document.getElementById('engToggle').addEventListener('click', () => {
   btn.setAttribute('aria-pressed', String(active));
   document.getElementById('engLabel').textContent = active ? 'User view' : 'Engineering view';
 });
+
+function downloadResultJson() {
+  const data = window._lastTroubleshootResponse;
+  if (!data) return;
+  const out = { query: data.query, response: data.response };
+  const blob = new Blob([JSON.stringify(out, null, 2)], { type: 'application/json' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'troubleir-result.json';
+  a.click();
+  URL.revokeObjectURL(a.href);
+}
 
 function esc(s) {
   if (s == null) return '';
