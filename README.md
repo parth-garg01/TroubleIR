@@ -231,6 +231,50 @@ The engineering diagnostics panel (bottom-right toggle) shows latency, model, co
 
 ---
 
+## Scalability
+
+The default single-worker setup is enough for demos and low-traffic deployments. Here is how to scale it when you need to.
+
+### Multiple workers (gunicorn)
+
+The repo includes a `gunicorn.conf.py` that runs the app with multiple uvicorn workers:
+
+```bash
+# Linux / Mac (gunicorn does not run natively on Windows)
+set PYTHONPATH=src
+gunicorn -c gunicorn.conf.py troubleir.api.main:app
+```
+
+Default worker count is `(2 * CPU cores) + 1`, capped at 8. Override with the `WORKERS` environment variable.
+
+The key setting is `preload_app = True`. This loads the Sentence Transformers model (about 90MB) once in the master process before forking. Workers inherit it via copy-on-write, so you get 4 or 8 workers for the memory cost of one. Without this, each worker would download and allocate the model independently.
+
+### Shared cache across workers (Redis)
+
+By default the cache lives in each worker's memory separately. If one worker compiles a plan for "battery draining," only that worker benefits from the cache hit. The other workers each run a cold Groq call when they see the same query.
+
+Setting `REDIS_URL` switches to a shared cache:
+
+```bash
+REDIS_URL=redis://localhost:6379/0
+```
+
+On store, the plan and polarity tokens are written to Redis. On startup, every worker loads all existing entries from Redis so it starts warm. The embedding vectors for cosine similarity are kept in local memory (no per-lookup Redis round-trip), so lookup speed is unchanged.
+
+If Redis is unreachable at startup, the server falls back to in-memory automatically and logs a warning. The cache backend is reported in `GET /v1/cache/stats` as `"backend": "redis"` or `"backend": "memory"`.
+
+### What this gives you
+
+| Setup | Concurrent requests | Cache sharing | Memory |
+|-------|---------------------|---------------|--------|
+| Single uvicorn worker | ~1-2 | N/A | baseline |
+| gunicorn, 4 workers, no Redis | ~4-8 | No (each worker has own cache) | ~1x (preload_app) |
+| gunicorn, 4 workers, Redis | ~4-8 | Yes (all workers share one cache) | ~1x (preload_app) |
+
+For the Samsung PRISM demo (a handful of reviewers, mostly sequential queries), a single uvicorn worker is fine. The gunicorn + Redis setup is there for a real support-traffic deployment.
+
+---
+
 ## Tech stack
 
 - FastAPI 0.111 + Uvicorn 0.30
