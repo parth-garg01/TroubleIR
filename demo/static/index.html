@@ -96,9 +96,52 @@
     /* ===================== HERO ===================== */
     .hero {
       padding: 72px 40px 56px;
-      display: flex; flex-direction: column;
-      align-items: flex-start; justify-content: flex-start;
+      display: grid; grid-template-columns: 3fr 2fr; gap: 64px;
+      align-items: center;
       position: relative; overflow: hidden;
+    }
+    .hero-left { display: flex; flex-direction: column; align-items: flex-start; }
+    .hero-right {
+      display: flex; flex-direction: column; gap: 0;
+      padding-left: 32px; border-left: 1px solid var(--cream3);
+    }
+    .hero-flow-label {
+      font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--text4); margin-bottom: 20px;
+    }
+    .hero-flow {
+      display: flex; flex-direction: column; gap: 0;
+      border-left: 1px solid var(--cream3); margin-left: 6px;
+    }
+    .hero-flow-step {
+      display: flex; align-items: center; gap: 14px;
+      padding: 10px 0 10px 20px; position: relative;
+    }
+    .hero-flow-step::before {
+      content: ''; position: absolute; left: -5px; top: 50%;
+      transform: translateY(-50%);
+      width: 9px; height: 9px; border-radius: 50%;
+      background: var(--cream2); border: 1px solid var(--cream3);
+    }
+    .hero-flow-step.hl::before { background: var(--blue); border-color: var(--blue); }
+    .hero-flow-num {
+      font-family: var(--mono); font-size: 10px; color: var(--text4);
+      letter-spacing: 0.08em; min-width: 16px;
+    }
+    .hero-flow-name {
+      font-size: 13px; font-weight: 600; letter-spacing: 0.02em;
+      text-transform: uppercase; color: var(--text2);
+    }
+    .hero-flow-step.hl .hero-flow-name { color: var(--blue); }
+    .hero-flow-desc { font-size: 12px; color: var(--text4); margin-left: 30px; padding-bottom: 2px; font-family: var(--mono); }
+    .hero-flow-end {
+      font-family: var(--mono); font-size: 11px; letter-spacing: 0.08em;
+      color: var(--blue); margin-top: 20px; margin-left: 6px;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .hero-flow-end::before {
+      content: ''; display: inline-block;
+      width: 9px; height: 9px; border-radius: 50%; background: var(--blue);
     }
     .hero-eyebrow {
       font-family: var(--mono); font-size: 13px; font-weight: 400;
@@ -127,7 +170,7 @@
     }
     .hero-meta-sep { width: 1px; height: 32px; background: var(--cream3); }
     .hero-scroll {
-      position: absolute; bottom: 40px; left: 40px;
+      position: relative; margin-top: 40px;
       display: flex; align-items: center; gap: 12px;
       font-family: var(--mono); font-size: 10px; color: var(--text3);
       letter-spacing: 0.12em; text-transform: uppercase; opacity: 0;
@@ -311,19 +354,18 @@
       padding: 48px 40px; overflow: visible;
     }
     .compiler-pipeline {
-      display: flex; align-items: center; gap: 0;
-      margin-top: 24px; overflow-x: auto;
+      display: flex; align-items: stretch; gap: 0;
+      margin-top: 24px;
       scrollbar-width: none;
       border: 1px solid var(--cream3); border-radius: 12px;
       background: var(--white);
     }
     .compiler-pipeline::-webkit-scrollbar { display: none; }
     .pipeline-stage {
-      flex-shrink: 0; display: flex; flex-direction: column;
-      gap: 10px; padding: 22px 28px;
+      flex: 1 1 0; display: flex; flex-direction: column;
+      gap: 10px; padding: 22px 20px;
       border-left: 1px solid var(--cream3);
       opacity: 0; transform: translateY(16px);
-      min-width: 160px;
     }
     .pipeline-stage:first-child { border-left: none; }
     .stage-idx {
@@ -834,37 +876,80 @@
 
 <!-- HERO -->
 <section class="hero" id="top" aria-label="Hero introduction">
-  <div class="hero-eyebrow" id="heroEyebrow">Smart Guided Troubleshooting Engine</div>
-  <h1 class="hero-title" id="heroTitle">
-    <span class="line"><span class="word">From</span> <span class="word">vague</span></span>
-    <span class="line"><span class="word">complaints</span></span>
-    <span class="line"><span class="word">to</span> <span class="word blue">verified</span></span>
-    <span class="line"><span class="word blue">device</span> <span class="word blue">actions.</span></span>
-  </h1>
-  <div class="hero-meta" id="heroMeta">
-    <div class="hero-meta-item">
-      <span class="hero-meta-val">P95</span>
-      <span class="hero-meta-key">300ms warm path</span>
+  <div class="hero-left">
+    <div class="hero-eyebrow" id="heroEyebrow">Smart Guided Troubleshooting Engine</div>
+    <h1 class="hero-title" id="heroTitle">
+      <span class="line"><span class="word">From</span> <span class="word">vague</span></span>
+      <span class="line"><span class="word">complaints</span></span>
+      <span class="line"><span class="word">to</span> <span class="word blue">verified</span></span>
+      <span class="line"><span class="word blue">device</span> <span class="word blue">actions.</span></span>
+    </h1>
+    <div class="hero-meta" id="heroMeta">
+      <div class="hero-meta-item">
+        <span class="hero-meta-val">P95</span>
+        <span class="hero-meta-key">300ms warm path</span>
+      </div>
+      <div class="hero-meta-sep"></div>
+      <div class="hero-meta-item">
+        <span class="hero-meta-val">10x</span>
+        <span class="hero-meta-key">query variations</span>
+      </div>
+      <div class="hero-meta-sep"></div>
+      <div class="hero-meta-item">
+        <span class="hero-meta-val">578</span>
+        <span class="hero-meta-key">deeplinks indexed</span>
+      </div>
+      <div class="hero-meta-sep"></div>
+      <div class="hero-meta-item">
+        <span class="hero-meta-val">7</span>
+        <span class="hero-meta-key">compiler stages</span>
+      </div>
     </div>
-    <div class="hero-meta-sep"></div>
-    <div class="hero-meta-item">
-      <span class="hero-meta-val">10x</span>
-      <span class="hero-meta-key">query variations</span>
-    </div>
-    <div class="hero-meta-sep"></div>
-    <div class="hero-meta-item">
-      <span class="hero-meta-val">62</span>
-      <span class="hero-meta-key">deeplinks indexed</span>
-    </div>
-    <div class="hero-meta-sep"></div>
-    <div class="hero-meta-item">
-      <span class="hero-meta-val">7</span>
-      <span class="hero-meta-key">compiler stages</span>
+    <div class="hero-scroll" id="heroScroll">
+      <div class="hero-scroll-line"></div>
+      Scroll to compile
     </div>
   </div>
-  <div class="hero-scroll" id="heroScroll">
-    <div class="hero-scroll-line"></div>
-    Scroll to compile
+  <div class="hero-right" id="heroRight">
+    <div class="hero-flow-label">Pipeline stages</div>
+    <div class="hero-flow">
+      <div class="hero-flow-step hl">
+        <span class="hero-flow-num">01</span>
+        <span class="hero-flow-name">Enrich</span>
+      </div>
+      <div class="hero-flow-desc">BM25 + dense query variations</div>
+      <div class="hero-flow-step hl">
+        <span class="hero-flow-num">02</span>
+        <span class="hero-flow-name">Cache Lookup</span>
+      </div>
+      <div class="hero-flow-desc">Polarity-aware semantic cache</div>
+      <div class="hero-flow-step">
+        <span class="hero-flow-num">03</span>
+        <span class="hero-flow-name">SIIS Retrieval</span>
+      </div>
+      <div class="hero-flow-desc">Hybrid search over support knowledge</div>
+      <div class="hero-flow-step">
+        <span class="hero-flow-num">04</span>
+        <span class="hero-flow-name">Extraction</span>
+      </div>
+      <div class="hero-flow-desc">LLM extracts Goal / Action / StepGroup</div>
+      <div class="hero-flow-step">
+        <span class="hero-flow-num">05</span>
+        <span class="hero-flow-name">Grounding</span>
+      </div>
+      <div class="hero-flow-desc">IDF-weighted SIIS evidence check</div>
+      <div class="hero-flow-step">
+        <span class="hero-flow-num">06</span>
+        <span class="hero-flow-name">Deeplink Bind</span>
+      </div>
+      <div class="hero-flow-desc">SettingsGraph resolves exact screen</div>
+      <div class="hero-flow-step">
+        <span class="hero-flow-num">07</span>
+        <span class="hero-flow-name">Lint + Store</span>
+      </div>
+      <div class="hero-flow-desc">Schema check, cache the verified plan</div>
+    </div>
+    <div class="hero-flow-end">Verified troubleshooting plan</div>
   </div>
 </section>
 
@@ -931,51 +1016,12 @@
 
 <div class="divider"></div>
 
-<!-- SIIS EVIDENCE -->
-<section class="evidence-scene">
-  <div class="two-col">
-  <div class="col-text">
-  <h2 class="scene-title">Grounded in Samsung support knowledge.</h2>
-  <p class="scene-body">Every extracted intent traces back to a SIIS knowledge base article. The system does not generate steps from nothing.</p>
-  <div class="evidence-doc-label" style="margin-top:8px">SIIS Article — Battery drain</div>
-  <div class="evidence-doc" id="evidenceDoc">
-    If your Galaxy device battery is draining faster than expected, there are several settings you can adjust.
-    First, <mark>check Battery Usage in Settings to identify which apps are consuming the most power</mark>.
-    Navigate to Settings &gt; Battery and device care &gt; Battery &gt; Battery usage.
-    <mark>Apps running in the background can significantly drain battery</mark>.
-    Go to Settings &gt; Battery and device care &gt; Battery &gt; Background usage limits and restrict apps that you don't need running in the background.
-    <mark>Reduce screen brightness</mark> by going to Settings &gt; Display &gt; Brightness and lowering the slider.
-    Enable <mark>Power saving mode</mark> via Settings &gt; Battery and device care &gt; Battery &gt; Power saving to limit CPU performance and background network activity.
-  </div>
-  </div>
-  <div class="col-vis">
-  <div class="evidence-bindings" id="evidenceBindings">
-    <div class="evidence-bind" id="eb0">
-      <div class="bind-source">Source span</div>
-      <div class="bind-target">Check Battery Usage in Settings</div>
-      <div class="bind-arrow">&#8594; Action: Check Battery Usage</div>
-    </div>
-    <div class="evidence-bind" id="eb1">
-      <div class="bind-source">Source span</div>
-      <div class="bind-target">Background usage limits</div>
-      <div class="bind-arrow">&#8594; Action: Review Background Limits</div>
-    </div>
-    <div class="evidence-bind" id="eb2">
-      <div class="bind-source">Source span</div>
-      <div class="bind-target">Power saving to limit CPU</div>
-      <div class="bind-arrow">&#8594; Action: Enable Power Saving</div>
-    </div>
-  </div>
-  </div><!-- col-vis -->
-  </div><!-- two-col -->
-</section>
-
-<div class="divider"></div>
-
 <!-- COMPILER PIPELINE -->
 <section class="compiler-scene" id="compiler-section">
-  <h2 class="scene-title" style="max-width:580px">The LLM understands language.<br />Deterministic stages control navigation.</h2>
-  <p class="scene-body">The intent travels through seven compiler stages. The LLM only touches extraction. Every downstream step is deterministic.</p>
+  <div style="display:grid;grid-template-columns:3fr 2fr;gap:56px;align-items:end;margin-bottom:32px;">
+    <h2 class="scene-title" style="margin-bottom:0">The LLM understands language.<br />Deterministic stages control navigation.</h2>
+    <p class="scene-body" style="margin-bottom:0">The intent travels through seven compiler stages. The LLM only touches extraction. Every downstream step is deterministic.</p>
+  </div>
   <div class="compiler-token" id="compilerToken">
     <span class="compiler-token-text">battery drain + overheating</span>
   </div>
