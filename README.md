@@ -1,71 +1,130 @@
 # TroubleIR
 
-**Samsung PRISM Theme 02 / Smart Guided Troubleshooting Engine**
+**Samsung PRISM Theme 02 — Smart Guided Troubleshooting Engine**
 
-TroubleIR converts vague Galaxy device complaints into verified, step-by-step troubleshooting plans. Each plan is grounded against a Samsung SIIS knowledge base, validated against a SettingsGraph of real deeplinks, and protected by a polarity-aware semantic cache.
-
----
-
-## What it does
-
-You type something like "my battery is draining too fast." TroubleIR figures out what you actually mean, checks whether it has seen something similar before, pulls relevant Samsung support knowledge, asks an LLM to extract actionable steps, verifies every step is backed by real evidence, maps each action to a live Settings deeplink, and hands you a clean, structured plan you can execute on a Galaxy device. The whole thing takes under 10 seconds on a cold run and under 1 second on a cache hit.
+TroubleIR turns a vague Galaxy device complaint into a verified, step-by-step troubleshooting plan grounded in real Samsung support knowledge. It is not a chatbot. It is a compiler: the user's words go in, a structured, validated, executable plan comes out.
 
 ---
 
-## Architecture
+## The problem it solves
+
+When a Galaxy user says "my battery is draining too fast," they need specific actions, not a wall of text. Current support flows either dump generic documentation or require the user to navigate menus manually. TroubleIR closes that gap: it understands natural language, pulls the relevant Samsung SIIS knowledge, extracts actionable steps, verifies every step is grounded in evidence, maps each step to a real Settings deeplink, and returns a clean plan the device can act on directly.
+
+Cold run: under 10 seconds. Cache hit: under 1 second.
+
+---
+
+## What makes it novel
+
+Most RAG systems stop at retrieval. They find relevant documents and hand the text to an LLM to summarize. TroubleIR goes several steps further:
+
+**Grounding validation.** Every step the LLM extracts is checked against the SIIS evidence using IDF-weighted term overlap. If a step is not supported by the retrieved document, it is rejected with diagnostic code E204. The LLM cannot hallucinate steps and have them pass through silently.
+
+**Polarity-aware cache.** Two queries can be semantically similar but mean opposite things ("battery draining too fast" vs "battery charging too slowly"). A naive cache would serve the wrong plan. TroubleIR extracts the intent polarity and blocks cache reuse when it conflicts, so every cache hit is actually relevant.
+
+**Deterministic deeplink binding.** The LLM only touches language: extraction and enrichment. Every downstream step, including deeplink resolution, grounding, lint, and schema validation, is deterministic code. The pipeline uses the official 578-deeplink Samsung catalog with `voiceassist://` URIs verbatim. It never constructs or guesses a URI.
+
+**Validation deeplinks.** Each resolved step includes not just an actionable deeplink to open the setting, but also a validation deeplink that lets the device confirm the setting was actually changed. This is the full `StepGroup` schema as specified in the hackathon dataset.
+
+**SettingsGraph traversal.** Deeplinks are resolved through a graph of the Settings hierarchy. Parent-menu matches (paths that land on a category page rather than a specific setting) are rejected with E310. Only leaf-level settings pass.
+
+**Structured output with schema lint.** The final output is a `ContextDeeplinkResponse` validated by Pydantic v2 against the official schema. A separate lint pass checks ordering rules (auto before manual before critical), URL leak detection (E402), and schema field correctness (E403). The response is never delivered if it fails lint.
+
+---
+
+## How it works
 
 ```
 User complaint (natural language)
         |
         v
   Query Enrichment
-  (BM25 + dense embedding variations)
+  LLM generates 10 canonical paraphrases for robust cache keying
         |
         v
   Semantic Cache lookup
-  (cosine sim >= 0.85 + polarity guard)
+  Cosine similarity >= 0.85 + polarity guard
         |
-   hit? yes --> return cached plan
+   Cache hit? --> return cached plan immediately
         |
-       no
+       No
         |
         v
   SIIS Retrieval
-  (hybrid BM25 + Sentence Transformers, top-20)
+  BM25 + Sentence Transformers hybrid search over 20 Samsung support articles
         |
         v
   LLM Extraction
-  (Groq / qwen3.8-27b, structured Pydantic output)
+  Groq / qwen3.8-27b produces structured Goal / Action / StepGroup output
         |
         v
   IDF-weighted Grounding Validator
-  (rejects steps not supported by SIIS evidence)
+  Rejects steps not supported by SIIS evidence (E204)
         |
         v
   Deeplink Binding
-  (SettingsGraph rejects parent-menu paths, E310)
+  SettingsGraph resolves each action to a voiceassist:// URI
+  Rejects parent-menu paths (E310)
         |
         v
   Schema Lint
-  (Pydantic v2, E401 URL leak, E402 schema failure)
+  Pydantic v2 validation, URL leak check (E402), ordering rules (E403)
         |
         v
   Cache Store + Response
 ```
 
-## Pipeline stages and diagnostic codes
+---
 
-| Code | Name | Meaning |
-|------|------|---------|
-| E204 | UNGROUNDED_OPERATION | Step not supported by SIIS evidence |
-| E310 | PARENT_MENU_MATCH | Deeplink resolves to a parent menu, not a leaf setting |
-| E401 | INVALID_DEEPLINK | Deeplink format rejected by schema |
-| E402 | URL_LEAK | HTTP URL found in steps (should be deeplinks only) |
-| E403 | SCHEMA_FAILURE | Pydantic validation failed on LLM output |
-| E501 | CACHE_POLARITY_MISMATCH | Polarity of cached plan differs from incoming query |
-| E502 | CACHE_SLOT_MISMATCH | Cache slot exists but query slots do not match |
-| E601 | STALE_DEPENDENCY | Cached plan references a deeplink that has since changed |
-| E701 | LOW_RELIABILITY | Goal score below acceptable threshold |
+## Diagnostic codes
+
+| Code | Meaning |
+|------|---------|
+| E204 | Step not supported by SIIS evidence (grounding failure) |
+| E310 | Deeplink resolves to a parent menu, not a leaf setting |
+| E401 | Invalid deeplink URI format |
+| E402 | HTTP URL found in steps (should be deeplinks only) |
+| E403 | Pydantic schema validation failed |
+| E501 | Cache polarity mismatch: similar query, opposite intent |
+| E502 | Cache slot exists but query slots do not match |
+| E601 | Cached plan references a deeplink that has since changed |
+| E701 | Goal score below acceptable threshold |
+
+---
+
+## Security
+
+The API was hardened before submission:
+
+**CORS lockdown.** The server does not accept requests from arbitrary origins. Allowed origins are set via the `ALLOWED_ORIGINS` environment variable and default to `localhost:8000` only. Set this to your actual domain before deploying.
+
+**Rate limiting.** All expensive endpoints are rate-limited per IP using `slowapi`:
+- `/v1/troubleshoot`: 20 requests per minute
+- `/v1/catalog/search` and `/v1/catalog/list`: 30 per minute
+- `/v1/graph/screens`: 60 per minute
+
+This protects against both denial-of-service and accidental LLM cost runaway.
+
+**Protected admin endpoints.** `/v1/debug/config`, `/v1/cache/stats`, and `/v1/cache/invalidate` require a `Bearer` token. Set `DEBUG_TOKEN` in `.env` to enable them. If the token is not set, the endpoints return 404 rather than leaking configuration.
+
+**Input length caps.** Query length is capped at 2000 characters and SIIS override at 8000 characters at the Pydantic validation layer.
+
+**No secrets in the repo.** The `.env` file is gitignored. The `GROQ_API_KEY` is never committed. All sensitive configuration is loaded at runtime from environment variables only.
+
+**Error sanitization.** The `/v1/troubleshoot` endpoint logs full tracebacks server-side but returns only `"Internal server error"` to the caller, so stack traces and internal paths are never exposed.
+
+---
+
+## Official hackathon data
+
+The project uses the official Samsung PRISM dataset exactly as provided:
+
+- **578 deeplinks** with `voiceassist://masked/act/...` URIs. Every URI is used verbatim from the catalog. The pipeline never constructs or guesses a URI.
+- **20 SIIS knowledge-base articles** keyed on `original_query` for retrieval.
+- **Validation deeplinks** populated from `validation.deeplink` and `validation.key` in the catalog, so every `StepGroup` carries both an actionable and a validation deeplink where the catalog provides one.
+- **Schema compliance**: the output matches the official `schema.py` exactly (`Goal`, `Action`, `StepGroup`, `Deeplink`, `ValidationDeepLink`, `actionCategory`). All 25 unit tests pass.
+
+---
 
 ## Project structure
 
@@ -89,11 +148,18 @@ src/troubleir/
   schema.py          Pydantic models for all data structures
 
 data/raw/
-  siis_responses.json   20 official SIIS knowledge-base articles (hackathon dataset)
-  deeplinks.json        578 official Settings deeplinks with voiceassist:// URIs (hackathon dataset)
+  siis_responses.json   20 official SIIS knowledge-base articles
+  deeplinks.json        578 official Settings deeplinks with voiceassist:// URIs
+
+prism-docs/
+  schema.py             Official hackathon output schema
+  deeplinks.json        Official deeplink catalog (source)
+  siis_responses.json   Official SIIS dataset (source)
+  sample_output.json    Official sample output for reference
+  input.txt             Official input examples
 
 demo/static/
-  index.html            Scroll-driven frontend (GSAP + Lenis)
+  index.html            Scroll-driven frontend demo (GSAP + Lenis)
   favicon.svg           Samsung blue SVG favicon
 
 tests/
@@ -104,21 +170,23 @@ tests/
   test_api.py           Full API integration tests
 ```
 
+---
+
 ## Quickstart
 
 ```bash
 # 1. Install dependencies
 pip install -r requirements.txt
 
-# 2. Set environment variables
+# 2. Configure environment
 cp .env.example .env
-# edit .env and set GROQ_API_KEY
+# Edit .env and set GROQ_API_KEY
 
 # 3. Run the server
 set PYTHONPATH=src
 python -m uvicorn troubleir.api.main:app --host 0.0.0.0 --port 8000 --reload
 
-# 4. Open http://localhost:8000 in your browser
+# 4. Open http://localhost:8000
 ```
 
 ## Environment variables
@@ -138,7 +206,7 @@ python -m uvicorn troubleir.api.main:app --host 0.0.0.0 --port 8000 --reload
 ## Running tests
 
 ```bash
-# Unit tests only (no server needed)
+# Unit tests (no server needed)
 set PYTHONPATH=src
 python -m pytest tests/test_schema.py tests/test_cache.py tests/test_lint.py tests/test_grounding.py -v
 
@@ -148,74 +216,18 @@ python -m pytest tests/test_api.py -v
 
 ---
 
-## What was built and improved
+## Demo frontend
 
-This section walks through the major pieces added or changed during development. It is aimed at a reviewer reading the project for the first time.
+The demo at `demo/static/index.html` is a scroll-driven single-page walkthrough that shows a reviewer how the pipeline works before they run a single command.
 
-### Demo frontend
-
-The demo at `demo/static/index.html` is a scroll-driven single-page experience that walks a reviewer through every stage of the pipeline before they even open a terminal. It uses GSAP ScrollTrigger for animations and Lenis for smooth scrolling.
-
-Each scroll section corresponds to one real pipeline stage:
-
-- **SIIS Evidence** - shows a source document with highlights and the deeplink bindings extracted from it. Layout is two-column: the article on the left, the extracted bindings on the right.
-- **Compiler Pipeline** - animates through the seven deterministic stages, showing each stage name and its output token. Stage dots animate blue as each stage completes.
-- **SettingsGraph** - shows the navigation graph with traversal statistics (depth, resolved screens, parent-only matches) and a resolved destination annotation.
-- **Action Ordering** - shows how actions are ranked by goal score with a legend explaining auto, manual, and critical categories.
-- **Polarity Protection** - demonstrates why two semantically similar queries ("battery is draining too fast" vs "battery is charging too slowly") cannot share a cache entry because their extracted polarities differ.
-
-The interactive section at the bottom lets you type a real complaint and compile it live against the running API. The result panel shows:
+Each scroll section corresponds to a real pipeline stage. The interactive section at the bottom lets you type a real complaint and compile it live against the running API. Results include:
 
 - Action cards with step-by-step instructions, deeplink badges, and inline breadcrumb paths
-- A **Settings navigation tree** pulled live from `/v1/graph/screens`, showing the full Settings hierarchy with the traversed path highlighted in blue and destination nodes rendered as filled buttons
-- A **relevance score bar chart** at the bottom showing the LLM's confidence score for each action
+- A live Settings navigation tree pulled from `/v1/graph/screens`, with the traversed path highlighted and destination nodes rendered as filled buttons
+- A relevance score bar chart showing the LLM's confidence score for each action
+- A **Download JSON** button that saves the full response in the official hackathon schema format
 
-The engineering diagnostics panel (toggled from the bottom-right) shows latency, model, cost, lint result, canonical query, and variation count. It matches the page's cream background rather than using a dark overlay.
-
-Design decisions worth noting:
-- No card boxes or bordered containers anywhere on the page. All visual separation uses whitespace, typography weight, and thin lines.
-- Two-column alternating layout for every scene section so neither side is ever empty.
-- Section padding reduced from 72px to 48px to avoid dead space between sections.
-- All text uses Space Grotesk for body and IBM Plex Mono for code and labels. No em dashes in any copy.
-
-### Official hackathon data alignment
-
-The project was updated to use the official hackathon dataset exactly as provided:
-
-**Deeplinks** - replaced the initial prototype catalog (58 entries, `bixby://` scheme) with the official 578-deeplink catalog (`voiceassist://masked/act/...` URIs). Every URI is used verbatim from the catalog; the pipeline never constructs or guesses a URI. A `voiceassist://dummy_positive` placeholder is used only when the catalog has no match for a valid settings screen.
-
-**SIIS knowledge base** - replaced with the 20 official SIIS articles, keyed on `original_query` for retrieval. The loader accepts both the new `{responses: [...]}` format and the legacy flat-dict format for backwards compatibility.
-
-**Validation deeplinks** - each catalog entry includes a `validation.deeplink` and `validation.key`. The pipeline now populates `validationDeeplink` on every `StepGroup` where a catalog match is found, so the full output schema is satisfied.
-
-**Schema compliance** - the output schema matches the official `schema.py` exactly (`Goal`, `Action`, `StepGroup`, `Deeplink`, `ValidationDeepLink`, `actionCategory`). All 25 unit tests pass against the updated data.
-
-### Backend fixes
-
-**Error handling** - the `/v1/troubleshoot` endpoint previously propagated raw Python exception messages to the client. It now logs the full traceback server-side with `logger.exception` and returns only `"Internal server error"` to the caller.
-
-**Schema compatibility** - the test suite was importing `ActionableDeeplink` and `ActionCategory` directly from `schema.py`, which did not export them under those names. Aliases were added at the bottom of `schema.py` so the tests pass without modifying test code.
-
-**Model consistency** - `MODEL_NAME` from `config.py` is now used consistently across all response paths in `orchestrator.py`, so the `meta.model` field in API responses always reflects what is set in the environment rather than a hardcoded fallback.
-
-### Security hardening
-
-The API was open by default. The following was tightened up:
-
-**CORS** - previously `allow_origins=["*"]`. Now reads from `ALLOWED_ORIGINS` environment variable, defaulting to `localhost:8000` only. Set this to your actual domain before deploying.
-
-**Rate limiting** - added `slowapi` rate limiting on all expensive endpoints:
-- `/v1/troubleshoot`: 20 requests per minute per IP
-- `/v1/catalog/search` and `/v1/catalog/list`: 30 per minute
-- `/v1/graph/screens`: 60 per minute
-
-This protects against both DoS and unintended LLM cost runaway.
-
-**Admin endpoints** - `/v1/debug/config`, `/v1/cache/stats`, and `/v1/cache/invalidate` are now behind a `Bearer` token check. Set `DEBUG_TOKEN` in your `.env` and pass `Authorization: Bearer <token>` to access them. If `DEBUG_TOKEN` is not set, the endpoints return 404.
-
-**Input length caps** - query length is capped at 2000 characters and SIIS override at 8000 characters at the Pydantic validation layer, preventing large payload abuse.
-
-**No secrets in repo** - the `.env` file is gitignored. The `GROQ_API_KEY` is never committed. All sensitive configuration is loaded at runtime from environment variables only.
+The engineering diagnostics panel (bottom-right toggle) shows latency, model, cost, lint result, canonical query, and variation count.
 
 ---
 
@@ -223,8 +235,8 @@ This protects against both DoS and unintended LLM cost runaway.
 
 - FastAPI 0.111 + Uvicorn 0.30
 - slowapi 0.1.9 for rate limiting
-- Groq SDK 1.6 (qwen3.8-27b)
-- Pydantic v2 for schema validation
+- Groq SDK (qwen3.8-27b)
+- Pydantic v2 for schema validation and lint
 - Sentence Transformers 6.1 for dense embeddings
 - rank-bm25 for BM25 sparse retrieval
 - GSAP 3.12.5 + Lenis 1.1.14 for the frontend
