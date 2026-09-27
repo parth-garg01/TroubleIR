@@ -18,3 +18,10 @@ data/processed/
 *.db
 *.pkl
 *.npy
+
+# Debug screenshots and session artifacts
+*.jpeg
+*.jpg
+demo/static/screenshots/
+.playwright-mcp/
+drive-download-*.zip
