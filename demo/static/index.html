@@ -1201,33 +1201,6 @@
   </div><!-- two-col -->
 </section>
 
-<!-- POLARITY PROTECTION -->
-<section class="polarity-scene">
-  <div class="two-col">
-  <div class="col-text">
-  <h2 class="scene-title">Semantic similarity alone is not enough.</h2>
-  <p class="scene-body">Two complaints can produce similar embeddings but opposite intents. The polarity guard prevents stale plans from being reused incorrectly.</p>
-  </div>
-  <div class="col-vis">
-  <div class="polarity-compare">
-    <div class="polarity-case" id="pc0">
-      <div class="polarity-quote">"battery is draining too fast"</div>
-      <div class="polarity-meta">&#8595; LLM extracts polarity: <strong>DRAIN</strong></div>
-      <div class="polarity-verdict-text match">Cache reuse allowed</div>
-      <div class="polarity-note-text">Another "drain" query maps to the same compiled plan. Cache hit.</div>
-    </div>
-    <div class="polarity-case-divider"></div>
-    <div class="polarity-case" id="pc1">
-      <div class="polarity-quote">"battery is charging too slowly"</div>
-      <div class="polarity-meta">&#8595; LLM extracts polarity: <strong>CHARGE</strong></div>
-      <div class="polarity-verdict-text blocked">Cache reuse blocked</div>
-      <div class="polarity-note-text">Different polarity detected. System runs cold path to generate a new plan.</div>
-    </div>
-  </div>
-  </div><!-- col-vis -->
-  </div><!-- two-col -->
-</section>
-
 <!-- NO MATCH -->
 <section class="nomatch-scene">
   <div class="two-col rev">
