@@ -21,7 +21,7 @@ if not os.environ.get("GROQ_API_KEY"):
 from .routes import router, limiter
 from ..pipeline.mapping import load_catalog
 from ..pipeline.siis import load_siis
-from ..pipeline.cache import load_cache
+from ..pipeline.cache import load_cache, _get_embed_model
 from ..graph.builder import save_graph
 
 
@@ -44,6 +44,12 @@ async def lifespan(app: FastAPI):
     load_catalog()
     print("Loading SIIS knowledge base...")
     load_siis()
+    # Warm up the embedding model now, before any request arrives.
+    # With gunicorn preload_app=True this runs in the master process
+    # and workers inherit the loaded model via copy-on-write (no
+    # redundant downloads or RAM duplication per worker).
+    print("Warming up embedding model...")
+    _get_embed_model()
     print("Loading persistent cache (if any)...")
     load_cache()
     print("Building SettingsGraph...")
