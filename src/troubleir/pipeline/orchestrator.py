@@ -39,11 +39,31 @@ def run_pipeline(query: str, siis_response_override: Optional[str] = None) -> Tr
     start_ts = time.perf_counter()
     cost_usd = 0.0
 
-    # Step 1: Enrich
-    canonical, variations = enrich_query(query)
-    cost_usd += 0.0001  # approx haiku cost for enrichment
+    # Step 1a: Fast cache probe on raw query — no Groq call, just embed + cosine.
+    # Repeat or near-identical queries return here in ~20-50 ms.
+    cached = lookup(query, query)
+    if cached is not None:
+        elapsed_ms = int((time.perf_counter() - start_ts) * 1000)
+        return TroubleshootResponse(
+            query=query,
+            query_variations=[],
+            response=cached,
+            meta={
+                "latency_ms": elapsed_ms,
+                "cache_hit": True,
+                "cache_path": "raw",
+                "model": MODEL_NAME,
+                "cost_usd": 0.0,
+                "canonical": query,
+                "diagnostics": [],
+            },
+        )
 
-    # Step 2: Cache lookup (warm path)
+    # Step 1b: Enrich (only on cache miss — pays the Groq round-trip once)
+    canonical, variations = enrich_query(query)
+    cost_usd += 0.0001  # approx enrichment cost
+
+    # Step 2: Cache lookup on canonical form (catches paraphrases of cached queries)
     cached = lookup(canonical, query)
     if cached is not None:
         elapsed_ms = int((time.perf_counter() - start_ts) * 1000)
@@ -54,6 +74,7 @@ def run_pipeline(query: str, siis_response_override: Optional[str] = None) -> Tr
             meta={
                 "latency_ms": elapsed_ms,
                 "cache_hit": True,
+                "cache_path": "canonical",
                 "model": MODEL_NAME,
                 "cost_usd": 0.0,
                 "canonical": canonical,
