@@ -11,7 +11,7 @@ from ..schema import (
     Action,
     StepGroup,
     Deeplink,
-    ValidationDeeplink,
+    ValidationDeepLink,
     actionCategory,
     has_url_leak,
 )
@@ -166,7 +166,7 @@ def extract_plan(
             validation_deeplink = None
             if matched_entry and matched_entry.get("validation"):
                 v = matched_entry["validation"]
-                validation_deeplink = ValidationDeeplink(deeplink=v["deeplink"], key=v["key"])
+                validation_deeplink = ValidationDeepLink(deeplink=v["deeplink"], key=v["key"])
 
             step_groups.append(StepGroup(
                 steps=sg_data.get("steps", []),

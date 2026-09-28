@@ -34,7 +34,7 @@ class actionCategory(str, Enum):
     critical = "critical"
 
 
-class ValidationDeeplink(BaseDeeplink):
+class ValidationDeepLink(BaseDeeplink):  # capital L matches official schema.py
     key: str
     resultType: Optional[ResultTypes] = None
     condition: Optional[Condition] = None
@@ -43,7 +43,7 @@ class ValidationDeeplink(BaseDeeplink):
 
 class StepGroup(BaseModel):
     steps: List[str]
-    validationDeeplink: Optional[ValidationDeeplink] = None
+    validationDeeplink: Optional[ValidationDeepLink] = None
     actionableDeeplink: Optional[Deeplink] = None
 
 
@@ -122,3 +122,4 @@ def has_url_leak(text: str) -> bool:
 # Aliases for test compatibility
 ActionableDeeplink = Deeplink
 ActionCategory = actionCategory
+ValidationDeeplink = ValidationDeepLink  # lowercase-l alias for backwards compat
