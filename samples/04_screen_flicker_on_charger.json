@@ -1,0 +1,98 @@
+{
+  "query": "My TechCorp X1 Ultra screen flashes extremely quickly (in milliseconds) whenever I plug in a charger, making the display unusable for a short period.",
+  "response": {
+    "contexts": [
+      {
+        "goal": "Follow these steps to perform this Charger Triggered Screen Flicker Troubleshooting",
+        "title": "Charger screen flicker fix",
+        "score": 0.88,
+        "actions": [
+          {
+            "actionName": "Disable Extra Brightness",
+            "description": "It will stop the display from boosting brightness on plug-in events that cause flicker",
+            "stepGroups": [
+              {
+                "steps": [
+                  "Navigate to and open Settings.",
+                  "Tap Display.",
+                  "Tap Brightness.",
+                  "Toggle off Extra brightness."
+                ],
+                "actionableDeeplink": {
+                  "deeplink": "voiceassist://masked/act/6ddfdb39ee",
+                  "description": "Disables extra brightness via device Settings on the device.",
+                  "message": "Disable extra brightness",
+                  "originalType": "onURL"
+                },
+                "validationDeeplink": {
+                  "deeplink": "voiceassist://masked/val/6ea3871544",
+                  "key": "Extra brightness",
+                  "resultType": "boolean",
+                  "condition": "equal",
+                  "value": "False"
+                }
+              }
+            ],
+            "category": "auto"
+          },
+          {
+            "actionName": "Adjust Motion Smoothness",
+            "description": "It will stabilise the display refresh cycle when the charger is connected",
+            "stepGroups": [
+              {
+                "steps": [
+                  "Navigate to and open Settings.",
+                  "Tap Display.",
+                  "Tap Motion smoothness.",
+                  "Select Standard to reduce refresh rate instability."
+                ],
+                "actionableDeeplink": {
+                  "deeplink": "voiceassist://masked/act/5e750b4d95",
+                  "description": "Updates the motion smoothness (refresh rate) to a specified value via device Settings.",
+                  "message": "Open motion smoothness settings",
+                  "originalType": "onURL"
+                },
+                "validationDeeplink": {
+                  "deeplink": "voiceassist://masked/val/674c596eb5",
+                  "key": "Motion smoothness",
+                  "resultType": "boolean",
+                  "condition": "equal",
+                  "value": "True"
+                }
+              }
+            ],
+            "category": "auto"
+          },
+          {
+            "actionName": "Back Up Data and Schedule Hardware Inspection",
+            "description": "It will protect your data before a technician inspects the charging port and display",
+            "stepGroups": [
+              {
+                "steps": [
+                  "Navigate to and open Settings.",
+                  "Tap Accounts and backup.",
+                  "Tap Back up data and complete a backup.",
+                  "Visit an authorized TechCorp Service Centre with the charger that triggers the flicker."
+                ],
+                "actionableDeeplink": {
+                  "deeplink": "voiceassist://masked/act/b3ed3ed663",
+                  "description": "Enables data backup to TechCorp Cloud via device Settings on the device.",
+                  "message": "Enable Back up data (TechCorp Cloud)",
+                  "originalType": "onURL"
+                },
+                "validationDeeplink": {
+                  "deeplink": "voiceassist://masked/val/266037d0c5",
+                  "key": "Back up data (TechCorp Cloud)",
+                  "resultType": "boolean",
+                  "condition": "equal",
+                  "value": "True"
+                }
+              }
+            ],
+            "category": "manual"
+          }
+        ]
+      }
+    ]
+  }
+}

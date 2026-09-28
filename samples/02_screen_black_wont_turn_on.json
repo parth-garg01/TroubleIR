@@ -1,0 +1,91 @@
+{
+  "query": "My TechCorp Nexa A14/A15 screen suddenly went completely black on its own after about a month of use. It doesn't display anything, even when I try to turn it on.",
+  "response": {
+    "contexts": [
+      {
+        "goal": "Follow these steps to perform this Black Screen Troubleshooting",
+        "title": "Black screen recovery",
+        "score": 0.93,
+        "actions": [
+          {
+            "actionName": "Force Restart the Device",
+            "description": "It will perform a forced reboot to clear temporary faults causing black screen",
+            "stepGroups": [
+              {
+                "steps": [
+                  "Press and hold the Volume Down button and the Side key simultaneously for 7 seconds.",
+                  "The device will vibrate and restart.",
+                  "If the screen remains black, charge the device for at least 30 minutes and try again."
+                ],
+                "actionableDeeplink": {
+                  "deeplink": "voiceassist://dummy_positive",
+                  "description": "Force restart requires hardware button combination and cannot be triggered by a deeplink.",
+                  "message": "Force restart the device",
+                  "originalType": null
+                },
+                "validationDeeplink": null
+              }
+            ],
+            "category": "auto"
+          },
+          {
+            "actionName": "Enable Double Tap to Wake Screen",
+            "description": "It will allow the display to wake without pressing the physical power button",
+            "stepGroups": [
+              {
+                "steps": [
+                  "Navigate to and open Settings.",
+                  "Tap Advanced features.",
+                  "Tap Motions and gestures.",
+                  "Toggle on Double tap to turn on screen."
+                ],
+                "actionableDeeplink": {
+                  "deeplink": "voiceassist://masked/act/b848c66dac",
+                  "description": "Enables double tap to wake screen via device Settings on the device.",
+                  "message": "Enable double tap to turn on screen",
+                  "originalType": "onURL"
+                },
+                "validationDeeplink": {
+                  "deeplink": "voiceassist://masked/val/9f395ed609",
+                  "key": "Double tap to turn on screen",
+                  "resultType": "boolean",
+                  "condition": "equal",
+                  "value": "True"
+                }
+              }
+            ],
+            "category": "auto"
+          },
+          {
+            "actionName": "Back Up Phone Data",
+            "description": "It will secure your personal files before a hardware service appointment",
+            "stepGroups": [
+              {
+                "steps": [
+                  "If the screen activates temporarily, immediately navigate to Settings.",
+                  "Tap Accounts and backup.",
+                  "Tap Back up data and run a full backup.",
+                  "Contact TechCorp Support to schedule a display inspection."
+                ],
+                "actionableDeeplink": {
+                  "deeplink": "voiceassist://masked/act/b3ed3ed663",
+                  "description": "Enables data backup to TechCorp Cloud via device Settings on the device.",
+                  "message": "Enable Back up data (TechCorp Cloud)",
+                  "originalType": "onURL"
+                },
+                "validationDeeplink": {
+                  "deeplink": "voiceassist://masked/val/266037d0c5",
+                  "key": "Back up data (TechCorp Cloud)",
+                  "resultType": "boolean",
+                  "condition": "equal",
+                  "value": "True"
+                }
+              }
+            ],
+            "category": "manual"
+          }
+        ]
+      }
+    ]
+  }
+}

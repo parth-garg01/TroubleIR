@@ -1,0 +1,56 @@
+{
+  "query": "My smartphone's screen is completely cracked, it's a total crack and I can't use the device.",
+  "response": {
+    "contexts": [
+      {
+        "goal": "Follow these steps to perform this Screen Damage Troubleshooting",
+        "title": "Screen display damage",
+        "score": 0.95,
+        "actions": [
+          {
+            "actionName": "Back Up Phone Data",
+            "description": "It will facilitate secure data transfer between your devices",
+            "stepGroups": [
+              {
+                "steps": [
+                  "Navigate to and open Settings.",
+                  "Tap on Accounts and backup.",
+                  "Select Back up data to secure your personal files."
+                ],
+                "actionableDeeplink": {
+                  "deeplink": "voiceassist://masked/act/b3ed3ed663",
+                  "description": "Enables data backup to TechCorp Cloud via device Settings on the device.",
+                  "message": "Enable Back up data (TechCorp Cloud)",
+                  "originalType": "onURL"
+                },
+                "validationDeeplink": {
+                  "deeplink": "voiceassist://masked/val/266037d0c5",
+                  "key": "Back up data (TechCorp Cloud)",
+                  "resultType": "boolean",
+                  "condition": "equal",
+                  "value": "True"
+                }
+              }
+            ],
+            "category": "auto"
+          },
+          {
+            "actionName": "Schedule Screen Repair Service",
+            "description": "It will connect you to the nearest authorized service center for repair",
+            "stepGroups": [
+              {
+                "steps": [
+                  "Contact Customer Support or visit an authorized TechCorp Service Center.",
+                  "Provide device details regarding the cracked display to initiate service."
+                ],
+                "actionableDeeplink": null,
+                "validationDeeplink": null
+              }
+            ],
+            "category": "manual"
+          }
+        ]
+      }
+    ]
+  }
+}

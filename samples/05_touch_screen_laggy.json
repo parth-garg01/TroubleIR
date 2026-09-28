@@ -1,0 +1,98 @@
+{
+  "query": "My Nexa X1 screen inputs are delayed and the touch responsiveness is laggy, causing a noticeable delay when I try to interact with the phone.",
+  "response": {
+    "contexts": [
+      {
+        "goal": "Follow these steps to perform this Touch Responsiveness Troubleshooting",
+        "title": "Touch screen fix",
+        "score": 0.89,
+        "actions": [
+          {
+            "actionName": "Enable Palm Touch Protection",
+            "description": "It will prevent accidental palm touches from interfering with intentional inputs",
+            "stepGroups": [
+              {
+                "steps": [
+                  "Navigate to and open Settings.",
+                  "Tap Advanced features.",
+                  "Tap Motions and gestures.",
+                  "Toggle on Palm touch to turn off screen."
+                ],
+                "actionableDeeplink": {
+                  "deeplink": "voiceassist://masked/act/a6668a330d",
+                  "description": "Enables palm touch to turn off screen via device Settings on the device.",
+                  "message": "Enable palm touch to turn off screen",
+                  "originalType": "onURL"
+                },
+                "validationDeeplink": {
+                  "deeplink": "voiceassist://masked/val/6963808b6e",
+                  "key": "Palm touch to turn off screen",
+                  "resultType": "boolean",
+                  "condition": "equal",
+                  "value": "True"
+                }
+              }
+            ],
+            "category": "auto"
+          },
+          {
+            "actionName": "Adjust Motion Smoothness for Touch Accuracy",
+            "description": "It will reconfigure the display refresh rate to improve touch input sampling speed",
+            "stepGroups": [
+              {
+                "steps": [
+                  "Navigate to and open Settings.",
+                  "Tap Display.",
+                  "Tap Motion smoothness.",
+                  "Select Adaptive to allow the screen to dynamically optimise for touch input."
+                ],
+                "actionableDeeplink": {
+                  "deeplink": "voiceassist://masked/act/5e750b4d95",
+                  "description": "Updates the motion smoothness (refresh rate) to a specified value via device Settings.",
+                  "message": "Set motion smoothness to adaptive",
+                  "originalType": "onURL"
+                },
+                "validationDeeplink": {
+                  "deeplink": "voiceassist://masked/val/674c596eb5",
+                  "key": "Motion smoothness",
+                  "resultType": "boolean",
+                  "condition": "equal",
+                  "value": "True"
+                }
+              }
+            ],
+            "category": "auto"
+          },
+          {
+            "actionName": "Back Up Data Before Reset",
+            "description": "It will secure your personal files before a factory reset to fix persistent touch issues",
+            "stepGroups": [
+              {
+                "steps": [
+                  "Navigate to and open Settings.",
+                  "Tap Accounts and backup.",
+                  "Tap Back up data and perform a full backup.",
+                  "After backup, proceed to Settings > General management > Reset > Factory data reset."
+                ],
+                "actionableDeeplink": {
+                  "deeplink": "voiceassist://masked/act/b3ed3ed663",
+                  "description": "Enables data backup to TechCorp Cloud via device Settings on the device.",
+                  "message": "Enable Back up data (TechCorp Cloud)",
+                  "originalType": "onURL"
+                },
+                "validationDeeplink": {
+                  "deeplink": "voiceassist://masked/val/266037d0c5",
+                  "key": "Back up data (TechCorp Cloud)",
+                  "resultType": "boolean",
+                  "condition": "equal",
+                  "value": "True"
+                }
+              }
+            ],
+            "category": "critical"
+          }
+        ]
+      }
+    ]
+  }
+}

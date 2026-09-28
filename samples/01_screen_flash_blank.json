@@ -1,0 +1,97 @@
+{
+  "query": "My TechCorp A15G tablet screen flashes and then goes completely blank whenever I tap to open an email in Gmail, and after it works for a short time it goes blank again.",
+  "response": {
+    "contexts": [
+      {
+        "goal": "Follow these steps to perform this Screen Flash Blank Troubleshooting",
+        "title": "Screen flash blank",
+        "score": 0.91,
+        "actions": [
+          {
+            "actionName": "Adjust Motion Smoothness",
+            "description": "It will stabilise the display refresh rate to eliminate flash and blank cycles",
+            "stepGroups": [
+              {
+                "steps": [
+                  "Navigate to and open Settings.",
+                  "Tap Display.",
+                  "Tap Motion smoothness.",
+                  "Select Standard to reduce refresh rate instability."
+                ],
+                "actionableDeeplink": {
+                  "deeplink": "voiceassist://masked/act/5e750b4d95",
+                  "description": "Updates the motion smoothness (refresh rate) to a specified value via device Settings.",
+                  "message": "Open motion smoothness settings",
+                  "originalType": "onURL"
+                },
+                "validationDeeplink": {
+                  "deeplink": "voiceassist://masked/val/674c596eb5",
+                  "key": "Motion smoothness",
+                  "resultType": "boolean",
+                  "condition": "equal",
+                  "value": "True"
+                }
+              }
+            ],
+            "category": "auto"
+          },
+          {
+            "actionName": "Disable Adaptive Brightness",
+            "description": "It will prevent automatic brightness swings that cause perceived blank flashes",
+            "stepGroups": [
+              {
+                "steps": [
+                  "Navigate to and open Settings.",
+                  "Tap Display.",
+                  "Tap Brightness.",
+                  "Toggle off Adaptive brightness."
+                ],
+                "actionableDeeplink": {
+                  "deeplink": "voiceassist://masked/act/a7dee23afb",
+                  "description": "Disables adaptive brightness via device Settings on the device.",
+                  "message": "Disable adaptive brightness",
+                  "originalType": "onURL"
+                },
+                "validationDeeplink": {
+                  "deeplink": "voiceassist://masked/val/b2410a1e18",
+                  "key": "Adaptive brightness",
+                  "resultType": "boolean",
+                  "condition": "equal",
+                  "value": "False"
+                }
+              }
+            ],
+            "category": "auto"
+          },
+          {
+            "actionName": "Back Up Phone Data",
+            "description": "It will secure all personal data before sending the device for inspection",
+            "stepGroups": [
+              {
+                "steps": [
+                  "Navigate to and open Settings.",
+                  "Tap Accounts and backup.",
+                  "Select Back up data to secure your personal files."
+                ],
+                "actionableDeeplink": {
+                  "deeplink": "voiceassist://masked/act/b3ed3ed663",
+                  "description": "Enables data backup to TechCorp Cloud via device Settings on the device.",
+                  "message": "Enable Back up data (TechCorp Cloud)",
+                  "originalType": "onURL"
+                },
+                "validationDeeplink": {
+                  "deeplink": "voiceassist://masked/val/266037d0c5",
+                  "key": "Back up data (TechCorp Cloud)",
+                  "resultType": "boolean",
+                  "condition": "equal",
+                  "value": "True"
+                }
+              }
+            ],
+            "category": "manual"
+          }
+        ]
+      }
+    ]
+  }
+}
