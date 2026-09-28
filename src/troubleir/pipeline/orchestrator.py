@@ -44,9 +44,12 @@ def run_pipeline(query: str, siis_response_override: Optional[str] = None) -> Tr
     cached = lookup(query, query)
     if cached is not None:
         elapsed_ms = int((time.perf_counter() - start_ts) * 1000)
+        # Still generate variations async would be ideal, but for correctness
+        # we return the cached plan immediately and note the raw path.
+        # query_variations are omitted on raw hits to preserve the <300ms SLA.
         return TroubleshootResponse(
             query=query,
-            query_variations=[],
+            query_variations=["(raw cache hit — variations not generated)"],
             response=cached,
             meta={
                 "latency_ms": elapsed_ms,
