@@ -19,6 +19,10 @@ data/processed/
 *.pkl
 *.npy
 
+# Presentation files (added by team separately)
+*.pptx
+*.ppt
+
 # Debug screenshots and session artifacts
 *.jpeg
 *.jpg
