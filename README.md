@@ -1,6 +1,6 @@
 # TroubleIR
 
-**Samsung PRISM Theme 02 — Smart Guided Troubleshooting Engine**
+**Samsung PRISM Theme 02: Smart Guided Troubleshooting Engine**
 
 TroubleIR turns a vague Galaxy device complaint into a verified, step-by-step troubleshooting plan grounded in real Samsung support knowledge. It is not a chatbot. It is a compiler: the user's words go in, a structured, validated, executable plan comes out.
 
@@ -275,8 +275,8 @@ The key setting is `preload_app = True`. This loads the Sentence Transformers mo
 
 The cache runs two probes per incoming query:
 
-1. **Raw probe** — embeds the query and runs a cosine search before any Groq call. Exact or near-exact repeat queries return in ~20-50 ms, well under the 300 ms target.
-2. **Canonical probe** — if the raw probe misses, query enrichment runs (one Groq call) and the canonical form is checked. This catches paraphrases of previously seen queries without paying the full cold-path cost.
+1. **Raw probe**: embeds the query and runs a cosine search before any Groq call. Exact or near-exact repeat queries return in ~20-50 ms, well under the 300 ms target.
+2. **Canonical probe**: if the raw probe misses, query enrichment runs (one Groq call) and the canonical form is checked. This catches paraphrases of previously seen queries without paying the full cold-path cost.
 
 Only on a double miss does the full extraction pipeline run.
 

@@ -117,7 +117,7 @@ def extract_plan(
         deeplink_catalog=catalog_summary,
     )
     resp = _get_client().chat.completions.create(
-        model=os.environ.get("MODEL_NAME", "llama-3.3-70b-versatile"),
+        model=os.environ.get("MODEL_NAME", "qwen/qwen3-8b-fast"),
         messages=[{"role": "user", "content": prompt}],
         max_tokens=2500,
         temperature=0.1,

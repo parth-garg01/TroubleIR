@@ -70,7 +70,7 @@ async def health():
 
 @router.get("/v1/health/detailed")
 async def health_detailed():
-    """Component-level health check — catalog, cache, and embedding model readiness."""
+    """Component-level health check: catalog, cache, and embedding model readiness."""
     catalog = get_catalog()
     stats = get_cache_stats()
     return {

@@ -1,9 +1,9 @@
-"""Central configuration — all env-driven constants live here."""
+"""Central configuration: all env-driven constants live here."""
 import os
 
 
 GROQ_API_KEY: str = os.environ.get("GROQ_API_KEY", "")
-MODEL_NAME: str = os.environ.get("MODEL_NAME", "qwen/qwen3.8-27b")
+MODEL_NAME: str = os.environ.get("MODEL_NAME", "qwen/qwen3-8b-fast")
 EMBEDDING_MODEL: str = os.environ.get("EMBEDDING_MODEL", "all-MiniLM-L6-v2")
 
 CACHE_SIMILARITY_THRESHOLD: float = float(os.environ.get("CACHE_SIMILARITY_THRESHOLD", "0.85"))

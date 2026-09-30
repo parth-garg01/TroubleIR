@@ -39,7 +39,7 @@ def run_pipeline(query: str, siis_response_override: Optional[str] = None) -> Tr
     start_ts = time.perf_counter()
     cost_usd = 0.0
 
-    # Step 1a: Fast cache probe on raw query — no Groq call, just embed + cosine.
+    # Step 1a: Fast cache probe on raw query, no Groq call, just embed + cosine.
     # Repeat or near-identical queries return here in ~20-50 ms.
     cached = lookup(query, query)
     if cached is not None:
@@ -49,7 +49,7 @@ def run_pipeline(query: str, siis_response_override: Optional[str] = None) -> Tr
         # query_variations are omitted on raw hits to preserve the <300ms SLA.
         return TroubleshootResponse(
             query=query,
-            query_variations=["(raw cache hit — variations not generated)"],
+            query_variations=["(raw cache hit, variations not generated)"],
             response=cached,
             meta={
                 "latency_ms": elapsed_ms,
@@ -62,7 +62,7 @@ def run_pipeline(query: str, siis_response_override: Optional[str] = None) -> Tr
             },
         )
 
-    # Step 1b: Enrich (only on cache miss — pays the Groq round-trip once)
+    # Step 1b: Enrich (only on cache miss, pays the Groq round-trip once)
     canonical, variations = enrich_query(query)
     cost_usd += 0.0001  # approx enrichment cost
 
@@ -145,7 +145,7 @@ def run_pipeline(query: str, siis_response_override: Optional[str] = None) -> Tr
         meta={
             "latency_ms": elapsed_ms,
             "cache_hit": False,
-            "model": os.environ.get("MODEL_NAME", "claude-haiku-4-5-20251001"),
+            "model": MODEL_NAME,
             "cost_usd": cost_usd,
             "canonical": canonical,
             "lint_passed": passed,
